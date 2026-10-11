@@ -1,0 +1,280 @@
+/* Orders, checkout, calculator, dashboard totals and admin console ("bb-" prefix = scoped). */
+
+/* ---------- Detail page tools: calculator + order box ---------- */
+.bb-detail-tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.bb-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.bb-panel .bb-section-title {
+  margin-top: 0;
+}
+
+.bb-calc-form,
+.bb-buy-form {
+  display: grid;
+  gap: 12px;
+}
+
+.bb-calc-form {
+  grid-template-columns: 1fr 110px auto;
+  align-items: end;
+}
+
+.bb-calc-result {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--success-bg);
+  border: 1px solid #b7dfc9;
+}
+
+.bb-calc-formula {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.bb-calc-answer {
+  font-size: 1.1rem;
+}
+
+.bb-buy-total {
+  font-size: 1.1rem;
+}
+
+/* ---------- Order status badges ---------- */
+.bb-status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bb-status-warn {
+  color: #8a5300;
+  background: #fff3dc;
+}
+
+.bb-status-good {
+  color: var(--primary-dark);
+  background: var(--success-bg);
+}
+
+.bb-status-done {
+  color: #fff;
+  background: var(--primary);
+}
+
+.bb-status-muted {
+  color: var(--muted);
+  background: #eceeed;
+}
+
+/* ---------- Order page ---------- */
+.bb-order-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bb-pay-box {
+  padding: 16px;
+  border-radius: 12px;
+  background: #fff8ea;
+  border: 1px solid #f1d9a6;
+}
+
+.bb-countdown {
+  font-variant-numeric: tabular-nums;
+  font-size: 1.15rem;
+}
+
+.bb-payments {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.bb-payments li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+
+/* ---------- Order lists ---------- */
+.bb-order-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.bb-order-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.bb-order-main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.bb-order-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.bb-order-main a,
+.bb-details a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ---------- Dashboard / admin totals ---------- */
+.bb-stats {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.bb-stat {
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+.bb-stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
+  overflow-wrap: anywhere;
+}
+
+.bb-stat-label {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+/* ---------- Admin console ---------- */
+.bb-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bb-tab {
+  font: inherit;
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.bb-tab-active,
+.bb-tab:hover {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.bb-admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.bb-admin-filters input {
+  font: inherit;
+  padding: 7px 10px;
+  border: 1px solid #c4d3ca;
+  border-radius: 8px;
+}
+
+.bb-table-wrap {
+  overflow-x: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.bb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+
+.bb-table th,
+.bb-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.bb-table th {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.bb-table a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .bb-calc-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bb-calc-form .bb-button {
+    grid-column: 1 / -1;
+  }
+
+  .bb-order-side {
+    align-items: flex-start;
+  }
+}

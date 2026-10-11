@@ -1,0 +1,363 @@
+/* Styles for login, register, dashboards and status pages.
+   Every class starts with "bb-" so nothing clashes with the connection-check page. */
+
+/* ---------- Page frame ---------- */
+.bb-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+.bb-auth {
+  width: 100%;
+  max-width: 480px;
+}
+
+.bb-brand {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bb-brand-name {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.bb-brand-tagline {
+  font-weight: 600;
+}
+
+/* ---------- Card ---------- */
+.bb-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow:
+    0 1px 2px rgba(21, 60, 50, 0.06),
+    0 12px 32px rgba(21, 60, 50, 0.08);
+}
+
+.bb-card-narrow {
+  width: 100%;
+  max-width: 480px;
+}
+
+.bb-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.bb-muted {
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.bb-loading {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ---------- Alerts ---------- */
+.bb-alert {
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 16px 0 0;
+  border: 1px solid transparent;
+}
+
+.bb-alert-success {
+  background: var(--success-bg);
+  border-color: #b7dfc9;
+  color: var(--primary-dark);
+}
+
+.bb-alert-info {
+  background: #eef4f8;
+  border-color: #c9dbe7;
+  color: var(--text);
+}
+
+.bb-alert-error {
+  background: var(--error-bg);
+  border-color: #f5c2bd;
+  color: var(--error);
+}
+
+/* ---------- Forms ---------- */
+.bb-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.bb-field {
+  display: grid;
+  gap: 6px;
+}
+
+.bb-field label,
+.bb-roles legend {
+  font-weight: 600;
+}
+
+.bb-field input,
+.bb-password input {
+  width: 100%;
+  font: inherit;
+  color: var(--text);
+  padding: 11px 14px;
+  border: 1px solid #c4d3ca;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.bb-field input[aria-invalid='true'] {
+  border-color: var(--error);
+}
+
+.bb-hint {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.bb-field-error {
+  font-size: 0.875rem;
+  color: var(--error);
+}
+
+.bb-password {
+  position: relative;
+}
+
+.bb-password input {
+  padding-right: 76px;
+}
+
+.bb-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.bb-password-toggle:hover {
+  background: var(--success-bg);
+}
+
+/* Buyer / Seller choice */
+.bb-roles {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.bb-roles legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.bb-roles .bb-field-error {
+  grid-column: 1 / -1;
+}
+
+.bb-role-option {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1px solid #c4d3ca;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.bb-role-option:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--success-bg);
+}
+
+.bb-role-option input {
+  margin-top: 4px;
+  accent-color: var(--primary);
+}
+
+.bb-role-option span {
+  display: grid;
+}
+
+.bb-role-option small {
+  color: var(--muted);
+}
+
+/* ---------- Buttons and links ---------- */
+.bb-button {
+  display: inline-block;
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.bb-button:hover:not(:disabled) {
+  background: var(--primary-dark);
+}
+
+.bb-button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.bb-button-full {
+  width: 100%;
+}
+
+.bb-button-outline {
+  color: var(--primary);
+  background: #fff;
+  padding: 8px 16px;
+}
+
+.bb-button-outline:hover:not(:disabled) {
+  color: #fff;
+}
+
+.bb-switch {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.bb-switch a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ---------- Dashboard ---------- */
+.bb-dashboard {
+  min-height: 100vh;
+}
+
+.bb-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.bb-topbar-brand {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.bb-topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.bb-topbar-name {
+  font-weight: 600;
+}
+
+.bb-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--success-bg);
+  border-radius: 999px;
+}
+
+.bb-dashboard-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 16px;
+  display: grid;
+  gap: 20px;
+}
+
+.bb-eyebrow {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.bb-details {
+  margin: 20px 0;
+  display: grid;
+  gap: 8px;
+}
+
+.bb-details div {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bb-details dt {
+  color: var(--muted);
+}
+
+.bb-details dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.bb-next {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 480px) {
+  .bb-card {
+    padding: 22px;
+  }
+
+  .bb-roles {
+    grid-template-columns: 1fr;
+  }
+
+  .bb-topbar {
+    padding: 12px 16px;
+  }
+}

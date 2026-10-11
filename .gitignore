@@ -1,0 +1,21 @@
+# Dependencies and build output (recreated by npm install / mvnw)
+node_modules/
+dist/
+target/
+
+# Local-only environment overrides and logs
+*.local
+*.log
+
+# IDE / tool files
+.vscode/
+.idea/
+.settings/
+.classpath
+.project
+.factorypath
+.github/modernize/
+
+# OS files
+.DS_Store
+Thumbs.db
