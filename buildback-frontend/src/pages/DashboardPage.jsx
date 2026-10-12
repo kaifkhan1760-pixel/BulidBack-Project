@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { api } from '../api/client'
 import { ROLE_LABELS } from '../auth/authContext'
-import { AppHeader } from '../components/AppHeader'
+import { Icon } from '../components/Icon'
 
 // Short guidance per role (the numbers above it come from the database)
 const HINTS = {
@@ -14,18 +14,27 @@ const HINTS = {
 // Real, working links for each role
 const ACTIONS = {
   BUYER: [
-    { to: '/materials', label: 'Browse materials', primary: true },
-    { to: '/buyer/orders', label: 'My orders' },
+    { to: '/materials', label: 'Browse materials', icon: 'search', text: 'Search tiles, paint, plywood and fittings' },
+    { to: '/buyer/orders', label: 'My orders', icon: 'bag', text: 'Pay, track and review your purchases' },
+    { to: '/materials?category=TILES', label: 'Tile calculator', icon: 'calculator', text: 'Open a tile listing to check the quantity' },
   ],
   SELLER: [
-    { to: '/seller/materials', label: 'Manage my materials', primary: true },
-    { to: '/seller/orders', label: 'Orders received' },
-    { to: '/seller/materials/new', label: 'Add material' },
+    { to: '/seller/materials', label: 'Manage my listings', icon: 'package', text: 'Edit stock, prices and photos' },
+    { to: '/seller/orders', label: 'Orders received', icon: 'receipt', text: 'Hand over paid orders and mark them collected' },
+    { to: '/seller/materials/new', label: 'Add a listing', icon: 'plus', text: 'List leftover material in a minute' },
   ],
   ADMIN: [
-    { to: '/admin/console', label: 'Admin console', primary: true },
-    { to: '/materials', label: 'Browse materials' },
+    { to: '/admin/console', label: 'Admin console', icon: 'shield', text: 'Users, listings, orders and totals' },
+    { to: '/admin/console?tab=listings', label: 'Moderate listings', icon: 'archive', text: 'Archive listings that break the rules' },
+    { to: '/materials', label: 'Browse materials', icon: 'search', text: 'See the marketplace as buyers do' },
   ],
+}
+
+// Icon for each stat tile, in the order the server sends them
+const STAT_ICONS = {
+  BUYER: ['clock', 'bag', 'checkCircle', 'rupee'],
+  SELLER: ['package', 'clock', 'truck', 'rupee'],
+  ADMIN: ['users', 'package', 'receipt', 'rupee'],
 }
 
 /**
@@ -68,66 +77,83 @@ export default function DashboardPage({ role }) {
   const user = data?.user
 
   return (
-    <div className="bb-app">
-      <AppHeader />
-      <main className="bb-dashboard-main">
-        {loading && (
-          <p className="bb-loading" role="status">
-            Loading your dashboard…
-          </p>
-        )}
+    <main className="bb-dashboard-main">
+      {loading && (
+        <p className="bb-loading" role="status">
+          Loading your dashboard…
+        </p>
+      )}
 
-        {error && (
-          <div className="bb-card" role="alert">
-            <p className="bb-alert bb-alert-error">{error}</p>
-            <button type="button" className="bb-button" onClick={retry}>
-              Try again
-            </button>
-          </div>
-        )}
+      {error && (
+        <div className="bb-card bb-state" role="alert">
+          <p className="bb-alert bb-alert-error">{error}</p>
+          <button type="button" className="bb-btn bb-btn-primary" onClick={retry}>
+            Try again
+          </button>
+        </div>
+      )}
 
-        {data && (
-          <section className="bb-card" aria-labelledby="dashboard-title">
-            <p className="bb-eyebrow">{ROLE_LABELS[data.dashboard]} dashboard</p>
-            <h1 id="dashboard-title" className="bb-card-title">
-              {data.message}
-            </h1>
-            <dl className="bb-details">
-              <div>
-                <dt>Email</dt>
-                <dd>{user.email}</dd>
-              </div>
-              <div>
-                <dt>Account type</dt>
-                <dd>{ROLE_LABELS[user.role]}</dd>
-              </div>
-            </dl>
+      {data && (
+        <>
+          <section className="bb-welcome" aria-labelledby="dashboard-title">
+            <div>
+              <p className="bb-eyebrow">{ROLE_LABELS[data.dashboard]} dashboard</p>
+              <h1 id="dashboard-title">{data.message}</h1>
+              <p>
+                Signed in as {user.email} · {ROLE_LABELS[user.role]} account
+              </p>
+            </div>
+            <Link to={ACTIONS[data.dashboard][0].to} className="bb-btn bb-btn-primary bb-btn-lg">
+              {ACTIONS[data.dashboard][0].label}
+              <Icon name="arrowRight" size={18} />
+            </Link>
+          </section>
 
-            <ul className="bb-stats" aria-label="Your totals">
-              {data.stats.map((stat) => (
+          <section aria-labelledby="totals-title">
+            <h2 id="totals-title" className="bb-visually-hidden">
+              Your totals
+            </h2>
+            <ul className="bb-stats">
+              {data.stats.map((stat, index) => (
                 <li key={stat.label} className="bb-stat">
+                  <span className="bb-stat-icon">
+                    <Icon name={STAT_ICONS[data.dashboard][index] ?? 'info'} size={22} />
+                  </span>
                   <span className="bb-stat-value">{stat.value}</span>
                   <span className="bb-stat-label">{stat.label}</span>
                 </li>
               ))}
             </ul>
-
-            <div className="bb-actions">
-              {ACTIONS[data.dashboard].map((action) => (
-                <Link
-                  key={action.to}
-                  to={action.to}
-                  className={action.primary ? 'bb-button' : 'bb-button bb-button-outline'}
-                >
-                  {action.label}
-                </Link>
-              ))}
-            </div>
-
-            <p className="bb-next">{HINTS[data.dashboard]}</p>
           </section>
-        )}
-      </main>
-    </div>
+
+          <section aria-labelledby="actions-title" className="bb-page-heading">
+            <h2 id="actions-title" className="bb-section-title">
+              Quick actions
+            </h2>
+            <ul className="bb-action-grid">
+              {ACTIONS[data.dashboard].map((action) => (
+                <li key={action.to}>
+                  <Link to={action.to} className="bb-action-card">
+                    <span className="bb-action-icon">
+                      <Icon name={action.icon} size={22} />
+                    </span>
+                    <span>
+                      <strong>{action.label}</strong>
+                      <small>{action.text}</small>
+                    </span>
+                    <Icon name="chevronRight" size={20} className="bb-action-arrow" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <p className="bb-next">
+            <Icon name="info" size={20} />
+            {HINTS[data.dashboard]}
+          </p>
+        </>
+      )}
+    </main>
   )
 }

@@ -81,7 +81,7 @@ export default function LoginPage() {
           )}
         </FormField>
 
-        <button type="submit" className="bb-button bb-button-full" disabled={submitting}>
+        <button type="submit" className="bb-btn bb-btn-primary bb-btn-lg bb-btn-block" disabled={submitting}>
           {submitting ? 'Logging in...' : 'Log in'}
         </button>
       </form>

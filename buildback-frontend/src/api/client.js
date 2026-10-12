@@ -35,7 +35,7 @@ function withQuery(path, params = {}) {
 
 // signal: an AbortController signal, so an old search can be cancelled
 // when a newer one starts (the old answer can never overwrite the new one)
-async function send(path, { method = 'GET', json, form, signal } = {}) {
+async function send(path, { method = 'GET', json, form, file, signal } = {}) {
   if (!API_BASE_URL) {
     throw new ApiError('VITE_API_BASE_URL is missing. Add it to .env and restart Vite.', 0)
   }
@@ -49,6 +49,11 @@ async function send(path, { method = 'GET', json, form, signal } = {}) {
     // Spring Security's login filter reads normal HTML-form fields
     headers['Content-Type'] = 'application/x-www-form-urlencoded'
     body = new URLSearchParams(form)
+  } else if (file !== undefined) {
+    // Photo upload: multipart/form-data. No Content-Type header here; the
+    // browser adds it together with the "boundary" that separates the parts.
+    body = new FormData()
+    body.append('file', file)
   }
 
   if (method !== 'GET') {
@@ -77,6 +82,17 @@ async function send(path, { method = 'GET', json, form, signal } = {}) {
     throw new ApiError(data?.message ?? `Request failed (HTTP ${response.status})`, response.status, data?.errors ?? {})
   }
   return data
+}
+
+/**
+ * Photos uploaded to BuildBack are stored as "/api/images/abc.jpg" (a path on the
+ * API server); outside links are full "https://..." URLs. This gives a usable src.
+ */
+export function imageSrc(url) {
+  if (typeof url !== 'string') return null
+  if (url.startsWith('https://')) return url
+  if (url.startsWith('/api/images/') && API_BASE_URL) return new URL(url, API_BASE_URL).href
+  return null
 }
 
 export async function refreshCsrfToken() {
@@ -148,6 +164,11 @@ export const api = {
     materials: (params, signal) => send(withQuery('/admin/materials', params), { signal }),
     archiveMaterial: (id) => send(`/admin/materials/${encodeURIComponent(id)}/archive`, { method: 'POST' }),
     orders: (params, signal) => send(withQuery('/admin/orders', params), { signal }),
+  },
+
+  // Listing photos: the server checks the file really is a JPG/PNG/WebP and returns { url }
+  sellerImages: {
+    upload: (file) => send('/seller/images', { method: 'POST', file }),
   },
 
   // The logged-in seller's own listings. The server decides who "own" is.

@@ -59,14 +59,16 @@ class OrderPaymentIntegrationTest extends ApiTestSupport {
         return idOf(postJson(seller, "/api/seller/materials", map(
                 "title", "Vitrified floor tiles 2x2", "description", "Ivory vitrified tiles, unused.",
                 "category", "TILES", "unitPrice", "45.00", "availableQuantity", quantity, "unit", "PIECE",
-                "city", "Pune", "tileLengthFeet", "2.00", "tileWidthFeet", "2.00"))
+                "city", "Pune", "tileLengthFeet", "2.00", "tileWidthFeet", "2.00",
+                "imageUrls", List.of("https://example.com/tiles.jpg")))
                 .andExpect(status().isCreated()));
     }
 
     private long createPaint(TestUser seller) throws Exception {
         return idOf(postJson(seller, "/api/seller/materials", map(
                 "title", "Emulsion paint", "description", "20 litre cans, sealed.", "category", "PAINT",
-                "unitPrice", "1200.00", "availableQuantity", 4, "unit", "CAN", "city", "Pune"))
+                "unitPrice", "1200.00", "availableQuantity", 4, "unit", "CAN", "city", "Pune",
+                "imageUrls", List.of("https://example.com/paint.jpg")))
                 .andExpect(status().isCreated()));
     }
 

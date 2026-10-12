@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { api } from '../api/client'
-import { AppHeader } from '../components/AppHeader'
 import { ConfirmDialog } from '../components/ConfirmDialog'
 import { MaterialImage } from '../components/MaterialImage'
 import { Pagination } from '../components/Pagination'
@@ -96,7 +95,6 @@ export default function SellerMaterialsPage() {
 
   return (
     <div className="bb-app">
-      <AppHeader />
       <main className="bb-page">
         <div className="bb-page-heading bb-page-heading-row">
           <div>

@@ -7,18 +7,36 @@ export const CATEGORY_LABELS = {
   PAINT: 'Paint',
   PLYWOOD: 'Plywood',
   FITTINGS: 'Fittings',
+  FALSE_CEILING: 'POP & False Ceiling',
+  WATERPROOFING: 'Waterproofing',
+  INTERIOR: 'Interior & Decor',
 }
 
-// Each category is sold in exactly one unit
-export const ALLOWED_UNIT = {
-  TILES: 'PIECE',
-  PAINT: 'CAN',
-  PLYWOOD: 'SHEET',
-  FITTINGS: 'PIECE',
+// Icon shown for each category (names from components/Icon.jsx)
+export const CATEGORY_ICONS = {
+  TILES: 'tiles',
+  PAINT: 'paint',
+  PLYWOOD: 'plywood',
+  FITTINGS: 'fittings',
+  FALSE_CEILING: 'ceiling',
+  WATERPROOFING: 'droplet',
+  INTERIOR: 'sofa',
 }
 
-export const UNIT_LABELS = { PIECE: 'piece', CAN: 'can', SHEET: 'sheet' }
-const UNIT_PLURALS = { PIECE: 'pieces', CAN: 'cans', SHEET: 'sheets' }
+// Units each category may be sold in (same as MaterialCategory.java).
+// The first one is the usual unit, so the form picks it by default.
+export const ALLOWED_UNITS = {
+  TILES: ['PIECE'],
+  PAINT: ['CAN'],
+  PLYWOOD: ['SHEET'],
+  FITTINGS: ['PIECE'],
+  FALSE_CEILING: ['SHEET', 'BAG', 'PIECE'],
+  WATERPROOFING: ['CAN', 'BAG', 'ROLL'],
+  INTERIOR: ['PIECE', 'ROLL', 'SHEET'],
+}
+
+export const UNIT_LABELS = { PIECE: 'piece', CAN: 'can', SHEET: 'sheet', BAG: 'bag', ROLL: 'roll' }
+export const UNIT_PLURALS = { PIECE: 'pieces', CAN: 'cans', SHEET: 'sheets', BAG: 'bags', ROLL: 'rolls' }
 
 export const SORT_OPTIONS = [
   { value: 'newest', label: 'Newest first' },
@@ -42,6 +60,14 @@ const inr = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' 
 /** "1250.50" -> "₹1,250.50" (display only; the exact string is what we send). */
 export function formatPrice(value) {
   return inr.format(Number(value))
+}
+
+const inrWhole = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })
+
+/** Shorter price for cards: "₹3,250" for whole rupees, "₹28.50" otherwise. */
+export function formatPriceCompact(value) {
+  const amount = Number(value)
+  return Number.isInteger(amount) ? inrWhole.format(amount) : inr.format(amount)
 }
 
 /** Always show the unit next to a price: "₹45.50 per piece". */
@@ -68,13 +94,16 @@ export function isValidPriceText(text) {
   return PRICE_PATTERN.test(text)
 }
 
-function isHttpsUrl(text) {
-  try {
-    const url = new URL(text)
-    return url.protocol === 'https:' && url.hostname !== '' && !url.username && !url.password
-  } catch {
-    return false
-  }
+// Listing photos: same limits as the backend (MaterialRequest + ImageStorageService)
+export const MAX_PHOTOS = 5
+export const MAX_PHOTO_BYTES = 5 * 1024 * 1024
+export const PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+
+/** Quick check before uploading. The server checks the real file content again. */
+export function photoProblem(file) {
+  if (!PHOTO_TYPES.includes(file.type)) return `“${file.name}” is not a JPG, PNG or WebP photo.`
+  if (file.size > MAX_PHOTO_BYTES) return `“${file.name}” is larger than 5 MB.`
+  return null
 }
 
 export const EMPTY_MATERIAL_FORM = {
@@ -85,7 +114,7 @@ export const EMPTY_MATERIAL_FORM = {
   unitPrice: '',
   availableQuantity: '',
   city: '',
-  imageUrl: '',
+  imageUrls: [], // first one is the cover photo
   tileLengthFeet: '',
   tileWidthFeet: '',
 }
@@ -100,7 +129,7 @@ export function formFromMaterial(m) {
     unitPrice: m.unitPrice,
     availableQuantity: String(m.availableQuantity),
     city: m.city,
-    imageUrl: m.imageUrl ?? '',
+    imageUrls: m.imageUrls ?? (m.imageUrl ? [m.imageUrl] : []),
     tileLengthFeet: m.tileLengthFeet ?? '',
     tileWidthFeet: m.tileWidthFeet ?? '',
   }
@@ -113,11 +142,11 @@ export function requestFromForm(form) {
     title: form.title.trim(),
     description: form.description.trim(),
     category: form.category,
-    unit: ALLOWED_UNIT[form.category],
+    unit: form.unit,
     unitPrice: form.unitPrice.trim(),
     availableQuantity: Number.parseInt(form.availableQuantity.trim(), 10),
     city: form.city.trim(),
-    imageUrl: form.imageUrl.trim() || null,
+    imageUrls: form.imageUrls,
     // Never send old tile sizes for a non-tile category
     tileLengthFeet: isTiles ? form.tileLengthFeet.trim() : null,
     tileWidthFeet: isTiles ? form.tileWidthFeet.trim() : null,
@@ -139,12 +168,12 @@ export function validateMaterialForm(form, { creating }) {
   const city = form.city.trim()
   const price = form.unitPrice.trim()
   const quantity = form.availableQuantity.trim()
-  const imageUrl = form.imageUrl.trim()
 
   if (title.length < 3 || title.length > 120) errors.title = 'Title must be 3 to 120 characters'
   if (description.length < 10 || description.length > 2000)
     errors.description = 'Description must be 10 to 2000 characters'
-  if (!ALLOWED_UNIT[form.category]) errors.category = 'Choose a category'
+  if (!ALLOWED_UNITS[form.category]) errors.category = 'Choose a category'
+  else if (!ALLOWED_UNITS[form.category].includes(form.unit)) errors.unit = 'Choose how this material is sold'
 
   // Blank stays blank: we never turn an empty box into 0
   if (!price) errors.unitPrice = 'Price is required'
@@ -159,8 +188,8 @@ export function validateMaterialForm(form, { creating }) {
 
   if (city.length < 2 || city.length > 100) errors.city = 'City must be 2 to 100 characters'
 
-  if (imageUrl && (imageUrl.length > 2048 || !isHttpsUrl(imageUrl)))
-    errors.imageUrl = 'Enter a full image link starting with https://'
+  if (form.imageUrls.length === 0) errors.imageUrls = 'Add at least one photo of the material'
+  else if (form.imageUrls.length > MAX_PHOTOS) errors.imageUrls = `Add at most ${MAX_PHOTOS} photos`
 
   if (form.category === 'TILES') {
     checkFeet(form.tileLengthFeet, 'Tile length', errors, 'tileLengthFeet')

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router'
 import { api } from '../api/client'
-import { AppHeader } from '../components/AppHeader'
 import { ConfirmDialog } from '../components/ConfirmDialog'
+import { Icon } from '../components/Icon'
+import { OrderTimeline } from '../components/OrderTimeline'
 import { OrderStatusBadge } from '../components/StatusBadge'
 import { CATEGORY_LABELS, UNIT_LABELS, formatPrice } from '../materials/materialRules'
 import { PAYMENT_STATUS, formatDate, timeLeft } from '../orders/orderRules'
@@ -155,10 +156,9 @@ export default function OrderDetailPage() {
 
   return (
     <div className="bb-app">
-      <AppHeader />
-      <main className="bb-page bb-page-narrow">
+      <main className="bb-page">
         <Link to="/buyer/orders" className="bb-back-link">
-          ← My orders
+          <Icon name="arrowLeft" size={16} /> My orders
         </Link>
 
         {!order && !notFound && !loadError && (
@@ -169,7 +169,7 @@ export default function OrderDetailPage() {
         {notFound && (
           <div className="bb-card bb-state" role="alert">
             <h1 className="bb-card-title">Order not found</h1>
-            <Link to="/buyer/orders" className="bb-button">
+            <Link to="/buyer/orders" className="bb-btn bb-btn-primary">
               Back to my orders
             </Link>
           </div>
@@ -177,18 +177,21 @@ export default function OrderDetailPage() {
         {loadError && (
           <div className="bb-card bb-state" role="alert">
             <p className="bb-alert bb-alert-error">{loadError}</p>
-            <button type="button" className="bb-button" onClick={() => load()}>
+            <button type="button" className="bb-btn bb-btn-primary" onClick={() => load()}>
               Try again
             </button>
           </div>
         )}
 
         {order && (
-          <section className="bb-card" aria-labelledby="order-title">
+          <>
             <div className="bb-order-head">
-              <h1 id="order-title" className="bb-card-title">
-                Order #{order.id}
-              </h1>
+              <div>
+                <p className="bb-eyebrow">Order</p>
+                <h1 id="order-title" className="bb-page-title">
+                  Order #{order.id}
+                </h1>
+              </div>
               <OrderStatusBadge status={order.status} />
             </div>
 
@@ -206,113 +209,144 @@ export default function OrderDetailPage() {
               </p>
             )}
 
-            <dl className="bb-details">
-              <div>
-                <dt>Material</dt>
-                <dd>
-                  <Link to={`/materials/${order.material.id}`}>{order.material.title}</Link> (
-                  {CATEGORY_LABELS[order.material.category]})
-                </dd>
-              </div>
-              <div>
-                <dt>Quantity</dt>
-                <dd>
-                  {order.quantity} {UNIT_LABELS[order.material.unit]}
-                  {order.quantity === 1 ? '' : 's'} × {formatPrice(order.unitPrice)}
-                </dd>
-              </div>
-              <div>
-                <dt>Total</dt>
-                <dd className="bb-price">{formatPrice(order.totalAmount)}</dd>
-              </div>
-              <div>
-                <dt>Seller</dt>
-                <dd>
-                  {order.sellerName}
-                  {order.sellerEmail && (
-                    <>
-                      {' '}
-                      · <a href={`mailto:${order.sellerEmail}`}>{order.sellerEmail}</a>
-                    </>
+            <section className="bb-card" aria-label="Order progress">
+              <OrderTimeline status={order.status} />
+            </section>
+
+            <div className="bb-order-layout">
+              <section className="bb-card" aria-labelledby="summary-title">
+                <h2 id="summary-title" className="bb-section-title">
+                  Order summary
+                </h2>
+                <dl className="bb-details">
+                  <div>
+                    <dt>Material</dt>
+                    <dd>
+                      <Link to={`/materials/${order.material.id}`}>{order.material.title}</Link>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Category</dt>
+                    <dd>{CATEGORY_LABELS[order.material.category]}</dd>
+                  </div>
+                  <div>
+                    <dt>Quantity</dt>
+                    <dd>
+                      {order.quantity} {UNIT_LABELS[order.material.unit]}
+                      {order.quantity === 1 ? '' : 's'} × {formatPrice(order.unitPrice)}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Seller</dt>
+                    <dd>
+                      {order.sellerName}
+                      {order.sellerEmail && (
+                        <>
+                          <br />
+                          <a href={`mailto:${order.sellerEmail}`}>{order.sellerEmail}</a>
+                        </>
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Pick-up city</dt>
+                    <dd>{order.material.city}</dd>
+                  </div>
+                  <div>
+                    <dt>Ordered</dt>
+                    <dd>{formatDate(order.createdAt)}</dd>
+                  </div>
+                  {order.paidAt && (
+                    <div>
+                      <dt>Paid</dt>
+                      <dd>{formatDate(order.paidAt)}</dd>
+                    </div>
                   )}
-                </dd>
-              </div>
-              <div>
-                <dt>Pick-up city</dt>
-                <dd>{order.material.city}</dd>
-              </div>
-              <div>
-                <dt>Ordered</dt>
-                <dd>{formatDate(order.createdAt)}</dd>
-              </div>
-              {order.paidAt && (
-                <div>
-                  <dt>Paid</dt>
-                  <dd>{formatDate(order.paidAt)}</dd>
-                </div>
-              )}
-              {order.collectedAt && (
-                <div>
-                  <dt>Collected</dt>
-                  <dd>{formatDate(order.collectedAt)}</dd>
-                </div>
-              )}
-            </dl>
+                  {order.collectedAt && (
+                    <div>
+                      <dt>Collected</dt>
+                      <dd>{formatDate(order.collectedAt)}</dd>
+                    </div>
+                  )}
+                </dl>
 
-            {pending && (
-              <div className="bb-pay-box">
-                <p>
-                  Stock reserved for{' '}
-                  <strong className="bb-countdown" aria-live="off">
-                    {remaining ?? '0:00'}
-                  </strong>{' '}
-                  more minutes.
+                {order.payments?.length > 0 && (
+                  <>
+                    <h2 className="bb-section-title">Payment attempts</h2>
+                    <ul className="bb-payments">
+                      {order.payments.map((p) => (
+                        <li key={p.id}>
+                          <span>
+                            {formatDate(p.createdAt)} · {p.provider === 'SIMULATOR' ? 'Test simulator' : 'Razorpay (test)'}
+                          </span>
+                          <span className={p.status === 'SUCCESS' ? 'bb-stock' : p.status === 'FAILED' ? 'bb-stock-out' : 'bb-muted'}>
+                            {PAYMENT_STATUS[p.status]}
+                            {p.failureReason ? ` – ${p.failureReason}` : ''}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </section>
+
+              <aside className="bb-panel bb-buy-panel" aria-label="Payment">
+                <p className="bb-muted">Order total</p>
+                <p className="bb-price bb-price-large">{formatPrice(order.totalAmount)}</p>
+
+                {pending && (
+                  <div className="bb-pay-box">
+                    <p>
+                      <Icon name="clock" size={18} /> Stock reserved for
+                    </p>
+                    <p className="bb-countdown" aria-live="off">
+                      {remaining ?? '0:00'}
+                    </p>
+                    <button
+                      type="button"
+                      className="bb-btn bb-btn-primary bb-btn-lg bb-btn-block"
+                      onClick={startPayment}
+                      disabled={paying || timeIsUp}
+                    >
+                      <Icon name="card" size={18} />
+                      {paying ? 'Processing…' : `Pay ${formatPrice(order.totalAmount)}`}
+                    </button>
+                    <button
+                      type="button"
+                      className="bb-btn bb-button-danger-outline bb-btn-block"
+                      onClick={() => {
+                        setCancelError(null)
+                        setConfirmCancel(true)
+                      }}
+                      disabled={paying}
+                    >
+                      Cancel order
+                    </button>
+                  </div>
+                )}
+
+                {order.status === 'PAID' && (
+                  <p className="bb-next">
+                    <Icon name="truck" size={20} />
+                    Contact the seller to arrange collection. The seller marks the order collected after hand-over.
+                  </p>
+                )}
+                {order.status === 'COLLECTED' && (
+                  <p className="bb-next">
+                    <Icon name="checkCircle" size={20} /> Collected. Thank you for giving this material a second life.
+                  </p>
+                )}
+                {(order.status === 'CANCELLED' || order.status === 'EXPIRED') && (
+                  <Link to={`/materials/${order.material.id}`} className="bb-btn bb-btn-secondary bb-btn-block">
+                    View the listing again
+                  </Link>
+                )}
+                <p className="bb-buy-note">
+                  <Icon name="shield" size={18} /> Payments are verified by the BuildBack server. Test mode only.
                 </p>
-                <div className="bb-actions">
-                  <button type="button" className="bb-button" onClick={startPayment} disabled={paying || timeIsUp}>
-                    {paying ? 'Processing…' : `Pay ${formatPrice(order.totalAmount)}`}
-                  </button>
-                  <button
-                    type="button"
-                    className="bb-button bb-button-danger-outline"
-                    onClick={() => {
-                      setCancelError(null)
-                      setConfirmCancel(true)
-                    }}
-                    disabled={paying}
-                  >
-                    Cancel order
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {order.status === 'PAID' && (
-              <p className="bb-next">
-                <strong>Next:</strong> contact the seller to arrange collection. The seller marks the order as
-                collected after hand-over.
-              </p>
-            )}
-
-            {order.payments?.length > 0 && (
-              <>
-                <h2 className="bb-section-title">Payment attempts</h2>
-                <ul className="bb-payments">
-                  {order.payments.map((p) => (
-                    <li key={p.id}>
-                      <span>
-                        {formatDate(p.createdAt)} · {p.provider === 'SIMULATOR' ? 'Test simulator' : 'Razorpay (test)'}
-                      </span>
-                      <span className={p.status === 'SUCCESS' ? 'bb-stock' : p.status === 'FAILED' ? 'bb-stock-out' : 'bb-muted'}>
-                        {PAYMENT_STATUS[p.status]}
-                        {p.failureReason ? ` – ${p.failureReason}` : ''}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </section>
+              </aside>
+            </div>
+          </>
         )}
 
         {/* Clearly labelled stand-in for a gateway when no Razorpay test keys are configured */}

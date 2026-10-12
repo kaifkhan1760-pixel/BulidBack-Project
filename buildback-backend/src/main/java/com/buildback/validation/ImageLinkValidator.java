@@ -3,15 +3,20 @@ package com.buildback.validation;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.buildback.service.ImageStorageService;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class HttpsUrlValidator implements ConstraintValidator<HttpsUrl, String> {
+public class ImageLinkValidator implements ConstraintValidator<ImageLink, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            return true; // the image is optional
+            return true; // "missing" is reported by @NotBlank, not here
+        }
+        if (ImageStorageService.isUploadedImageUrl(value)) {
+            return true;
         }
         try {
             URI uri = new URI(value);

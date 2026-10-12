@@ -99,7 +99,7 @@ class MaterialIntegrationTest {
         body.put("availableQuantity", 120);
         body.put("unit", "PIECE");
         body.put("city", city);
-        body.put("imageUrl", "https://example.com/tile.jpg");
+        body.put("imageUrls", List.of("https://example.com/tile.jpg"));
         body.put("tileLengthFeet", "2.00");
         body.put("tileWidthFeet", "2.00");
         return body;
@@ -114,6 +114,7 @@ class MaterialIntegrationTest {
         body.put("availableQuantity", 2);
         body.put("unit", "CAN");
         body.put("city", city);
+        body.put("imageUrls", List.of("https://example.com/paint.jpg"));
         return body;
     }
 
@@ -302,7 +303,7 @@ class MaterialIntegrationTest {
     private void expectFieldError(MockHttpSession session, Object body, String field) throws Exception {
         create(session, body)
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors." + field).exists());
+                .andExpect(jsonPath("$.errors['" + field + "']").exists());
     }
 
     @Test
@@ -326,9 +327,17 @@ class MaterialIntegrationTest {
         expectFieldError(s, with(t, "tileLengthFeet", "10.01"), "tileLengthFeet");
         expectFieldError(s, with(t, "tileLengthFeet", "1.255"), "tileLengthFeet");
         expectFieldError(s, with(p, "tileLengthFeet", "2.00"), "tileLengthFeet"); // not tiles
-        expectFieldError(s, with(t, "imageUrl", "http://example.com/a.jpg"), "imageUrl");
-        expectFieldError(s, with(t, "imageUrl", "javascript:alert(1)"), "imageUrl");
-        expectFieldError(s, with(t, "imageUrl", "data:image/png;base64,AAAA"), "imageUrl");
+        expectFieldError(s, with(t, "imageUrls", List.of("http://example.com/a.jpg")), "imageUrls[0]");
+        expectFieldError(s, with(t, "imageUrls", List.of("javascript:alert(1)")), "imageUrls[0]");
+        expectFieldError(s, with(t, "imageUrls", List.of("data:image/png;base64,AAAA")), "imageUrls[0]");
+        expectFieldError(s, with(t, "imageUrls", List.of("/api/images/../../secret.jpg")), "imageUrls[0]");
+        expectFieldError(s, with(t, "imageUrls", List.of()), "imageUrls"); // photos are compulsory
+        expectFieldError(s, with(t, "imageUrls", null), "imageUrls");
+        expectFieldError(s, with(t, "imageUrls", List.of("https://e.com/1.jpg", "https://e.com/2.jpg",
+                "https://e.com/3.jpg", "https://e.com/4.jpg", "https://e.com/5.jpg", "https://e.com/6.jpg")), "imageUrls");
+        // An upload-style link whose file was never uploaded
+        expectFieldError(s, with(t, "imageUrls", List.of("/api/images/0123456789abcdef0123456789abcdef.jpg")),
+                "imageUrls");
         expectFieldError(s, with(t, "title", "  ab  "), "title");
         expectFieldError(s, with(t, "description", "short"), "description");
         expectFieldError(s, with(t, "city", "   "), "city");
@@ -339,11 +348,30 @@ class MaterialIntegrationTest {
     }
 
     @Test
-    void validPaintWithoutImageIsAccepted() throws Exception {
+    void newCategoriesAcceptOnlyTheirOwnUnits() throws Exception {
         MockHttpSession s = loggedIn(Role.SELLER).session();
-        create(s, with(paint("Pune"), "imageUrl", "   "))
+        Map<String, Object> waterproofing = with(paint("Pune"), "title", "Waterproofing compound 20 kg",
+                "category", "WATERPROOFING", "unit", "BAG");
+        create(s, waterproofing).andExpect(status().isCreated()).andExpect(jsonPath("$.unit").value("BAG"));
+        create(s, with(waterproofing, "unit", "ROLL")).andExpect(status().isCreated());
+        expectFieldError(s, with(waterproofing, "unit", "SHEET"), "unit"); // not a waterproofing unit
+
+        Map<String, Object> ceiling = with(paint("Pune"), "title", "Gypsum ceiling boards",
+                "category", "FALSE_CEILING", "unit", "SHEET");
+        create(s, ceiling).andExpect(status().isCreated());
+        create(s, with(ceiling, "category", "INTERIOR", "unit", "ROLL")).andExpect(status().isCreated());
+        expectFieldError(s, with(ceiling, "unit", "CAN"), "unit");
+        expectFieldError(s, with(ceiling, "tileLengthFeet", "2.00"), "tileLengthFeet"); // tiles only
+    }
+
+    @Test
+    void validPaintIsAcceptedAndPhotosAreReturnedInOrder() throws Exception {
+        MockHttpSession s = loggedIn(Role.SELLER).session();
+        create(s, with(paint("Pune"), "imageUrls", List.of(" https://example.com/a.jpg ", "https://example.com/b.jpg")))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.imageUrl").doesNotExist())
+                .andExpect(jsonPath("$.imageUrl").value("https://example.com/a.jpg")) // cover = first photo
+                .andExpect(jsonPath("$.imageUrls.length()").value(2))
+                .andExpect(jsonPath("$.imageUrls[1]").value("https://example.com/b.jpg"))
                 .andExpect(jsonPath("$.tileLengthFeet").doesNotExist());
     }
 

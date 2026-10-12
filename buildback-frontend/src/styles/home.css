@@ -1,0 +1,521 @@
+/* =========================================================
+   Home page: banner, promotions, trust strip, categories,
+   product rows, seller banner, cities, how it works.
+   ========================================================= */
+.bb-home {
+  padding: 20px 0 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* sideways-scrolling rows must not widen the page */
+  gap: 24px;
+}
+
+/* ---------- Banner + side promotions ---------- */
+.bb-hero-area {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.bb-hero {
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: #fff;
+  background-color: #23313a;
+  background-image: linear-gradient(90deg, rgba(14, 22, 28, 0.88) 0%, rgba(14, 22, 28, 0.7) 45%, rgba(14, 22, 28, 0.1) 100%),
+    var(--hero-image);
+  background-size: cover;
+  background-position: center;
+}
+
+.bb-hero-copy {
+  max-width: 540px;
+  padding: 40px 44px;
+  display: grid;
+  gap: 14px;
+}
+
+.bb-hero-kicker {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-500);
+}
+
+.bb-hero h1 {
+  color: #fff;
+  font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.bb-hero-lead {
+  font-size: 1.08rem;
+  color: #dbe3e8;
+}
+
+.bb-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.bb-hero-stat {
+  color: #c4ced5;
+  font-size: 0.95rem;
+}
+
+.bb-hero-stat strong {
+  color: #fff;
+}
+
+.bb-promos {
+  display: grid;
+  gap: 16px;
+}
+
+.bb-promo {
+  position: relative;
+  min-height: 192px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 20px 22px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+  background-color: #2b3740;
+  background-image: linear-gradient(180deg, rgba(14, 22, 28, 0.05) 20%, rgba(14, 22, 28, 0.85) 100%), var(--promo-image);
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.2s var(--ease);
+}
+
+.bb-promo-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-500);
+}
+
+.bb-promo-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.bb-promo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.bb-promo:hover .bb-promo-link {
+  text-decoration: underline;
+}
+
+/* ---------- Trust strip ---------- */
+.bb-trust {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.bb-trust li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  color: var(--brand-600);
+}
+
+.bb-trust li + li {
+  border-left: 1px solid var(--line);
+}
+
+.bb-trust strong {
+  display: block;
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+.bb-trust small {
+  display: block;
+  color: var(--ink-500);
+  font-size: 0.86rem;
+}
+
+/* ---------- Shared block heading ---------- */
+.bb-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.bb-block-head h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* ---------- Categories ---------- */
+.bb-cat-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)); /* one row with every category */
+  gap: 12px;
+}
+
+.bb-cat-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.bb-cat-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--canvas);
+}
+
+.bb-cat-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.bb-cat-card:hover .bb-cat-name {
+  color: var(--brand-700);
+}
+
+.bb-cat-body {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px 12px;
+}
+
+.bb-cat-name {
+  font-size: 0.98rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--ink-900);
+}
+
+.bb-cat-text {
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: var(--ink-500);
+}
+
+.bb-cat-count {
+  margin-top: 4px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--brand-700);
+}
+
+/* ---------- Product rows ---------- */
+.bb-rail {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px 20px;
+}
+
+.bb-rail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.bb-rail-list > li {
+  display: flex;
+}
+
+/* ---------- Seller banner ---------- */
+.bb-sell {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  color: #fff;
+  background-color: var(--brand-800);
+  background-image: linear-gradient(90deg, rgba(8, 45, 33, 0.95) 0%, rgba(8, 45, 33, 0.85) 45%, rgba(8, 45, 33, 0.2) 100%),
+    var(--sell-image);
+  background-size: cover;
+  background-position: center 30%;
+}
+
+.bb-sell-copy {
+  max-width: 520px;
+  padding: 36px 40px;
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+
+.bb-sell h2 {
+  color: #fff;
+  font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+  font-weight: 700;
+}
+
+.bb-sell ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  color: #dcebe4;
+}
+
+.bb-sell li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bb-sell li .bb-icon {
+  color: var(--accent-500);
+}
+
+/* ---------- Cities ---------- */
+.bb-cities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bb-cities a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink-700);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.bb-cities a .bb-icon {
+  color: var(--ink-300);
+}
+
+.bb-cities a:hover {
+  border-color: var(--brand-600);
+  color: var(--brand-700);
+}
+
+.bb-cities a:hover .bb-icon {
+  color: var(--brand-600);
+}
+
+/* ---------- How it works ---------- */
+.bb-how {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 30px;
+}
+
+.bb-how h2 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+.bb-how ol {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.bb-how li {
+  counter-increment: step;
+  display: grid;
+  gap: 6px;
+  padding-left: 48px;
+  position: relative;
+}
+
+.bb-how li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid var(--brand-600);
+  color: var(--brand-700);
+  font-weight: 700;
+}
+
+.bb-how h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.bb-how p {
+  color: var(--ink-500);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1200px) {
+  .bb-cat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .bb-hero-area {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bb-promos {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bb-trust {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bb-trust li:nth-child(3) {
+    border-left: 0;
+  }
+
+  .bb-trust li:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .bb-cat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Rows scroll sideways on tablets and phones */
+  .bb-rail-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+
+  .bb-rail-list > li {
+    display: flex;
+    flex: 0 0 200px;
+    scroll-snap-align: start;
+  }
+
+  .bb-how ol {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .bb-home {
+    padding-top: 12px;
+    gap: 16px;
+  }
+
+  .bb-hero {
+    min-height: 0;
+    background-image: linear-gradient(180deg, rgba(14, 22, 28, 0.78) 0%, rgba(14, 22, 28, 0.9) 100%), var(--hero-image);
+  }
+
+  .bb-hero-copy {
+    padding: 28px 20px;
+  }
+
+  .bb-hero-actions .bb-btn {
+    flex: 1;
+  }
+
+  .bb-promos {
+    grid-template-columns: 1fr;
+  }
+
+  .bb-promo {
+    min-height: 150px;
+  }
+
+  .bb-trust {
+    grid-template-columns: 1fr;
+  }
+
+  .bb-trust li + li {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .bb-trust li {
+    padding: 14px 16px;
+  }
+
+  .bb-cat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bb-cat-text {
+    display: none;
+  }
+
+  .bb-rail {
+    padding: 14px 12px 14px;
+  }
+
+  .bb-rail-list > li {
+    flex-basis: 165px;
+  }
+
+  .bb-sell {
+    background-image: linear-gradient(180deg, rgba(8, 45, 33, 0.9), rgba(8, 45, 33, 0.95)), var(--sell-image);
+  }
+
+  .bb-sell-copy {
+    padding: 28px 20px;
+  }
+
+  .bb-how {
+    padding: 22px 18px;
+  }
+}

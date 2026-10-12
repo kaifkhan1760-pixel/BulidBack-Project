@@ -1,10 +1,12 @@
 package com.buildback.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 
 import com.buildback.entity.MaterialCategory;
 import com.buildback.entity.MaterialUnit;
-import com.buildback.validation.HttpsUrl;
+import com.buildback.validation.ImageLink;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -57,9 +59,12 @@ public record MaterialRequest(
         @Size(min = 2, max = 100, message = "City must be 2 to 100 characters")
         String city,
 
-        @Size(max = 2048, message = "Image link must be at most 2048 characters")
-        @HttpsUrl
-        String imageUrl,
+        /** 1 to 5 photos; the first one is the cover shown on listing cards. */
+        @NotNull(message = "Add at least one photo")
+        @Size(min = 1, max = 5, message = "Add 1 to 5 photos")
+        List<@NotBlank(message = "Photo link is empty")
+             @Size(max = 2048, message = "Image link must be at most 2048 characters")
+             @ImageLink String> imageUrls,
 
         @DecimalMin(value = "0.00", inclusive = false, message = "Tile length must be greater than 0")
         @DecimalMax(value = "10.00", message = "Tile length must be at most 10 feet")
@@ -73,14 +78,14 @@ public record MaterialRequest(
 
         Long version) {
 
-    /** Clean up text before validation. A blank image link means "no image". */
+    /** Clean up text before validation. */
     public MaterialRequest {
         title = trim(title);
         description = trim(description);
         city = trim(city);
-        imageUrl = trim(imageUrl);
-        if (imageUrl != null && imageUrl.isEmpty()) {
-            imageUrl = null;
+        if (imageUrls != null) {
+            // Trim each link and drop exact duplicates, keeping the seller's order
+            imageUrls = imageUrls.stream().map(MaterialRequest::trim).filter(Objects::nonNull).distinct().toList();
         }
     }
 

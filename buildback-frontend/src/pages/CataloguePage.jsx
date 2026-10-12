@@ -1,27 +1,23 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useSearchParams } from 'react-router'
+import { Link, useSearchParams } from 'react-router'
 import { api } from '../api/client'
-import { AppHeader } from '../components/AppHeader'
-import { MaterialImage } from '../components/MaterialImage'
+import { Icon } from '../components/Icon'
+import { MaterialCard, MaterialCardSkeleton } from '../components/MaterialCard'
 import { Pagination } from '../components/Pagination'
-import {
-  CATEGORY_LABELS,
-  LIMITS,
-  SORT_OPTIONS,
-  isValidPriceText,
-  priceWithUnit,
-  quantityText,
-  toHundredths,
-} from '../materials/materialRules'
+import { CATEGORY_LABELS, LIMITS, SORT_OPTIONS, isValidPriceText, toHundredths } from '../materials/materialRules'
 
 // The filters live in the URL (?keyword=tile&category=TILES&page=1), so Back,
 // Refresh and shared links all show the same results. Names match the backend.
 const FILTER_KEYS = ['keyword', 'category', 'city', 'minPrice', 'maxPrice', 'inStock']
 
+// 4 cards per row x 2 rows
+const PAGE_SIZE = 8
+
 export default function CataloguePage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.toString()
   const [reloadCount, setReloadCount] = useState(0)
+  const [filtersOpen, setFiltersOpen] = useState(false) // phones only: filters start collapsed
   const requestKey = `${query}#${reloadCount}`
 
   // result.key tells us which request the data belongs to; if it is not the
@@ -34,7 +30,7 @@ export default function CataloguePage() {
     // older, slower answer can never replace newer results
     const controller = new AbortController()
     api.materials
-      .search(Object.fromEntries(new URLSearchParams(query)), controller.signal)
+      .search({ size: PAGE_SIZE, ...Object.fromEntries(new URLSearchParams(query)) }, controller.signal)
       .then((data) => setResult({ key: requestKey, data, error: null }))
       .catch((error) => {
         if (error.name !== 'AbortError') setResult({ key: requestKey, data: null, error })
@@ -47,6 +43,7 @@ export default function CataloguePage() {
     for (const key of FILTER_KEYS) if (filters[key]) next.set(key, filters[key])
     if (searchParams.get('sort')) next.set('sort', searchParams.get('sort'))
     setSearchParams(next) // no "page": new filters start again at page 0
+    setFiltersOpen(false)
   }
 
   function changeSort(sort) {
@@ -70,20 +67,43 @@ export default function CataloguePage() {
   const error = loading ? null : result.error
   const hasFilters = FILTER_KEYS.some((key) => searchParams.get(key))
 
-  return (
-    <div className="bb-app">
-      <AppHeader />
-      <main className="bb-page">
-        <div className="bb-page-heading">
-          <h1 className="bb-card-title">Browse surplus materials</h1>
-          <p className="bb-muted">Leftover tiles, paint, plywood and fittings from sellers near you.</p>
-        </div>
+  const activeCategory = searchParams.get('category') ?? ''
+  const keyword = searchParams.get('keyword') ?? ''
+  const city = searchParams.get('city') ?? ''
+  const heading = CATEGORY_LABELS[activeCategory] ?? 'All materials'
 
+  return (
+    <main>
+      <header className="bb-catalogue-head">
+        <div className="bb-container">
+          <nav className="bb-breadcrumb" aria-label="Breadcrumb">
+            <Link to="/">Home</Link>
+            <Icon name="chevronRight" size={14} />
+            {activeCategory ? (
+              <>
+                <Link to="/materials">Materials</Link>
+                <Icon name="chevronRight" size={14} />
+                <span aria-current="page">{heading}</span>
+              </>
+            ) : (
+              <span aria-current="page">Materials</span>
+            )}
+          </nav>
+          <h1>
+            {keyword ? <>Results for &ldquo;{keyword}&rdquo;</> : heading}
+            {city && <span className="bb-muted"> in {city}</span>}
+          </h1>
+          <p>Surplus stock from builders, contractors and homeowners. Prices are per unit, in INR.</p>
+        </div>
+      </header>
+
+      <div className="bb-page">
         <div className="bb-catalogue">
           {/* key: when the URL changes (Back button), the form resets to match it */}
           <FilterForm
             key={query}
             initial={Object.fromEntries(searchParams)}
+            open={filtersOpen}
             onApply={applyFilters}
             onClear={clearFilters}
           />
@@ -91,10 +111,28 @@ export default function CataloguePage() {
           <section className="bb-results" aria-labelledby="results-heading" aria-busy={loading}>
             <div className="bb-results-bar">
               <h2 id="results-heading" className="bb-results-count" aria-live="polite">
-                {loading ? 'Searching…' : data ? `${data.totalElements} material${data.totalElements === 1 ? '' : 's'} found` : 'Results'}
+                {loading ? (
+                  'Searching…'
+                ) : data ? (
+                  <>
+                    {data.totalElements.toLocaleString('en-IN')} material{data.totalElements === 1 ? '' : 's'}{' '}
+                    <span>found</span>
+                  </>
+                ) : (
+                  'Results'
+                )}
               </h2>
+              <button
+                type="button"
+                className="bb-btn bb-btn-secondary bb-btn-sm bb-filters-toggle"
+                aria-expanded={filtersOpen}
+                aria-controls="catalogue-filters"
+                onClick={() => setFiltersOpen((open) => !open)}
+              >
+                <Icon name="filter" size={16} /> Filters
+              </button>
               <label className="bb-inline-field">
-                Sort by{' '}
+                Sort by
                 <select value={searchParams.get('sort') ?? 'newest'} onChange={(e) => changeSort(e.target.value)}>
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -105,8 +143,17 @@ export default function CataloguePage() {
               </label>
             </div>
 
+            {loading && (
+              <div className="bb-card-grid">
+                {Array.from({ length: 8 }, (_, i) => (
+                  <MaterialCardSkeleton key={i} />
+                ))}
+              </div>
+            )}
+
             {error && (
               <div className="bb-card bb-state" role="alert">
+                <Icon name="alert" size={32} />
                 <p className="bb-alert bb-alert-error">
                   {error.status === 400
                     ? 'Some search values are not valid. Clear the filters and try again.'
@@ -114,11 +161,11 @@ export default function CataloguePage() {
                 </p>
                 <div className="bb-actions">
                   {error.status === 400 ? (
-                    <button type="button" className="bb-button" onClick={clearFilters}>
+                    <button type="button" className="bb-btn bb-btn-primary" onClick={clearFilters}>
                       Clear filters
                     </button>
                   ) : (
-                    <button type="button" className="bb-button" onClick={() => setReloadCount((n) => n + 1)}>
+                    <button type="button" className="bb-btn bb-btn-primary" onClick={() => setReloadCount((n) => n + 1)}>
                       Try again
                     </button>
                   )}
@@ -127,15 +174,14 @@ export default function CataloguePage() {
             )}
 
             {data && data.content.length === 0 && (
-              <div className="bb-card bb-state">
+              <div className="bb-empty">
+                <Icon name="search" size={32} />
                 <p>
                   <strong>No materials match your search.</strong>
                 </p>
-                <p className="bb-muted">
-                  {data.totalElements > 0 ? 'This page is empty.' : 'Try fewer filters or a different city.'}
-                </p>
+                <p>{data.totalElements > 0 ? 'This page is empty.' : 'Try fewer filters or a different city.'}</p>
                 {(hasFilters || data.totalElements > 0) && (
-                  <button type="button" className="bb-button" onClick={clearFilters}>
+                  <button type="button" className="bb-btn bb-btn-primary" onClick={clearFilters}>
                     Clear filters
                   </button>
                 )}
@@ -144,7 +190,7 @@ export default function CataloguePage() {
 
             {data && data.content.length > 0 && (
               <>
-                <ul className="bb-grid">
+                <ul className="bb-card-grid">
                   {data.content.map((material) => (
                     <li key={material.id}>
                       <MaterialCard material={material} />
@@ -156,39 +202,12 @@ export default function CataloguePage() {
             )}
           </section>
         </div>
-      </main>
-    </div>
-  )
-}
-
-function MaterialCard({ material }) {
-  const location = useLocation()
-  return (
-    <article className="bb-material-card">
-      <MaterialImage src={material.imageUrl} alt={material.title} className="bb-material-image" />
-      <div className="bb-material-body">
-        <p className="bb-eyebrow">{CATEGORY_LABELS[material.category]}</p>
-        <h3 className="bb-material-title">{material.title}</h3>
-        <p className="bb-price">{priceWithUnit(material.unitPrice, material.unit)}</p>
-        <p className="bb-muted bb-small">{material.city}</p>
-        <p className={material.inStock ? 'bb-stock' : 'bb-stock bb-stock-out'}>
-          {quantityText(material.availableQuantity, material.unit)}
-        </p>
-        {/* Remember the current search so "Back to results" returns here */}
-        <Link
-          className="bb-button bb-button-outline bb-button-small"
-          to={`/materials/${material.id}`}
-          state={{ fromSearch: location.search }}
-        >
-          View details
-          <span className="bb-visually-hidden"> for {material.title}</span>
-        </Link>
       </div>
-    </article>
+    </main>
   )
 }
 
-function FilterForm({ initial, onApply, onClear }) {
+function FilterForm({ initial, open, onApply, onClear }) {
   const [filters, setFilters] = useState({
     keyword: initial.keyword ?? '',
     category: initial.category ?? '',
@@ -222,9 +241,21 @@ function FilterForm({ initial, onApply, onClear }) {
   }
 
   return (
-    <form className="bb-card bb-filters" onSubmit={handleSubmit} noValidate aria-label="Search filters">
-      <div className="bb-field">
-        <label htmlFor="f-keyword">Search</label>
+    <form
+      id="catalogue-filters"
+      className={open ? 'bb-card bb-filters is-open' : 'bb-card bb-filters'}
+      onSubmit={handleSubmit}
+      noValidate
+      aria-label="Search filters"
+    >
+      <h2 className="bb-filters-title">
+        Filters
+        <Icon name="filter" size={18} />
+      </h2>
+      <div className="bb-filter-group bb-field">
+        <label htmlFor="f-keyword" className="bb-filter-label">
+          Keyword
+        </label>
         <input
           id="f-keyword"
           type="search"
@@ -236,25 +267,35 @@ function FilterForm({ initial, onApply, onClear }) {
         {errors.keyword && <p className="bb-field-error">{errors.keyword}</p>}
       </div>
 
-      <div className="bb-field">
-        <label htmlFor="f-category">Category</label>
-        <select id="f-category" value={filters.category} onChange={update('category')}>
-          <option value="">All categories</option>
-          {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
+      <fieldset className="bb-filter-group">
+        <legend>Category</legend>
+        <ul className="bb-filter-options">
+          {[['', 'All categories'], ...Object.entries(CATEGORY_LABELS)].map(([value, label]) => (
+            <li key={value}>
+              <label className="bb-filter-option">
+                <input
+                  type="radio"
+                  name="f-category"
+                  value={value}
+                  checked={filters.category === value}
+                  onChange={update('category')}
+                />
+                {label}
+              </label>
+            </li>
           ))}
-        </select>
-      </div>
+        </ul>
+      </fieldset>
 
-      <div className="bb-field">
-        <label htmlFor="f-city">City</label>
-        <input id="f-city" type="text" placeholder="Exact city, e.g. Pune" value={filters.city} onChange={update('city')} />
+      <div className="bb-filter-group bb-field">
+        <label htmlFor="f-city" className="bb-filter-label">
+          City
+        </label>
+        <input id="f-city" type="text" placeholder="e.g. Pune" value={filters.city} onChange={update('city')} />
       </div>
 
       <fieldset className="bb-price-range">
-        <legend>Price per unit (₹)</legend>
+        <legend className="bb-filter-label">Price per unit (₹)</legend>
         <div className="bb-field">
           <label htmlFor="f-min">Min</label>
           <input
@@ -281,21 +322,23 @@ function FilterForm({ initial, onApply, onClear }) {
         {errors.maxPrice && <p id="f-max-error" className="bb-field-error">{errors.maxPrice}</p>}
       </fieldset>
 
-      <label className="bb-checkbox">
-        <input
-          type="checkbox"
-          checked={filters.inStock === 'true'}
-          onChange={(e) => setFilters({ ...filters, inStock: e.target.checked ? 'true' : '' })}
-        />
-        In stock only
-      </label>
+      <div className="bb-filter-group">
+        <label className="bb-checkbox">
+          <input
+            type="checkbox"
+            checked={filters.inStock === 'true'}
+            onChange={(e) => setFilters({ ...filters, inStock: e.target.checked ? 'true' : '' })}
+          />
+          In stock only
+        </label>
+      </div>
 
       <div className="bb-actions">
-        <button type="submit" className="bb-button">
+        <button type="submit" className="bb-btn bb-btn-primary">
           Apply
         </button>
-        <button type="button" className="bb-button bb-button-outline" onClick={onClear}>
-          Clear filters
+        <button type="button" className="bb-btn bb-btn-secondary" onClick={onClear}>
+          Clear
         </button>
       </div>
     </form>

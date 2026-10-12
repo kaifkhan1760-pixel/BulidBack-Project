@@ -76,6 +76,8 @@ public class SecurityConfig {
                 // Public catalogue is read-only: only GET is open to everyone
                 .requestMatchers(HttpMethod.GET, "/api/materials", "/api/materials/*",
                         "/api/materials/*/tile-estimate").permitAll()
+                // Listing photos are public, like the listings themselves (uploading needs SELLER, below)
+                .requestMatchers(HttpMethod.GET, "/api/images/*").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
                 .requestMatchers("/api/buyer/**").hasRole("BUYER") // orders and payments

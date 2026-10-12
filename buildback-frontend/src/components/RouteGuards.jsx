@@ -38,17 +38,3 @@ function RedirectIfLoggedIn({ children }) {
   if (user) return <Navigate to={dashboardPath(user.role)} replace />
   return children
 }
-
-/** "/" sends you to your dashboard, or to login. */
-export function HomeRedirect() {
-  return (
-    <SessionGate>
-      <HomeTarget />
-    </SessionGate>
-  )
-}
-
-function HomeTarget() {
-  const { user } = useAuth()
-  return <Navigate to={user ? dashboardPath(user.role) : '/login'} replace />
-}

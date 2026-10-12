@@ -2,10 +2,16 @@ package com.buildback.entity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,6 +23,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -55,7 +62,9 @@ public class Material {
     @Column(nullable = false, length = 2000)
     private String description;
 
+    /** VARCHAR (not a MySQL ENUM column), so adding a category never needs a table change. */
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(nullable = false, length = 20)
     private MaterialCategory category;
 
@@ -76,14 +85,27 @@ public class Material {
     private Integer reservedQuantity = 0;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
     @Column(nullable = false, length = 10)
     private MaterialUnit unit;
 
     @Column(nullable = false, length = 100)
     private String city;
 
+    /** The cover photo (= the first of imageUrls). Kept in this table so catalogue pages need no extra query. */
     @Column(name = "image_url", length = 2048)
     private String imageUrl;
+
+    /**
+     * All photos, in the seller's order (1 to 5). Stored in a separate table
+     * "material_images" (material_id, sort_order, url). LAZY: only loaded when needed.
+     */
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "material_images", joinColumns = @JoinColumn(name = "material_id"),
+            foreignKey = @ForeignKey(name = "fk_material_images_material"))
+    @OrderColumn(name = "sort_order")
+    @Column(name = "url", nullable = false, length = 2048)
+    private List<String> imageUrls = new ArrayList<>();
 
     /** Only for TILES (needed later by the tile calculator). DECIMAL(5,2) feet. */
     @Column(name = "tile_length_feet", precision = 5, scale = 2)
@@ -134,7 +156,7 @@ public class Material {
 
     /** Copies every seller-editable field. Seller, status, timestamps and id are untouched. */
     public void updateDetails(String title, String description, MaterialCategory category, BigDecimal unitPrice,
-            Integer availableQuantity, MaterialUnit unit, String city, String imageUrl,
+            Integer availableQuantity, MaterialUnit unit, String city, List<String> imageUrls,
             BigDecimal tileLengthFeet, BigDecimal tileWidthFeet) {
         this.title = title;
         this.description = description;
@@ -143,7 +165,9 @@ public class Material {
         this.availableQuantity = availableQuantity;
         this.unit = unit;
         this.city = city;
-        this.imageUrl = imageUrl;
+        this.imageUrls.clear();
+        this.imageUrls.addAll(imageUrls);
+        this.imageUrl = imageUrls.isEmpty() ? null : imageUrls.get(0);
         this.tileLengthFeet = tileLengthFeet;
         this.tileWidthFeet = tileWidthFeet;
     }
@@ -227,6 +251,17 @@ public class Material {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    /**
+     * Every photo of the listing, cover first. Listings saved before photo
+     * uploads existed only have the single image_url column, so fall back to it.
+     */
+    public List<String> getPhotos() {
+        if (!imageUrls.isEmpty()) {
+            return List.copyOf(imageUrls);
+        }
+        return imageUrl == null ? List.of() : List.of(imageUrl);
     }
 
     public BigDecimal getTileLengthFeet() {

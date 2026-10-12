@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { api } from '../api/client'
-import { AppHeader } from '../components/AppHeader'
 import { OrderList } from '../components/OrderList'
 import { Pagination } from '../components/Pagination'
 import { useApiQuery } from '../hooks/useApiQuery'
@@ -54,7 +53,6 @@ export default function OrdersPage({ view }) {
 
   return (
     <div className="bb-app">
-      <AppHeader />
       <main className="bb-page">
         <div className="bb-page-heading">
           <h1 className="bb-card-title">{title}</h1>

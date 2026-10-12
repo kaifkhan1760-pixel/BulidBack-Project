@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { api } from '../api/client'
-import { AppHeader } from '../components/AppHeader'
 import { ConfirmDialog } from '../components/ConfirmDialog'
+import { Icon } from '../components/Icon'
 import { OrderList } from '../components/OrderList'
 import { Pagination } from '../components/Pagination'
 import { useApiQuery } from '../hooks/useApiQuery'
@@ -23,7 +23,6 @@ export default function AdminPage() {
 
   return (
     <div className="bb-app">
-      <AppHeader />
       <main className="bb-page">
         <div className="bb-page-heading">
           <h1 className="bb-card-title">Admin console</h1>
@@ -77,22 +76,25 @@ function Overview() {
   if (!data) return <LoadState loading={loading} error={error} reload={reload} />
 
   const tiles = [
-    ['Buyers', data.buyers],
-    ['Sellers', data.sellers],
-    ['Admins', data.admins],
-    ['Active listings', data.activeListings],
-    ['Archived listings', data.archivedListings],
-    ['Awaiting payment', data.pendingOrders],
-    ['Paid (to collect)', data.paidOrders],
-    ['Collected', data.collectedOrders],
-    ['Cancelled', data.cancelledOrders],
-    ['Expired', data.expiredOrders],
-    ['Paid value', formatPrice(data.paidRevenue)],
+    ['Paid value', formatPrice(data.paidRevenue), 'rupee'],
+    ['Buyers', data.buyers, 'user'],
+    ['Sellers', data.sellers, 'store'],
+    ['Admins', data.admins, 'shield'],
+    ['Active listings', data.activeListings, 'package'],
+    ['Archived listings', data.archivedListings, 'archive'],
+    ['Awaiting payment', data.pendingOrders, 'clock'],
+    ['Paid (to collect)', data.paidOrders, 'card'],
+    ['Collected', data.collectedOrders, 'truck'],
+    ['Cancelled', data.cancelledOrders, 'close'],
+    ['Expired', data.expiredOrders, 'alert'],
   ]
   return (
     <ul className="bb-stats">
-      {tiles.map(([label, value]) => (
+      {tiles.map(([label, value, icon]) => (
         <li key={label} className="bb-stat">
+          <span className="bb-stat-icon">
+            <Icon name={icon} size={22} />
+          </span>
           <span className="bb-stat-value">{value}</span>
           <span className="bb-stat-label">{label}</span>
         </li>

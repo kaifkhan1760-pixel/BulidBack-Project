@@ -5,6 +5,8 @@
 --
 -- users      : accounts (password stored only as a BCrypt hash)
 -- materials  : listings; available_quantity = can be ordered, reserved_quantity = held for unpaid orders
+--              image_url = cover photo (first of the listing's photos)
+-- material_images : 1-5 photos per listing in the seller's order (sort_order); files live in buildback-backend/uploads
 -- orders     : one listing per order, price snapshot, 15-minute reservation (expires_at)
 -- payments   : payment attempts per order; provider_payment_id is UNIQUE so a payment counts once
 
@@ -24,10 +26,17 @@
         title varchar(120) not null,
         description varchar(2000) not null,
         image_url varchar(2048),
-        category enum ('FITTINGS','PAINT','PLYWOOD','TILES') not null,
+        category varchar(20) not null, -- TILES, PAINT, PLYWOOD, FITTINGS, FALSE_CEILING, WATERPROOFING, INTERIOR
         status enum ('ACTIVE','ARCHIVED') not null,
-        unit enum ('CAN','PIECE','SHEET') not null,
+        unit varchar(10) not null, -- PIECE, CAN, SHEET, BAG, ROLL
         primary key (id)
+    ) engine=InnoDB;
+
+    create table material_images (
+        sort_order integer not null,
+        material_id bigint not null,
+        url varchar(2048) not null,
+        primary key (material_id, sort_order)
     ) engine=InnoDB;
 
     create table orders (
@@ -107,6 +116,11 @@
        add constraint fk_materials_seller
        foreign key (seller_id)
        references users (id);
+
+    alter table material_images
+       add constraint fk_material_images_material
+       foreign key (material_id)
+       references materials (id);
 
     alter table orders
        add constraint fk_orders_buyer

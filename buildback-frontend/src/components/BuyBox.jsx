@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { api } from '../api/client'
 import { useAuth } from '../auth/authContext'
-import { UNIT_LABELS } from '../materials/materialRules'
+import { UNIT_LABELS, UNIT_PLURALS, formatPrice } from '../materials/materialRules'
+import { Icon } from './Icon'
 import { estimateTotal } from '../orders/orderRules'
 
 /**
@@ -19,25 +20,36 @@ export function BuyBox({ material, quantity, onQuantityChange }) {
 
   if (!user) {
     return (
-      <section className="bb-panel">
-        <p>
-          <Link to="/login">Log in</Link> or <Link to="/register">create a buyer account</Link> to order this
-          material.
-        </p>
+      <section className="bb-panel bb-buy-panel" aria-labelledby="buy-title">
+        <PanelHead />
+        <p className="bb-muted">Log in with a buyer account to reserve this material and pay online.</p>
+        <Link to="/login" className="bb-btn bb-btn-primary bb-btn-block">
+          Log in to order
+        </Link>
+        <Link to="/register" className="bb-btn bb-btn-secondary bb-btn-block">
+          Create a buyer account
+        </Link>
       </section>
     )
   }
   if (user.role !== 'BUYER') {
     return (
-      <section className="bb-panel">
-        <p className="bb-muted">Only buyer accounts can place orders.</p>
+      <section className="bb-panel bb-buy-panel" aria-labelledby="buy-title">
+        <PanelHead />
+        <p className="bb-muted">Only buyer accounts can place orders. You are logged in as a {user.role.toLowerCase()}.</p>
       </section>
     )
   }
   if (!material.inStock) {
     return (
-      <section className="bb-panel">
-        <p className="bb-stock-out">Out of stock</p>
+      <section className="bb-panel bb-buy-panel" aria-labelledby="buy-title">
+        <PanelHead />
+        <p className="bb-stock-out">
+          <Icon name="alert" size={18} /> Out of stock
+        </p>
+        <Link to="/materials" className="bb-btn bb-btn-secondary bb-btn-block">
+          Find similar materials
+        </Link>
       </section>
     )
   }
@@ -67,13 +79,15 @@ export function BuyBox({ material, quantity, onQuantityChange }) {
   }
 
   return (
-    <section className="bb-panel" aria-labelledby="buy-title">
-      <h2 id="buy-title" className="bb-section-title">
-        Order
-      </h2>
+    <section className="bb-panel bb-buy-panel" aria-labelledby="buy-title">
+      <PanelHead />
+      <p className="bb-detail-price-row">
+        <span className="bb-price bb-price-large">{formatPrice(material.unitPrice)}</span>
+        <span>per {UNIT_LABELS[material.unit]}</span>
+      </p>
       <form className="bb-buy-form" onSubmit={reserve} noValidate>
         <div className="bb-field">
-          <label htmlFor="buy-qty">Quantity ({UNIT_LABELS[material.unit]}s)</label>
+          <label htmlFor="buy-qty">Quantity ({UNIT_PLURALS[material.unit]})</label>
           <input
             id="buy-qty"
             inputMode="numeric"
@@ -86,20 +100,31 @@ export function BuyBox({ material, quantity, onQuantityChange }) {
         <p id="buy-help" className="bb-hint">
           Max {material.availableQuantity}. Stock is held for you for 15 minutes while you pay.
         </p>
-        {total && (
-          <p className="bb-buy-total">
-            Total: <strong>{total}</strong>
-          </p>
-        )}
+        <p className="bb-buy-total">
+          <span>Total</span>
+          <strong>{total ?? '—'}</strong>
+        </p>
         {error && (
           <p className="bb-field-error" role="alert">
             {error}
           </p>
         )}
-        <button type="submit" className="bb-button bb-button-full" disabled={busy}>
+        <button type="submit" className="bb-btn bb-btn-primary bb-btn-lg bb-btn-block" disabled={busy}>
           {busy ? 'Reserving…' : 'Reserve and pay'}
+          {!busy && <Icon name="arrowRight" size={18} />}
         </button>
       </form>
     </section>
+  )
+}
+
+function PanelHead() {
+  return (
+    <div className="bb-panel-head">
+      <span className="bb-panel-icon">
+        <Icon name="bag" size={20} />
+      </span>
+      <h2 id="buy-title">Order this material</h2>
+    </div>
   )
 }

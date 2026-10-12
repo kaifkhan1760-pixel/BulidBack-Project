@@ -1,21 +1,77 @@
+/* =========================================================
+   BuildBack design tokens + base styles
+   One place for colours, type, spacing, radius and shadows.
+   Components use these variables, never raw hex values.
+   ========================================================= */
 :root {
-  --bg: #f4f7f2;
-  --panel: #ffffff;
-  --primary: #167a59;
-  --primary-dark: #0f5c43;
-  --text: #153c32;
-  --muted: #4d6b61;
-  --border: #dde6df;
-  --success-bg: #e8f5ee;
-  --error: #b42318;
-  --error-bg: #fdecea;
+  /* Brand: forest green (trust, sustainability) */
+  --brand-950: #081d16;
+  --brand-900: #0d2a21;
+  --brand-800: #10382b;
+  --brand-700: #125e46;
+  --brand-600: #167a59; /* primary */
+  --brand-500: #1f9a71;
+  --brand-200: #bfe3d1;
+  --brand-100: #e3f1ea;
+  --brand-50: #f1f8f4;
 
-  font-family: system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
+  /* Accent: construction amber (used sparingly) */
+  --accent-500: #e8a33d;
+  --accent-700: #9a5b06; /* text on light backgrounds */
+  --accent-100: #fdf2dc;
+
+  /* Neutrals (cool grey, like most retail sites) */
+  --ink-900: #1a1f24; /* main text */
+  --ink-700: #38424c;
+  --ink-500: #5a6570; /* secondary text, 5.9:1 on white */
+  --ink-300: #a3acb5;
+  --line: #e1e5e9;
+  --line-strong: #c8cfd6;
+  --surface: #ffffff;
+  --canvas: #f1f3f5;
+
+  /* Feedback */
+  --error: #b42318;
+  --error-bg: #fef3f2;
+  --error-line: #fecdca;
+  --warn: #93590a;
+  --warn-bg: #fff7e6;
+  --warn-line: #f7d9a0;
+  --info-bg: #eef5fb;
+  --info-line: #c8dcee;
+
+  /* Typography */
+  --font-heading: 'IBM Plex Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* Radius, shadows, motion */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 32, 0.05);
+  --shadow-md: 0 2px 8px rgba(16, 24, 32, 0.08);
+  --shadow-lg: 0 8px 24px rgba(16, 24, 32, 0.14);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --container: 1280px;
+
+  /* Older names still used by the connection-check page */
+  --bg: var(--canvas);
+  --panel: var(--surface);
+  --primary: var(--brand-600);
+  --primary-dark: var(--brand-700);
+  --text: var(--ink-900);
+  --muted: var(--ink-500);
+  --border: var(--line);
+  --success-bg: var(--brand-100);
+
+  font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--ink-900);
+  background: var(--canvas);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 *,
@@ -27,17 +83,59 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--canvas);
 }
 
 h1,
 h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--ink-900);
+}
+
 p {
   margin: 0;
 }
 
-/* Visible keyboard focus for every interactive element */
+a {
+  color: var(--brand-600);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Visible keyboard focus everywhere */
 :focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 3px;
+  outline: 3px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--brand-200);
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -4,11 +4,18 @@ import { useState } from 'react'
  * A labelled input with its own error message.
  * aria-invalid / aria-describedby let screen readers announce the error.
  */
-export function FormField({ id, label, error, hint, children }) {
+export function FormField({ id, label, error, hint, required, children }) {
   const describedBy = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ') || undefined
   return (
     <div className="bb-field">
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label}
+        {required && (
+          <span className="bb-required" aria-hidden="true">
+            {' '}*
+          </span>
+        )}
+      </label>
       {children({ id, 'aria-invalid': Boolean(error), 'aria-describedby': describedBy })}
       {hint && (
         <p id={`${id}-hint`} className="bb-hint">

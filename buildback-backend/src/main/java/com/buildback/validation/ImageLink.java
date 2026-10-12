@@ -10,17 +10,19 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 /**
- * The value must be an absolute https:// URL with a host name.
+ * A listing photo must be EITHER
+ *  - a photo uploaded to BuildBack: "/api/images/{random name}", OR
+ *  - an absolute https:// link with a host name.
  * Rejects http:, data:, javascript: and file: links, and user:password@ parts.
- * The backend only stores the text; it never downloads the image.
+ * For https links the backend only stores the text; it never downloads the image.
  */
 @Documented
-@Constraint(validatedBy = HttpsUrlValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.RECORD_COMPONENT })
+@Constraint(validatedBy = ImageLinkValidator.class)
+@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.RECORD_COMPONENT, ElementType.TYPE_USE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface HttpsUrl {
+public @interface ImageLink {
 
-    String message() default "Enter a full image link starting with https://";
+    String message() default "Upload a photo, or use a full image link starting with https://";
 
     Class<?>[] groups() default {};
 

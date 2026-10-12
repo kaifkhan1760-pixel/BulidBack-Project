@@ -19,3 +19,6 @@ target/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Photos uploaded by sellers while running locally
+buildback-backend/uploads/

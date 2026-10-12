@@ -39,10 +39,13 @@ public class MaterialService {
 
     private final MaterialRepository materialRepository;
     private final UserRepository userRepository;
+    private final ImageStorageService imageStorage;
 
-    public MaterialService(MaterialRepository materialRepository, UserRepository userRepository) {
+    public MaterialService(MaterialRepository materialRepository, UserRepository userRepository,
+            ImageStorageService imageStorage) {
         this.materialRepository = materialRepository;
         this.userRepository = userRepository;
+        this.imageStorage = imageStorage;
     }
 
     // ---------------- Public (buyers and visitors) ----------------
@@ -139,22 +142,23 @@ public class MaterialService {
 
     private static void copyFields(MaterialRequest r, Material m) {
         m.updateDetails(r.title(), r.description(), r.category(), r.unitPrice(), r.availableQuantity(), r.unit(),
-                r.city(), r.imageUrl(), r.tileLengthFeet(), r.tileWidthFeet());
+                r.city(), r.imageUrls(), r.tileLengthFeet(), r.tileWidthFeet());
     }
 
     /**
      * Rules that need more than one field, so simple annotations cannot express them:
-     *  1. the unit must match the category (Tiles -> PIECE, Paint -> CAN, ...)
+     *  1. the unit must be allowed for the category (Tiles -> PIECE, Paint -> CAN, POP -> SHEET/BAG/PIECE ...)
      *  2. Tiles need both tile sizes; other categories must not send any
      *  3. a new listing needs at least 1 item (an edit may set 0 = out of stock)
      *  4. an edit must say which version it was based on
+     *  5. every uploaded photo must really exist on this server
      */
-    private static void checkCrossFieldRules(MaterialRequest r, boolean creating) {
+    private void checkCrossFieldRules(MaterialRequest r, boolean creating) {
         Map<String, String> errors = new LinkedHashMap<>();
         MaterialCategory category = r.category();
 
-        if (category != null && r.unit() != null && r.unit() != category.allowedUnit()) {
-            errors.put("unit", "Unit for " + category + " must be " + category.allowedUnit());
+        if (category != null && r.unit() != null && !category.allows(r.unit())) {
+            errors.put("unit", "Unit for " + category + " must be one of " + category.allowedUnits());
         }
 
         if (category == MaterialCategory.TILES) {
@@ -178,6 +182,10 @@ public class MaterialService {
         }
         if (!creating && r.version() == null) {
             errors.put("version", "Version is missing. Reload the listing and try again.");
+        }
+        if (r.imageUrls() != null && r.imageUrls().stream()
+                .anyMatch(url -> ImageStorageService.isUploadedImageUrl(url) && !imageStorage.exists(url))) {
+            errors.put("imageUrls", "A photo could not be found. Remove it and upload it again.");
         }
 
         if (!errors.isEmpty()) {

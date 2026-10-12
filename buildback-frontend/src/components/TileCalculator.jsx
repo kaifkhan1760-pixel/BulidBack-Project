@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from '../api/client'
 import { formatPrice } from '../materials/materialRules'
+import { Icon } from './Icon'
 
 const ALLOWANCES = [0, 5, 10, 15, 20, 25]
 const AREA_PATTERN = /^\d{1,6}(\.\d{1,2})?$/
@@ -38,9 +39,12 @@ export function TileCalculator({ material, onUseQuantity }) {
 
   return (
     <section className="bb-panel" aria-labelledby="calc-title">
-      <h2 id="calc-title" className="bb-section-title">
-        Tile quantity calculator
-      </h2>
+      <div className="bb-panel-head">
+        <span className="bb-panel-icon">
+          <Icon name="calculator" size={20} />
+        </span>
+        <h2 id="calc-title">Tile quantity calculator</h2>
+      </div>
       <p className="bb-muted bb-small">
         Tile size {material.tileLengthFeet} ft × {material.tileWidthFeet} ft. The allowance covers cutting and
         breakage.
@@ -68,7 +72,7 @@ export function TileCalculator({ material, onUseQuantity }) {
             ))}
           </select>
         </div>
-        <button type="submit" className="bb-button" disabled={busy}>
+        <button type="submit" className="bb-btn bb-btn-primary" disabled={busy}>
           {busy ? 'Calculating…' : 'Calculate'}
         </button>
       </form>
@@ -90,16 +94,18 @@ export function TileCalculator({ material, onUseQuantity }) {
               You need <strong>{result.requiredTiles} tiles</strong> (about {formatPrice(result.estimatedCost)})
             </p>
             {result.enoughStock ? (
-              <p className="bb-stock">✓ This listing has {result.availableQuantity} available — enough.</p>
+              <p className="bb-stock">
+                <Icon name="checkCircle" size={18} /> This listing has {result.availableQuantity} available — enough.
+              </p>
             ) : (
               <p className="bb-stock-out">
-                Only {result.availableQuantity} available — not enough for this area.
+                <Icon name="alert" size={18} /> Only {result.availableQuantity} available — not enough for this area.
               </p>
             )}
             {result.enoughStock && onUseQuantity && (
               <button
                 type="button"
-                className="bb-button bb-button-outline bb-button-small"
+                className="bb-btn bb-btn-secondary bb-btn-sm"
                 onClick={() => onUseQuantity(String(result.requiredTiles))}
               >
                 Use {result.requiredTiles} tiles in my order

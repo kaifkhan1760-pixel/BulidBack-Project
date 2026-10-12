@@ -1,108 +1,256 @@
-/* Orders, checkout, calculator, dashboard totals and admin console ("bb-" prefix = scoped). */
+/* =========================================================
+   Calculator, buy box, orders, checkout, stats, admin console.
+   ========================================================= */
 
-/* ---------- Detail page tools: calculator + order box ---------- */
-.bb-detail-tools {
+/* ---------- Panels (calculator, order box) ---------- */
+.bb-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 16px;
-  align-items: start;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
 }
 
-.bb-panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
+.bb-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bb-panel-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   display: grid;
-  gap: 10px;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--brand-700);
+  background: var(--brand-100);
+}
+
+.bb-panel-head h2 {
+  font-size: 1.1rem;
 }
 
 .bb-panel .bb-section-title {
-  margin-top: 0;
+  margin: 0;
+}
+
+.bb-buy-panel {
+  border-color: var(--brand-200);
+  box-shadow: var(--shadow-md);
 }
 
 .bb-calc-form,
 .bb-buy-form {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .bb-calc-form {
-  grid-template-columns: 1fr 110px auto;
+  grid-template-columns: 1fr 120px auto;
   align-items: end;
 }
 
 .bb-calc-result {
   display: grid;
-  gap: 6px;
-  padding: 14px 16px;
-  border-radius: 10px;
-  background: var(--success-bg);
-  border: 1px solid #b7dfc9;
+  gap: 8px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  background: var(--brand-50);
+  border: 1px solid var(--brand-200);
 }
 
 .bb-calc-formula {
-  font-size: 0.9rem;
-  color: var(--muted);
+  font-size: 0.92rem;
+  color: var(--ink-500);
+  font-variant-numeric: tabular-nums;
 }
 
 .bb-calc-answer {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+}
+
+.bb-calc-answer strong {
+  font-family: var(--font-heading);
+  color: var(--brand-700);
 }
 
 .bb-buy-total {
-  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-top: 1px dashed var(--line-strong);
+  font-size: 1.05rem;
+}
+
+.bb-buy-total strong {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+}
+
+.bb-buy-note {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: var(--ink-500);
 }
 
 /* ---------- Order status badges ---------- */
 .bb-status {
-  display: inline-block;
-  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 700;
   white-space: nowrap;
 }
 
+.bb-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 .bb-status-warn {
-  color: #8a5300;
-  background: #fff3dc;
+  color: var(--warn);
+  background: var(--warn-bg);
 }
 
 .bb-status-good {
-  color: var(--primary-dark);
-  background: var(--success-bg);
+  color: var(--brand-700);
+  background: var(--brand-100);
 }
 
 .bb-status-done {
   color: #fff;
-  background: var(--primary);
+  background: var(--brand-700);
+}
+
+.bb-status-done::before {
+  background: var(--accent-500);
 }
 
 .bb-status-muted {
-  color: var(--muted);
+  color: var(--ink-500);
   background: #eceeed;
+}
+
+/* ---------- Order timeline ---------- */
+.bb-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  counter-reset: step;
+}
+
+.bb-timeline li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-500);
+}
+
+.bb-timeline li::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: -50%;
+  width: 100%;
+  height: 3px;
+  background: var(--line);
+  z-index: 0;
+}
+
+.bb-timeline li:first-child::before {
+  display: none;
+}
+
+.bb-timeline-dot {
+  position: relative;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 2px solid var(--line-strong);
+  color: var(--ink-300);
+}
+
+.bb-timeline li.is-done {
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+.bb-timeline li.is-done::before {
+  background: var(--brand-600);
+}
+
+.bb-timeline li.is-done .bb-timeline-dot {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: #fff;
+}
+
+.bb-timeline li.is-current .bb-timeline-dot {
+  border-color: var(--brand-600);
+  color: var(--brand-600);
+  box-shadow: 0 0 0 4px var(--brand-100);
+}
+
+.bb-timeline li.is-stopped .bb-timeline-dot {
+  border-color: var(--ink-300);
+  background: #eceeed;
+  color: var(--ink-500);
 }
 
 /* ---------- Order page ---------- */
 .bb-order-head {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
 }
 
+.bb-order-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  align-items: start;
+}
+
 .bb-pay-box {
-  padding: 16px;
-  border-radius: 12px;
-  background: #fff8ea;
-  border: 1px solid #f1d9a6;
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-line);
 }
 
 .bb-countdown {
+  font-family: var(--font-heading);
   font-variant-numeric: tabular-nums;
-  font-size: 1.15rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--warn);
 }
 
 .bb-payments {
@@ -110,7 +258,6 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 6px;
 }
 
 .bb-payments li {
@@ -118,9 +265,13 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.92rem;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.93rem;
+}
+
+.bb-payments li:last-child {
+  border-bottom: none;
 }
 
 /* ---------- Order lists ---------- */
@@ -129,94 +280,123 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 .bb-order-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
   justify-content: space-between;
-  padding: 14px 16px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .bb-order-main {
   display: grid;
-  gap: 2px;
+  gap: 4px;
   min-width: 0;
-  flex: 1 1 320px;
+  flex: 1 1 340px;
 }
 
 .bb-order-side {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .bb-order-main a,
 .bb-details a {
-  color: var(--primary);
+  color: var(--brand-600);
   font-weight: 600;
 }
 
-/* ---------- Dashboard / admin totals ---------- */
+/* ---------- Stat tiles (dashboards, admin) ---------- */
 .bb-stats {
   list-style: none;
   padding: 0;
-  margin: 18px 0;
+  margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
 }
 
 .bb-stat {
   display: grid;
-  gap: 2px;
-  padding: 14px;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.bb-stat-icon {
+  grid-row: span 2;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
-  background: var(--panel);
-  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  color: var(--brand-700);
+  background: var(--brand-100);
 }
 
 .bb-stat-value {
-  font-size: 1.4rem;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary);
+  line-height: 1.15;
+  color: var(--ink-900);
   overflow-wrap: anywhere;
 }
 
 .bb-stat-label {
-  font-size: 0.88rem;
-  color: var(--muted);
+  font-size: 0.9rem;
+  color: var(--ink-500);
 }
 
 /* ---------- Admin console ---------- */
 .bb-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  border-bottom: 1px solid var(--border);
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  justify-self: start;
 }
 
 .bb-tab {
-  font: inherit;
-  font-weight: 600;
-  color: var(--muted);
-  background: none;
+  min-height: 40px;
+  padding: 0 18px;
   border: none;
-  border-bottom: 3px solid transparent;
-  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-500);
+  font-family: var(--font-heading);
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.bb-tab:hover {
+  color: var(--brand-700);
+  background: var(--brand-50);
 }
 
 .bb-tab-active,
-.bb-tab:hover {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+.bb-tab-active:hover {
+  color: #fff;
+  background: var(--brand-700);
 }
 
 .bb-admin-filters {
@@ -224,45 +404,66 @@
   flex-wrap: wrap;
   gap: 12px;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .bb-admin-filters input {
-  font: inherit;
-  padding: 7px 10px;
-  border: 1px solid #c4d3ca;
-  border-radius: 8px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
 }
 
 .bb-table-wrap {
   overflow-x: auto;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .bb-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.93rem;
+  font-size: 0.95rem;
 }
 
 .bb-table th,
 .bb-table td {
   text-align: left;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
 
-.bb-table th {
-  color: var(--muted);
+.bb-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--canvas);
+  color: var(--ink-500);
+  font-size: 0.8rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bb-table tbody tr:hover {
+  background: var(--brand-50);
+}
+
+.bb-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .bb-table a {
-  color: var(--primary);
+  color: var(--brand-600);
   font-weight: 600;
+}
+
+@media (max-width: 980px) {
+  .bb-order-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 560px) {
@@ -270,11 +471,16 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .bb-calc-form .bb-button {
+  .bb-calc-form .bb-button,
+  .bb-calc-form .bb-btn {
     grid-column: 1 / -1;
   }
 
   .bb-order-side {
     align-items: flex-start;
+  }
+
+  .bb-timeline {
+    font-size: 0.82rem;
   }
 }

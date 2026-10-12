@@ -1,0 +1,2177 @@
+{
+  "_comment": "Demo marketplace data for presentations. Images are free-licence Unsplash photos (https://unsplash.com/license), linked by photo id. Emails use the reserved .test domain so demo sellers are easy to recognise.",
+  "sellers": [
+    {
+      "name": "Shree Ganesh Tiles & Sanitary",
+      "email": "shreeganesh@demo.buildback.test",
+      "city": "Pune",
+      "listings": [
+        {
+          "title": "Glossy white vitrified floor tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "52.00",
+          "availableQuantity": 140,
+          "unit": "PIECE",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00",
+          "image": "1600328604921-300918f36018",
+          "description": "Double-charged glossy vitrified tiles left over from a 3BHK handover in Baner. 14 sealed boxes of 10 tiles each, same batch and shade. Pickup from our Kharadi godown."
+        },
+        {
+          "title": "Sage green ceramic wall tiles 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "34.00",
+          "availableQuantity": 96,
+          "unit": "PIECE",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00",
+          "image": "1523350165414-082d792c4bcc",
+          "description": "Matte sage green and off-white wall tiles, ideal for kitchen backsplash. Customer changed the design after delivery, so these are unused."
+        },
+        {
+          "title": "Chrome basin mixer tap (single lever)",
+          "category": "FITTINGS",
+          "unitPrice": "1450.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1610278764397-388d11c35ddb",
+          "description": "Single-lever basin mixer with ceramic cartridge and flexible connectors. New in box, extra stock from a hotel bathroom project."
+        },
+        {
+          "title": "Wall-mounted wash basin with vanity top",
+          "category": "FITTINGS",
+          "unitPrice": "3800.00",
+          "availableQuantity": 3,
+          "unit": "PIECE",
+          "image": "1758448018619-4cbe2250b9ad",
+          "description": "Rectangular ceramic counter-top basin with marble-finish vanity slab. Display piece in very good condition, no cracks or chips."
+        },
+        {
+          "title": "Grey concrete-look porcelain tiles 2x4 ft",
+          "category": "TILES",
+          "unitPrice": "165.00",
+          "availableQuantity": 72,
+          "unit": "PIECE",
+          "image": "1708540084677-dc5838b37627",
+          "description": "Large-format tiles with a modern cement look. Left over from a clinic renovation in Pune. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "4.00",
+          "tileWidthFeet": "2.00"
+        },
+        {
+          "title": "Green kitchen backsplash tiles 3x6 inch",
+          "category": "TILES",
+          "unitPrice": "18.00",
+          "availableQuantity": 300,
+          "unit": "PIECE",
+          "image": "1682888818704-6dc91e9d7532",
+          "description": "Handmade-look glossy green tiles for backsplashes. Left over from a cafe interior in Pune. Sealed packing, collect anytime this week.",
+          "tileLengthFeet": "0.50",
+          "tileWidthFeet": "0.25"
+        },
+        {
+          "title": "Slate stone cladding 6x24 inch",
+          "category": "TILES",
+          "unitPrice": "58.00",
+          "availableQuantity": 140,
+          "unit": "PIECE",
+          "image": "1506968355081-0ed1cbd85ea5",
+          "description": "Natural slate strips for elevation and garden walls. Left over from a showroom renovation in Pune. Original packing; bill can be shown.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "0.50"
+        },
+        {
+          "title": "Kota stone tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "70.00",
+          "availableQuantity": 150,
+          "unit": "PIECE",
+          "image": "1699982759479-d1909bbdf591",
+          "description": "Natural Kota stone, machine-polished. Left over from a villa project in Pune. Original packing; bill can be shown.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        }
+      ]
+    },
+    {
+      "name": "Mehta Build Surplus",
+      "email": "mehtabuild@demo.buildback.test",
+      "city": "Mumbai",
+      "listings": [
+        {
+          "title": "Italian-look marble floor tiles 2x4 ft",
+          "category": "TILES",
+          "unitPrice": "210.00",
+          "availableQuantity": 48,
+          "unit": "PIECE",
+          "tileLengthFeet": "4.00",
+          "tileWidthFeet": "2.00",
+          "image": "1706629503571-c165023a7792",
+          "description": "Large-format polished porcelain slabs with Statuario-style veining. Leftover from a showroom flooring job in Andheri East."
+        },
+        {
+          "title": "Statuario marble-finish wall cladding 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "95.00",
+          "availableQuantity": 60,
+          "unit": "PIECE",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00",
+          "image": "1558346648-9757f2fa4474",
+          "description": "High-gloss white marble-finish wall tiles, rectified edges. 6 full boxes, never opened."
+        },
+        {
+          "title": "Interior acrylic emulsion, white 20 L",
+          "category": "PAINT",
+          "unitPrice": "3400.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1599619585752-c3edb42a414c",
+          "description": "Premium washable interior emulsion in brilliant white. Sealed 20 litre buckets, manufacture date within the last 8 months."
+        },
+        {
+          "title": "18 mm BWP marine plywood 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "3250.00",
+          "availableQuantity": 22,
+          "unit": "SHEET",
+          "image": "1690768162439-7ca7a1813038",
+          "description": "Boiling-water-proof marine grade plywood, IS 710 marked. Stored indoors on pallets, edges clean."
+        },
+        {
+          "title": "Weatherproof emulsion, terracotta 10 L",
+          "category": "PAINT",
+          "unitPrice": "2450.00",
+          "availableQuantity": 4,
+          "unit": "CAN",
+          "image": "1550002233-59d811d29b95",
+          "description": "Tinted exterior paint, sealed buckets. Left over from a housing society repair job in Mumbai. Original packing; bill can be shown."
+        },
+        {
+          "title": "Anti-fungal interior paint, white 4 L",
+          "category": "PAINT",
+          "unitPrice": "1250.00",
+          "availableQuantity": 10,
+          "unit": "CAN",
+          "image": "1783525556995-92dac86da802",
+          "description": "For bathrooms and damp-prone rooms. Left over from a hotel refurbishment in Mumbai. Same batch, no damage."
+        },
+        {
+          "title": "Exterior primer, grey 10 L",
+          "category": "PAINT",
+          "unitPrice": "1600.00",
+          "availableQuantity": 5,
+          "unit": "CAN",
+          "image": "1511822148790-e7b58ba14c72",
+          "description": "Alkali-resistant primer for exterior walls. Left over from a row-house scheme in Mumbai. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Aluminium paint, silver 1 L",
+          "category": "PAINT",
+          "unitPrice": "420.00",
+          "availableQuantity": 18,
+          "unit": "CAN",
+          "image": "1516415372068-d139ad9301ae",
+          "description": "Heat-resistant silver paint for metal surfaces. Left over from a clinic renovation in Mumbai. Brand new, ordered extra by mistake."
+        }
+      ]
+    },
+    {
+      "name": "Royal Ply & Laminates",
+      "email": "royalply@demo.buildback.test",
+      "city": "Bengaluru",
+      "listings": [
+        {
+          "title": "12 mm MR grade commercial plywood 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1480.00",
+          "availableQuantity": 35,
+          "unit": "SHEET",
+          "image": "1700973408133-b45276ec8feb",
+          "description": "Moisture-resistant commercial ply for wardrobes and false ceilings. Surplus from an apartment interiors contract in Whitefield."
+        },
+        {
+          "title": "19 mm block board 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2650.00",
+          "availableQuantity": 14,
+          "unit": "SHEET",
+          "image": "1517958189574-a9423e47b514",
+          "description": "Pine core block board, good for long shelves and doors that should not sag. Minor corner marks on two sheets."
+        },
+        {
+          "title": "Teak veneer wall panel sheets 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2900.00",
+          "availableQuantity": 10,
+          "unit": "SHEET",
+          "image": "1579494646587-7d6760bc9cca",
+          "description": "Natural teak veneer on 4 mm base, for feature walls and TV units. Unpolished, ready for PU finish."
+        },
+        {
+          "title": "6 mm flexible plywood 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "980.00",
+          "availableQuantity": 18,
+          "unit": "SHEET",
+          "image": "1422246654994-34520d5a0340",
+          "description": "Bendable plywood for curved reception counters and columns. Clean stock, stored flat."
+        },
+        {
+          "title": "Pine wood board 12 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1650.00",
+          "availableQuantity": 9,
+          "unit": "SHEET",
+          "image": "1590635022668-81cc8696a19d",
+          "description": "Solid pine edge-glued board for shelves and frames. Kiln dried, sanded both sides. Surplus from a cafe interiors job."
+        },
+        {
+          "title": "BWR plywood 12 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1560.00",
+          "availableQuantity": 30,
+          "unit": "SHEET",
+          "image": "1565602653868-dcef5419f957",
+          "description": "Boiling water resistant ply for kitchens. Left over from a 3BHK handover in Bengaluru. Clean stock, checked before listing."
+        },
+        {
+          "title": "High-gloss white laminate 1 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1380.00",
+          "availableQuantity": 25,
+          "unit": "SHEET",
+          "image": "1737094662085-7e0db16198e3",
+          "description": "Mirror-gloss laminate for kitchen shutters. Left over from a cafe interior in Bengaluru. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "HDHMR board 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2700.00",
+          "availableQuantity": 12,
+          "unit": "SHEET",
+          "image": "1550293038-06c7e135fcc8",
+          "description": "High-density moisture-resistant board. Left over from a housing society repair job in Bengaluru. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Plywood offcuts 9 mm (4x2 ft)",
+          "category": "PLYWOOD",
+          "unitPrice": "320.00",
+          "availableQuantity": 60,
+          "unit": "SHEET",
+          "image": "1599004082088-dd8261d80bdc",
+          "description": "Half-size offcuts, good for drawers and small jobs. Left over from a row-house scheme in Bengaluru. Original packing; bill can be shown."
+        }
+      ]
+    },
+    {
+      "name": "Sai Krupa Constructions",
+      "email": "saikrupa@demo.buildback.test",
+      "city": "Hyderabad",
+      "listings": [
+        {
+          "title": "Grey matt floor tiles 2x2 ft (parking grade)",
+          "category": "TILES",
+          "unitPrice": "41.00",
+          "availableQuantity": 220,
+          "unit": "PIECE",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00",
+          "image": "1534503442463-e0ddba45cf4c",
+          "description": "Heavy-duty anti-skid matt tiles left after a basement parking job in Gachibowli. 22 boxes available."
+        },
+        {
+          "title": "Exterior weatherproof emulsion 20 L",
+          "category": "PAINT",
+          "unitPrice": "4100.00",
+          "availableQuantity": 5,
+          "unit": "CAN",
+          "image": "1652572036885-b5e9205dd847",
+          "description": "Anti-algal exterior emulsion, off-white base. Ordered 15 buckets, used 10. Remaining buckets are sealed."
+        },
+        {
+          "title": "CPVC hot & cold water pipes 1 inch (3 m)",
+          "category": "FITTINGS",
+          "unitPrice": "520.00",
+          "availableQuantity": 40,
+          "unit": "PIECE",
+          "image": "1545193329-4a052e14eb8f",
+          "description": "SDR 11 CPVC pipes, 3 metre lengths. Excess from plumbing of a G+4 residential building."
+        },
+        {
+          "title": "GI pipe and valve set for overhead tank",
+          "category": "FITTINGS",
+          "unitPrice": "2300.00",
+          "availableQuantity": 4,
+          "unit": "PIECE",
+          "image": "1650551182991-b07558247564",
+          "description": "Galvanised iron pipe pieces with gate valve and union. Complete set for one overhead tank outlet."
+        },
+        {
+          "title": "Angle valves, chrome (pair)",
+          "category": "FITTINGS",
+          "unitPrice": "520.00",
+          "availableQuantity": 25,
+          "unit": "PIECE",
+          "image": "1646592491489-ebdf758b9d11",
+          "description": "Quarter-turn angle valves for basins and WCs. Left over from a 3BHK handover in Hyderabad. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Wall-hung WC with soft-close seat",
+          "category": "FITTINGS",
+          "unitPrice": "7800.00",
+          "availableQuantity": 3,
+          "unit": "PIECE",
+          "image": "1611066415697-7f58dc0a5d10",
+          "description": "Rimless wall-hung toilet, white. Left over from a commercial complex in Hyderabad. Original packing; bill can be shown."
+        },
+        {
+          "title": "UPVC pipe 1 inch, 3 m",
+          "category": "FITTINGS",
+          "unitPrice": "290.00",
+          "availableQuantity": 60,
+          "unit": "PIECE",
+          "image": "1729169927271-7826d8aae360",
+          "description": "Plumbing pipe for cold water lines. Left over from a hotel refurbishment in Hyderabad. Original packing; bill can be shown."
+        },
+        {
+          "title": "Distribution board 8-way",
+          "category": "FITTINGS",
+          "unitPrice": "1650.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1576446468729-7674e99608f5",
+          "description": "Double-door metal DB with neutral link. Left over from a row-house scheme in Hyderabad. Clean stock, checked before listing."
+        },
+        {
+          "title": "Hydraulic door closer",
+          "category": "FITTINGS",
+          "unitPrice": "1250.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1528278849011-96a6c2221b50",
+          "description": "For doors up to 60 kg. Left over from a commercial complex in Hyderabad. Original packing; bill can be shown."
+        },
+        {
+          "title": "Bitumen primer 20 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "2900.00",
+          "availableQuantity": 5,
+          "unit": "CAN",
+          "image": "1621294015009-b26e7d266602",
+          "description": "Primer before laying bitumen membranes. Left over from an office fit-out in Hyderabad. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "HDPE drainage sheet (20 m roll)",
+          "category": "WATERPROOFING",
+          "unitPrice": "5200.00",
+          "availableQuantity": 4,
+          "unit": "ROLL",
+          "image": "1541888894402-f3b1af908be4",
+          "description": "Dimpled sheet for basement walls. Left over from an office fit-out in Hyderabad. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Non-shrink grout 25 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "980.00",
+          "availableQuantity": 14,
+          "unit": "BAG",
+          "image": "1763479168547-40aa39986687",
+          "description": "Free-flowing grout for anchoring and gaps. Left over from a clinic renovation in Hyderabad. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Damp-proof exterior coating 10 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "2950.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1649829658924-448d6522436e",
+          "description": "Breathable damp-proof coat for walls. Left over from a hotel refurbishment in Hyderabad. Clean stock, checked before listing."
+        }
+      ]
+    },
+    {
+      "name": "Patel Paints Depot",
+      "email": "patelpaints@demo.buildback.test",
+      "city": "Ahmedabad",
+      "listings": [
+        {
+          "title": "Satin enamel paint, assorted colours 4 L",
+          "category": "PAINT",
+          "unitPrice": "1150.00",
+          "availableQuantity": 16,
+          "unit": "CAN",
+          "image": "1643822308521-1da534425d82",
+          "description": "Synthetic satin enamel for doors, grills and furniture. Mixed lot of orange, blue and green, 4 litre cans."
+        },
+        {
+          "title": "Wood primer, pink 4 L",
+          "category": "PAINT",
+          "unitPrice": "780.00",
+          "availableQuantity": 12,
+          "unit": "CAN",
+          "image": "1674376360445-2996327553e7",
+          "description": "Solvent-based wood primer. Cans have minor dents from transport, contents sealed and fine."
+        },
+        {
+          "title": "Royal blue metal enamel 1 L",
+          "category": "PAINT",
+          "unitPrice": "320.00",
+          "availableQuantity": 30,
+          "unit": "CAN",
+          "image": "1670940094923-6f75e4dc5c3a",
+          "description": "Quick-dry high-gloss enamel for gates and railings. Shade discontinued at our shop, clearing old stock."
+        },
+        {
+          "title": "Interior emulsion, sky blue 10 L",
+          "category": "PAINT",
+          "unitPrice": "1900.00",
+          "availableQuantity": 7,
+          "unit": "CAN",
+          "image": "1585676737728-432f58d5fdba",
+          "description": "Tinted interior emulsion, customer cancelled the order after tinting. Sealed 10 litre buckets."
+        },
+        {
+          "title": "Acrylic distemper, assorted colours 10 L",
+          "category": "PAINT",
+          "unitPrice": "1350.00",
+          "availableQuantity": 25,
+          "unit": "CAN",
+          "image": "1525909002-1b05e0c869d8",
+          "description": "Washable acrylic distemper in yellow, peach and light green. Sealed 10 litre buckets."
+        },
+        {
+          "title": "Interior emulsion, ivory 10 L",
+          "category": "PAINT",
+          "unitPrice": "1750.00",
+          "availableQuantity": 8,
+          "unit": "CAN",
+          "image": "1652829069862-87874e119527",
+          "description": "Low-odour washable interior emulsion. Left over from a clinic renovation in Ahmedabad. Same batch, no damage."
+        },
+        {
+          "title": "Metallic emulsion, gold 1 L",
+          "category": "PAINT",
+          "unitPrice": "690.00",
+          "availableQuantity": 14,
+          "unit": "CAN",
+          "image": "1775737403383-31822a9ef815",
+          "description": "Shimmer finish for accent walls and pooja rooms. Left over from a 3BHK handover in Ahmedabad. Clean stock, checked before listing."
+        },
+        {
+          "title": "Ceiling paint, brilliant white 10 L",
+          "category": "PAINT",
+          "unitPrice": "1350.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1693985120993-e9b203ce7631",
+          "description": "Flat white paint made for ceilings. Left over from a cafe interior in Ahmedabad. Unused and stored indoors."
+        },
+        {
+          "title": "Synthetic enamel, black 4 L",
+          "category": "PAINT",
+          "unitPrice": "1240.00",
+          "availableQuantity": 10,
+          "unit": "CAN",
+          "image": "1616474103484-75eabb8f2590",
+          "description": "Gloss enamel for grills, gates and railings. Left over from a school building in Ahmedabad. Original packing; bill can be shown."
+        },
+        {
+          "title": "Floor paint, brick red 4 L",
+          "category": "PAINT",
+          "unitPrice": "1100.00",
+          "availableQuantity": 7,
+          "unit": "CAN",
+          "image": "1777728868180-dbfc61eef59f",
+          "description": "For terraces and walkways. Left over from a cafe interior in Ahmedabad. Original packing; bill can be shown."
+        }
+      ]
+    },
+    {
+      "name": "Delhi Interiors Surplus",
+      "email": "delhiinteriors@demo.buildback.test",
+      "city": "New Delhi",
+      "listings": [
+        {
+          "title": "Moroccan pattern cement tiles 8x8 inch",
+          "category": "TILES",
+          "unitPrice": "68.00",
+          "availableQuantity": 150,
+          "unit": "PIECE",
+          "tileLengthFeet": "0.67",
+          "tileWidthFeet": "0.67",
+          "image": "1541471943749-e5976783f6c3",
+          "description": "Handmade encaustic-look tiles in terracotta and black. Perfect for balconies and cafe floors."
+        },
+        {
+          "title": "Blue and white patterned feature tiles 8x8 inch",
+          "category": "TILES",
+          "unitPrice": "72.00",
+          "availableQuantity": 80,
+          "unit": "PIECE",
+          "tileLengthFeet": "0.67",
+          "tileWidthFeet": "0.67",
+          "image": "1541320779116-ec4a3d4692bc",
+          "description": "Glazed decorative tiles for bathroom accent walls and kitchen backsplash. Leftover from a farmhouse project in Chhatarpur."
+        },
+        {
+          "title": "Brass bib cock tap, antique finish",
+          "category": "FITTINGS",
+          "unitPrice": "890.00",
+          "availableQuantity": 11,
+          "unit": "PIECE",
+          "image": "1619365566184-272a34acfeb9",
+          "description": "Solid brass wall tap with quarter-turn spindle. Antique finish, new in box."
+        },
+        {
+          "title": "Overhead rain shower 8 inch",
+          "category": "FITTINGS",
+          "unitPrice": "1650.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1677454759826-3922020f2ffb",
+          "description": "Stainless steel round rain shower with wall arm. Ordered extra for a villa project."
+        },
+        {
+          "title": "Wooden plank tiles 8x48 inch, oak finish",
+          "category": "TILES",
+          "unitPrice": "135.00",
+          "availableQuantity": 84,
+          "unit": "PIECE",
+          "image": "1508920052992-6f5a921eba78",
+          "description": "Wood-look porcelain planks; no termites, no polishing. Left over from a school building in New Delhi. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "4.00",
+          "tileWidthFeet": "0.67"
+        },
+        {
+          "title": "Brown Italian marble-look tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "88.00",
+          "availableQuantity": 96,
+          "unit": "PIECE",
+          "image": "1560348909-11d792e4c51e",
+          "description": "Botticino-style beige-brown veining, polished finish. Left over from a housing society repair job in New Delhi. Unused and stored indoors.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        },
+        {
+          "title": "Anti-skid outdoor tiles 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "32.00",
+          "availableQuantity": 250,
+          "unit": "PIECE",
+          "image": "1617887021567-fe8d2480bd96",
+          "description": "Textured matt tiles for terraces and walkways. Left over from a commercial complex in New Delhi. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Framed abstract wall art (set of 3)",
+          "category": "INTERIOR",
+          "unitPrice": "2800.00",
+          "availableQuantity": 4,
+          "unit": "PIECE",
+          "image": "1631679706909-1844bbd07221",
+          "description": "Canvas prints in black frames. Left over from a bungalow renovation in New Delhi. Same batch, no damage."
+        },
+        {
+          "title": "Full-length wall mirror, black frame",
+          "category": "INTERIOR",
+          "unitPrice": "3100.00",
+          "availableQuantity": 4,
+          "unit": "PIECE",
+          "image": "1712214741533-3dd5b8013ca7",
+          "description": "5x2 ft mirror with metal frame. Left over from an office fit-out in New Delhi. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Brick-effect wallpaper (57 sq ft roll)",
+          "category": "INTERIOR",
+          "unitPrice": "1150.00",
+          "availableQuantity": 18,
+          "unit": "ROLL",
+          "image": "1572756317709-fe9c15ced298",
+          "description": "Realistic exposed-brick print. Left over from a bungalow renovation in New Delhi. Clean stock, checked before listing."
+        },
+        {
+          "title": "Vinyl flooring 2 mm (2 m x 15 m roll)",
+          "category": "INTERIOR",
+          "unitPrice": "9800.00",
+          "availableQuantity": 3,
+          "unit": "ROLL",
+          "image": "1560185008-b033106af5c3",
+          "description": "Wood-pattern vinyl for offices and homes. Left over from a bungalow renovation in New Delhi. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Ceramic planters (set of 3)",
+          "category": "INTERIOR",
+          "unitPrice": "1350.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1485955900006-10f4d324d411",
+          "description": "Glazed planters with drainage holes. Left over from an office fit-out in New Delhi. Clean stock, checked before listing."
+        }
+      ]
+    },
+    {
+      "name": "Om Sanitaryware & Hardware",
+      "email": "omsanitary@demo.buildback.test",
+      "city": "Jaipur",
+      "listings": [
+        {
+          "title": "Chrome pillar tap for wash basin",
+          "category": "FITTINGS",
+          "unitPrice": "620.00",
+          "availableQuantity": 20,
+          "unit": "PIECE",
+          "image": "1542855368-ca6ea825bca2",
+          "description": "Heavy chrome-plated pillar cock with aerator. Surplus from a hotel renovation in Malviya Nagar."
+        },
+        {
+          "title": "Garden tap with hose connector",
+          "category": "FITTINGS",
+          "unitPrice": "340.00",
+          "availableQuantity": 18,
+          "unit": "PIECE",
+          "image": "1495647688236-ed6ef40cb28b",
+          "description": "Long-body garden tap with threaded hose nozzle. New, slightly scratched packaging."
+        },
+        {
+          "title": "Copper plumbing pipe 15 mm (3 m)",
+          "category": "FITTINGS",
+          "unitPrice": "1100.00",
+          "availableQuantity": 15,
+          "unit": "PIECE",
+          "image": "1580810734898-5e1753f23337",
+          "description": "Type L copper pipe lengths for geyser and solar heater lines. Unused, stored indoors."
+        },
+        {
+          "title": "Blue and white bathroom wall tiles 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "38.00",
+          "availableQuantity": 120,
+          "unit": "PIECE",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00",
+          "image": "1619439677623-6f881c7be58f",
+          "description": "Glossy patterned wall tiles for bathrooms. 12 boxes of the same batch."
+        },
+        {
+          "title": "Wall mixer with spout and bend",
+          "category": "FITTINGS",
+          "unitPrice": "2400.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1629078692818-c5a0443f4ae3",
+          "description": "Brass wall mixer, chrome finish. Left over from a housing society repair job in Jaipur. Unused and stored indoors."
+        },
+        {
+          "title": "Thermostatic shower panel",
+          "category": "FITTINGS",
+          "unitPrice": "9800.00",
+          "availableQuantity": 2,
+          "unit": "PIECE",
+          "image": "1761353855019-05f2f3ed9c43",
+          "description": "Shower panel with rain head, hand shower and jets. Left over from a showroom renovation in Jaipur. Same batch, no damage."
+        },
+        {
+          "title": "PVC pipe 4 inch, 6 m",
+          "category": "FITTINGS",
+          "unitPrice": "1250.00",
+          "availableQuantity": 30,
+          "unit": "PIECE",
+          "image": "1646009445351-b8192e095f3a",
+          "description": "SWR drainage pipe, ISI marked. Left over from a 3BHK handover in Jaipur. Same batch, no damage."
+        },
+        {
+          "title": "MCB 32 A double pole",
+          "category": "FITTINGS",
+          "unitPrice": "480.00",
+          "availableQuantity": 20,
+          "unit": "PIECE",
+          "image": "1588616437819-7d30e6f76e66",
+          "description": "Miniature circuit breakers, C-curve. Left over from a cafe interior in Jaipur. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Telescopic drawer channels 18 inch (pair)",
+          "category": "FITTINGS",
+          "unitPrice": "320.00",
+          "availableQuantity": 40,
+          "unit": "PIECE",
+          "image": "1574588822710-475a38fe3371",
+          "description": "Ball-bearing drawer slides, soft movement. Left over from a villa project in Jaipur. Sealed packing, collect anytime this week."
+        }
+      ]
+    },
+    {
+      "name": "Green Nest Developers",
+      "email": "greennest@demo.buildback.test",
+      "city": "Nashik",
+      "listings": [
+        {
+          "title": "Beige ceramic floor tiles 16x16 inch",
+          "category": "TILES",
+          "unitPrice": "29.00",
+          "availableQuantity": 180,
+          "unit": "PIECE",
+          "tileLengthFeet": "1.33",
+          "tileWidthFeet": "1.33",
+          "image": "1584354273341-3eb96574e5be",
+          "description": "Budget ceramic floor tiles with soft beige finish. Remaining after completing a row-house scheme."
+        },
+        {
+          "title": "Stone-look exterior wall cladding 1x2 ft",
+          "category": "TILES",
+          "unitPrice": "58.00",
+          "availableQuantity": 70,
+          "unit": "PIECE",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "1.00",
+          "image": "1599209250635-26c180f28419",
+          "description": "Porcelain cladding tiles with natural stone texture for elevation walls and compound walls."
+        },
+        {
+          "title": "Acacia wood board 18 mm (6x2 ft)",
+          "category": "PLYWOOD",
+          "unitPrice": "1250.00",
+          "availableQuantity": 40,
+          "unit": "SHEET",
+          "image": "1772677509584-cbec30114b9b",
+          "description": "Seasoned acacia board, sanded and ready to finish. Left over after making site furniture."
+        },
+        {
+          "title": "Exterior primer, white 20 L",
+          "category": "PAINT",
+          "unitPrice": "2600.00",
+          "availableQuantity": 10,
+          "unit": "CAN",
+          "image": "1562259949-e8e7689d7828",
+          "description": "Water-based exterior wall primer. Two buckets left after painting a row-house scheme."
+        },
+        {
+          "title": "Texture paint, sand finish 20 kg",
+          "category": "PAINT",
+          "unitPrice": "2800.00",
+          "availableQuantity": 3,
+          "unit": "CAN",
+          "image": "1709487491343-9ff157175b5b",
+          "description": "Ready-mix texture coating for exterior walls. Left over from a commercial complex in Nashik. Clean stock, checked before listing."
+        },
+        {
+          "title": "Tinted emulsion lot, pastel shades 4 L",
+          "category": "PAINT",
+          "unitPrice": "940.00",
+          "availableQuantity": 12,
+          "unit": "CAN",
+          "image": "1783524724207-f52e29d0bbf7",
+          "description": "Mixed pastel shades left after a show-flat. Left over from a villa project in Nashik. Original packing; bill can be shown."
+        },
+        {
+          "title": "Wood stain, walnut 1 L",
+          "category": "PAINT",
+          "unitPrice": "540.00",
+          "availableQuantity": 15,
+          "unit": "CAN",
+          "image": "1585773818428-b50bebdc2344",
+          "description": "Penetrating stain for doors and frames. Left over from a row-house scheme in Nashik. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Waterproof exterior paint, white 10 L",
+          "category": "PAINT",
+          "unitPrice": "2700.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1786295866839-d17f879c65cd",
+          "description": "Elastomeric paint for rain-exposed walls. Left over from a hotel refurbishment in Nashik. Sealed packing, collect anytime this week."
+        }
+      ]
+    },
+    {
+      "name": "Coastal Timber Co.",
+      "email": "coastaltimber@demo.buildback.test",
+      "city": "Kochi",
+      "listings": [
+        {
+          "title": "Rubber wood finger-joint board 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2400.00",
+          "availableQuantity": 12,
+          "unit": "SHEET",
+          "image": "1778830355855-58ffa19781e1",
+          "description": "Kiln-dried and treated rubber wood board, finger-jointed. Ideal for kitchen shutters and tables."
+        },
+        {
+          "title": "Shuttering plywood 12 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1150.00",
+          "availableQuantity": 30,
+          "unit": "SHEET",
+          "image": "1637235549935-196a9d3a88c8",
+          "description": "Film-faced shuttering ply used once for a slab. Can be reused 4 to 5 more times."
+        },
+        {
+          "title": "Reclaimed hardwood panel 4x2 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "780.00",
+          "availableQuantity": 55,
+          "unit": "SHEET",
+          "image": "1634672652995-ee7525bce595",
+          "description": "Panels made from reclaimed warehouse hardwood. Great for rustic wall panelling and furniture tops."
+        },
+        {
+          "title": "Marine-grade ply offcuts, 18 mm (4x2 ft)",
+          "category": "PLYWOOD",
+          "unitPrice": "620.00",
+          "availableQuantity": 26,
+          "unit": "SHEET",
+          "image": "1774918387795-81495e393c11",
+          "description": "Half-size marine ply offcuts, perfect for kitchen drawers and boat repairs."
+        },
+        {
+          "title": "Gurjan face plywood 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2850.00",
+          "availableQuantity": 16,
+          "unit": "SHEET",
+          "image": "1787422430123-344b233a0626",
+          "description": "Gurjan face veneers, IS 303 marked. Left over from a clinic renovation in Kochi. Clean stock, checked before listing."
+        },
+        {
+          "title": "Teak veneer sheet 0.5 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1650.00",
+          "availableQuantity": 18,
+          "unit": "SHEET",
+          "image": "1635841582997-8acd24605d8c",
+          "description": "Natural teak veneer, ready for polish. Left over from a villa project in Kochi. Clean stock, checked before listing."
+        },
+        {
+          "title": "Particle board 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1050.00",
+          "availableQuantity": 35,
+          "unit": "SHEET",
+          "image": "1675528030748-d463ab87e8d5",
+          "description": "Pre-laminated particle board, maple finish. Left over from a row-house scheme in Kochi. Clean stock, checked before listing."
+        }
+      ]
+    },
+    {
+      "name": "Singh Renovations",
+      "email": "singhreno@demo.buildback.test",
+      "city": "Chandigarh",
+      "listings": [
+        {
+          "title": "Black and white checkered floor tiles 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "46.00",
+          "availableQuantity": 90,
+          "unit": "PIECE",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00",
+          "image": "1599031628962-1f6755a3b1b5",
+          "description": "Classic black and white pattern tiles. Client changed the kitchen design, so these are surplus."
+        },
+        {
+          "title": "Teal glass mosaic tiles, sheet 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "135.00",
+          "availableQuantity": 40,
+          "unit": "PIECE",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00",
+          "image": "1550820946-1c6f7b8e2030",
+          "description": "Mesh-backed glass mosaic sheets for swimming pools and shower niches."
+        },
+        {
+          "title": "FR electrical wire 2.5 sq mm, 90 m coil",
+          "category": "FITTINGS",
+          "unitPrice": "2450.00",
+          "availableQuantity": 7,
+          "unit": "PIECE",
+          "image": "1518181835702-6eef8b4b2113",
+          "description": "Flame-retardant copper house wire, full 90 m coils, ISI marked. Ordered extra for a 4BHK rewiring."
+        },
+        {
+          "title": "Assorted electrical wire lot (mixed colours)",
+          "category": "FITTINGS",
+          "unitPrice": "1600.00",
+          "availableQuantity": 5,
+          "unit": "PIECE",
+          "image": "1601462904263-f2fa0c851cb9",
+          "description": "Partly used coils of 1.5 and 2.5 sq mm wire in red, yellow, blue and black. Sold as one lot."
+        },
+        {
+          "title": "Glossy black granite-look tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "62.00",
+          "availableQuantity": 90,
+          "unit": "PIECE",
+          "image": "1522061541612-28ef361a3045",
+          "description": "Deep black glazed vitrified tiles with a subtle sparkle. Left over from a bungalow renovation in Chandigarh. Unused and stored indoors.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        },
+        {
+          "title": "Highlighter wall tiles 1x1.5 ft, stone design",
+          "category": "TILES",
+          "unitPrice": "44.00",
+          "availableQuantity": 80,
+          "unit": "PIECE",
+          "image": "1753605788101-04d1e653e74a",
+          "description": "Feature wall tiles with a 3D stone pattern. Left over from a 3BHK handover in Chandigarh. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "1.50",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Red brick cladding tiles 2.5x9 inch",
+          "category": "TILES",
+          "unitPrice": "14.00",
+          "availableQuantity": 600,
+          "unit": "PIECE",
+          "image": "1586417753090-9058c92b350d",
+          "description": "Thin brick tiles for an exposed-brick look. Left over from a housing society repair job in Chandigarh. Same batch, no damage.",
+          "tileLengthFeet": "0.75",
+          "tileWidthFeet": "0.21"
+        },
+        {
+          "title": "Quartz countertop offcuts (2x2 ft)",
+          "category": "TILES",
+          "unitPrice": "850.00",
+          "availableQuantity": 12,
+          "unit": "PIECE",
+          "image": "1742403412746-8e4cf1728117",
+          "description": "White quartz pieces for vanities. Left over from a housing society repair job in Chandigarh. Sealed packing, collect anytime this week.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        }
+      ]
+    },
+    {
+      "name": "Lakeview Homes Pvt Ltd",
+      "email": "lakeviewhomes@demo.buildback.test",
+      "city": "Kolkata",
+      "listings": [
+        {
+          "title": "White hexagon ceramic wall tiles",
+          "category": "TILES",
+          "unitPrice": "64.00",
+          "availableQuantity": 75,
+          "unit": "PIECE",
+          "tileLengthFeet": "0.75",
+          "tileWidthFeet": "0.75",
+          "image": "1580398562556-d33329a0f29b",
+          "description": "Glossy white hexagon wall tiles with bevelled edges. Leftover from show-flat bathrooms."
+        },
+        {
+          "title": "Mosaic fish-scale tiles, pastel mix",
+          "category": "TILES",
+          "unitPrice": "88.00",
+          "availableQuantity": 50,
+          "unit": "PIECE",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00",
+          "image": "1458682625221-3a45f8a844c7",
+          "description": "Fan-shaped mosaic tiles in a pastel colour mix, sold per 1x1 ft mesh sheet."
+        },
+        {
+          "title": "Interior emulsion, assorted shades 4 L",
+          "category": "PAINT",
+          "unitPrice": "990.00",
+          "availableQuantity": 14,
+          "unit": "CAN",
+          "image": "1535673774336-ef95d2851cf3",
+          "description": "Mixed lot of tinted interior emulsion left after sample-flat painting. Labels show the shade."
+        },
+        {
+          "title": "Vanity cabinet with ceramic basin",
+          "category": "FITTINGS",
+          "unitPrice": "6500.00",
+          "availableQuantity": 2,
+          "unit": "PIECE",
+          "image": "1650894622076-e09ab837c502",
+          "description": "Wall-hung vanity cabinet with ceramic basin and mirror. Removed from a show flat, excellent condition."
+        },
+        {
+          "title": "Hand shower set with slide bar",
+          "category": "FITTINGS",
+          "unitPrice": "1850.00",
+          "availableQuantity": 7,
+          "unit": "PIECE",
+          "image": "1613849925362-38fb4c16ff36",
+          "description": "Multi-flow hand shower with 1.5 m hose. Left over from a cafe interior in Kolkata. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Ceramic wash basin, table-top",
+          "category": "FITTINGS",
+          "unitPrice": "2600.00",
+          "availableQuantity": 5,
+          "unit": "PIECE",
+          "image": "1648631478953-1334ce24a24c",
+          "description": "Round vessel basin, glossy white. Left over from a cafe interior in Kolkata. Original packing; bill can be shown."
+        },
+        {
+          "title": "PVC elbows and tees assorted (box)",
+          "category": "FITTINGS",
+          "unitPrice": "850.00",
+          "availableQuantity": 12,
+          "unit": "PIECE",
+          "image": "1616661317985-aeb2a13016d6",
+          "description": "Mixed box of 1 inch fittings. Left over from a commercial complex in Kolkata. Clean stock, checked before listing."
+        },
+        {
+          "title": "Mortise door handle set, brass",
+          "category": "FITTINGS",
+          "unitPrice": "1450.00",
+          "availableQuantity": 9,
+          "unit": "PIECE",
+          "image": "1538766017398-415434a31a5b",
+          "description": "Lever handles with lock body and keys. Left over from a bungalow renovation in Kolkata. Same batch, no damage."
+        },
+        {
+          "title": "Industrial cage pendant lamp",
+          "category": "INTERIOR",
+          "unitPrice": "780.00",
+          "availableQuantity": 14,
+          "unit": "PIECE",
+          "image": "1604610728890-6f4b631ed081",
+          "description": "Black metal cage pendant for cafes. Left over from a cafe interior in Kolkata. Same batch, no damage."
+        },
+        {
+          "title": "Round LED bathroom mirror 24 inch",
+          "category": "INTERIOR",
+          "unitPrice": "4200.00",
+          "availableQuantity": 5,
+          "unit": "PIECE",
+          "image": "1631889993959-41b4e9c6e3c5",
+          "description": "Touch-sensor LED backlit mirror. Left over from a school building in Kolkata. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Floral wallpaper (57 sq ft roll)",
+          "category": "INTERIOR",
+          "unitPrice": "1250.00",
+          "availableQuantity": 20,
+          "unit": "ROLL",
+          "image": "1581345628928-f5f782d0470e",
+          "description": "Non-woven floral wallpaper, washable. Left over from a school building in Kolkata. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Artificial grass (2 m x 10 m roll)",
+          "category": "INTERIOR",
+          "unitPrice": "5600.00",
+          "availableQuantity": 5,
+          "unit": "ROLL",
+          "image": "1558944351-3f79926e74ef",
+          "description": "35 mm pile turf for balconies and terraces. Left over from an office fit-out in Kolkata. Unused and stored indoors."
+        },
+        {
+          "title": "Upholstered accent chair",
+          "category": "INTERIOR",
+          "unitPrice": "6500.00",
+          "availableQuantity": 2,
+          "unit": "PIECE",
+          "image": "1560448076-ee77deea722b",
+          "description": "Ex-display velvet accent chair. Left over from a bungalow renovation in Kolkata. Unused and stored indoors."
+        },
+        {
+          "title": "LED batten tube lights 20 W (box of 10)",
+          "category": "FITTINGS",
+          "unitPrice": "1650.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1556401615-c909c3d67480",
+          "description": "4 ft LED battens with fittings. Left over from a clinic renovation in Kolkata. Sealed packing, collect anytime this week."
+        }
+      ]
+    },
+    {
+      "name": "Kaveri Hardware Traders",
+      "email": "kaverihardware@demo.buildback.test",
+      "city": "Chennai",
+      "listings": [
+        {
+          "title": "Carrara-look marble slab tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "118.00",
+          "availableQuantity": 64,
+          "unit": "PIECE",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00",
+          "image": "1551554781-c46200ea959d",
+          "description": "Polished glazed vitrified tiles with grey veining. 16 boxes from a cancelled villa order."
+        },
+        {
+          "title": "Hand-painted decorative tiles 6x6 inch",
+          "category": "TILES",
+          "unitPrice": "55.00",
+          "availableQuantity": 110,
+          "unit": "PIECE",
+          "tileLengthFeet": "0.50",
+          "tileWidthFeet": "0.50",
+          "image": "1519122114654-d665e49b122e",
+          "description": "Colourful hand-painted ceramic tiles for pooja rooms, staircases and kitchen borders."
+        },
+        {
+          "title": "Industrial pipe valve assembly 2 inch",
+          "category": "FITTINGS",
+          "unitPrice": "3200.00",
+          "availableQuantity": 3,
+          "unit": "PIECE",
+          "image": "1586057285471-2f78bffaf074",
+          "description": "Cast-iron flanged valve with pipe section, removed unused from a pump room upgrade."
+        },
+        {
+          "title": "MS black pipe 1.5 inch (6 m)",
+          "category": "FITTINGS",
+          "unitPrice": "1350.00",
+          "availableQuantity": 20,
+          "unit": "PIECE",
+          "image": "1607472586893-edb57bdc0e39",
+          "description": "Mild steel pipes for railings, sheds and structural work. Light surface rust only."
+        },
+        {
+          "title": "Network and power cable bundle",
+          "category": "FITTINGS",
+          "unitPrice": "750.00",
+          "availableQuantity": 9,
+          "unit": "PIECE",
+          "image": "1517373116369-9bdb8cdc9f62",
+          "description": "Mixed bundle of Cat6 patch cables and power cords from an office fit-out. All tested."
+        },
+        {
+          "title": "Ivory double-charge vitrified tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "54.00",
+          "availableQuantity": 200,
+          "unit": "PIECE",
+          "image": "1642678751244-296d18c4cab3",
+          "description": "Hard-wearing double-charged tiles for heavy footfall areas. Left over from a showroom renovation in Chennai. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        },
+        {
+          "title": "Onyx-look polished tiles 2x4 ft",
+          "category": "TILES",
+          "unitPrice": "240.00",
+          "availableQuantity": 40,
+          "unit": "PIECE",
+          "image": "1790644569737-57d259ec2e17",
+          "description": "High-gloss onyx design for lobbies and feature floors. Left over from a villa project in Chennai. Unused and stored indoors.",
+          "tileLengthFeet": "4.00",
+          "tileWidthFeet": "2.00"
+        },
+        {
+          "title": "Sandstone wall cladding panels 1x2 ft",
+          "category": "TILES",
+          "unitPrice": "92.00",
+          "availableQuantity": 70,
+          "unit": "PIECE",
+          "image": "1546709843-e35cf3d3002d",
+          "description": "Rajasthan sandstone panels, split-face finish. Left over from a hotel refurbishment in Chennai. Original packing; bill can be shown.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "1.00"
+        }
+      ]
+    },
+    {
+      "name": "Ceilcraft Gypsum & POP Studio",
+      "email": "ceilcraft@demo.buildback.test",
+      "city": "Thane",
+      "listings": [
+        {
+          "title": "Gypsum false ceiling boards 12.5 mm (6x4 ft)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "380.00",
+          "availableQuantity": 60,
+          "unit": "SHEET",
+          "image": "1627383838166-6e697cd673c3",
+          "description": "Standard gypsum boards for false ceilings and partitions. Left over after finishing a showroom ceiling in Ghodbunder Road. Stored flat and dry."
+        },
+        {
+          "title": "POP powder, 25 kg bag",
+          "category": "FALSE_CEILING",
+          "unitPrice": "310.00",
+          "availableQuantity": 40,
+          "unit": "BAG",
+          "image": "1482731215275-a1f151646268",
+          "description": "Plaster of Paris for ceiling joints, cornices and wall punning. Sealed bags, manufactured this year."
+        },
+        {
+          "title": "GI ceiling channels and angles (bundle of 10)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "950.00",
+          "availableQuantity": 15,
+          "unit": "PIECE",
+          "image": "1628901551715-7234d14fb7a0",
+          "description": "Galvanised ceiling section, intermediate channel and perimeter angle. Sold per bundle of 10 lengths."
+        },
+        {
+          "title": "Grid ceiling tiles 2x2 ft (mineral fibre)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "120.00",
+          "availableQuantity": 150,
+          "unit": "PIECE",
+          "image": "1660492039236-4e660d5a1a14",
+          "description": "Acoustic grid ceiling tiles for offices and shops. Removed unused from an office fit-out."
+        },
+        {
+          "title": "Curved cove ceiling panels with LED groove",
+          "category": "FALSE_CEILING",
+          "unitPrice": "1450.00",
+          "availableQuantity": 10,
+          "unit": "SHEET",
+          "image": "1582203423341-64b918240e25",
+          "description": "Pre-shaped gypsum cove panels with a groove for LED strip lights. Extra stock from a villa project."
+        },
+        {
+          "title": "Fire-rated gypsum board 12.5 mm (6x4 ft)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "610.00",
+          "availableQuantity": 30,
+          "unit": "SHEET",
+          "image": "1739172205233-72f77f55b8df",
+          "description": "Pink FR boards for commercial ceilings. Left over from a 3BHK handover in Thane. Unused and stored indoors."
+        },
+        {
+          "title": "COB ceiling spotlights 7 W (box of 10)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "1900.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1759473718260-2f1e162e5939",
+          "description": "Recessed spotlights for false ceilings. Left over from a showroom renovation in Thane. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Gypsum plaster 25 kg",
+          "category": "FALSE_CEILING",
+          "unitPrice": "390.00",
+          "availableQuantity": 60,
+          "unit": "BAG",
+          "image": "1785940894556-24a1b8f42545",
+          "description": "Ready-mix gypsum plaster, no curing needed. Left over from a bungalow renovation in Thane. Same batch, no damage."
+        },
+        {
+          "title": "Acoustic ceiling panels 2x2 ft",
+          "category": "FALSE_CEILING",
+          "unitPrice": "340.00",
+          "availableQuantity": 60,
+          "unit": "PIECE",
+          "image": "1656733911001-16912b79d2bf",
+          "description": "Sound-absorbing panels for studios and offices. Left over from a cafe interior in Thane. Clean stock, checked before listing."
+        }
+      ]
+    },
+    {
+      "name": "DryShield Waterproofing Solutions",
+      "email": "dryshield@demo.buildback.test",
+      "city": "Surat",
+      "listings": [
+        {
+          "title": "Terrace waterproofing coating, white 20 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "5200.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1674485169641-bcb2bf6f1df9",
+          "description": "Elastomeric heat-reflective terrace coating. Sealed 20 litre cans, left after a society terrace job."
+        },
+        {
+          "title": "APP waterproofing membrane 3 mm (10 m roll)",
+          "category": "WATERPROOFING",
+          "unitPrice": "2900.00",
+          "availableQuantity": 12,
+          "unit": "ROLL",
+          "image": "1635424709845-3a85ad5e1f5e",
+          "description": "Torch-applied APP modified bitumen membrane for roofs and podiums. Full 1 m x 10 m rolls."
+        },
+        {
+          "title": "Cement-based waterproofing compound 20 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "1450.00",
+          "availableQuantity": 18,
+          "unit": "BAG",
+          "image": "1773394089934-3e29f2a3d6a9",
+          "description": "Two-part cementitious coating for bathrooms, sunken slabs and water tanks. Bags are sealed."
+        },
+        {
+          "title": "Liquid waterproofing membrane, grey 4 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "980.00",
+          "availableQuantity": 20,
+          "unit": "CAN",
+          "image": "1623835255306-868c63d9335e",
+          "description": "Brush-applied acrylic membrane for walls, parapets and cracks. Unopened 4 litre buckets."
+        },
+        {
+          "title": "Fibre-reinforced roof coating 20 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "4600.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1726542566012-6d1ca151efe5",
+          "description": "Elastomeric coating with fibres for crack bridging. Left over from a cafe interior in Surat. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Geotextile fabric (50 m roll)",
+          "category": "WATERPROOFING",
+          "unitPrice": "4200.00",
+          "availableQuantity": 6,
+          "unit": "ROLL",
+          "image": "1614127938540-a1139bee1841",
+          "description": "Non-woven geotextile for drainage layers. Left over from a row-house scheme in Surat. Clean stock, checked before listing."
+        },
+        {
+          "title": "Polymer-modified repair mortar 25 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "1250.00",
+          "availableQuantity": 15,
+          "unit": "BAG",
+          "image": "1786269691602-519fdaa112ea",
+          "description": "For patching and crack repair. Left over from a row-house scheme in Surat. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Acrylic crack filler 1 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "290.00",
+          "availableQuantity": 35,
+          "unit": "CAN",
+          "image": "1711606329941-63c1af645a53",
+          "description": "Flexible filler for hairline cracks. Left over from a villa project in Surat. Unused and stored indoors."
+        }
+      ]
+    },
+    {
+      "name": "Nest & Nook Interiors",
+      "email": "nestandnook@demo.buildback.test",
+      "city": "Gurugram",
+      "listings": [
+        {
+          "title": "Copper dome pendant lights (set of 2)",
+          "category": "INTERIOR",
+          "unitPrice": "1800.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1636368208791-17b81ed832d2",
+          "description": "Copper-finish dome pendant lights with 1.5 m cable. Extra pieces from a cafe interior project."
+        },
+        {
+          "title": "Matte black pendant lamp",
+          "category": "INTERIOR",
+          "unitPrice": "950.00",
+          "availableQuantity": 12,
+          "unit": "PIECE",
+          "image": "1565814329452-e1efa11c5b89",
+          "description": "Simple matte black metal pendant for kitchens and dining tables. E27 holder, new in box."
+        },
+        {
+          "title": "Fluted wooden wall panels (9x1 ft)",
+          "category": "INTERIOR",
+          "unitPrice": "1650.00",
+          "availableQuantity": 30,
+          "unit": "SHEET",
+          "image": "1543646269-fcc4ba67ac5f",
+          "description": "Fluted MDF wall panels with oak veneer finish, for TV walls and headboards."
+        },
+        {
+          "title": "Gold-finish ornate wall mirror",
+          "category": "INTERIOR",
+          "unitPrice": "4200.00",
+          "availableQuantity": 2,
+          "unit": "PIECE",
+          "image": "1688650963441-a4ce8fa08d50",
+          "description": "Large ornate mirror with antique gold frame. Display piece from our showroom, very good condition."
+        },
+        {
+          "title": "Textured white wallpaper (57 sq ft roll)",
+          "category": "INTERIOR",
+          "unitPrice": "1350.00",
+          "availableQuantity": 15,
+          "unit": "ROLL",
+          "image": "1616258417209-66c77488f9a1",
+          "description": "Washable textured vinyl wallpaper. Each roll covers about 57 sq ft. Same batch."
+        },
+        {
+          "title": "Velvet blackout curtains (pair, 7 ft)",
+          "category": "INTERIOR",
+          "unitPrice": "2200.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1577926606472-fc6d3a33f7e1",
+          "description": "Rust-orange velvet curtains with lining, 7 ft drop. Leftover from a hotel room makeover."
+        },
+        {
+          "title": "Glass globe pendant light",
+          "category": "INTERIOR",
+          "unitPrice": "1650.00",
+          "availableQuantity": 7,
+          "unit": "PIECE",
+          "image": "1559924508-1461423083c5",
+          "description": "Clear glass globe, brass fittings. Left over from a 3BHK handover in Gurugram. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Ceramic table lamp with linen shade",
+          "category": "INTERIOR",
+          "unitPrice": "1650.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1631510083755-11ecb5172d81",
+          "description": "Textured ceramic base, warm light. Left over from a cafe interior in Gurugram. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Wooden venetian blinds 3x5 ft",
+          "category": "INTERIOR",
+          "unitPrice": "2600.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1622605058034-5cbf25d135de",
+          "description": "Basswood slats, walnut finish. Left over from a hotel refurbishment in Gurugram. Original packing; bill can be shown."
+        },
+        {
+          "title": "Jute area rug 5x7 ft",
+          "category": "INTERIOR",
+          "unitPrice": "2200.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1594040226829-7f251ab46d80",
+          "description": "Handwoven natural jute rug. Left over from a showroom renovation in Gurugram. Clean stock, checked before listing."
+        },
+        {
+          "title": "Wooden bar stools (pair)",
+          "category": "INTERIOR",
+          "unitPrice": "3800.00",
+          "availableQuantity": 4,
+          "unit": "PIECE",
+          "image": "1616627547584-bf28cee262db",
+          "description": "Solid mango wood stools, 24 inch. Left over from a cafe interior in Gurugram. Clean stock, checked before listing."
+        }
+      ]
+    },
+    {
+      "name": "Vardhman Tiles & Stone",
+      "email": "vardhmantiles@demo.buildback.test",
+      "city": "Indore",
+      "listings": [
+        {
+          "title": "Matt beige vitrified floor tiles 2x2 ft",
+          "category": "TILES",
+          "unitPrice": "48.00",
+          "availableQuantity": 160,
+          "unit": "PIECE",
+          "image": "1706629503586-2731f65587ae",
+          "description": "Rectified matt finish, suits living rooms and offices. Left over from a villa project in Indore. Same batch, no damage.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        },
+        {
+          "title": "Light blue bathroom wall tiles 1x1.5 ft",
+          "category": "TILES",
+          "unitPrice": "36.00",
+          "availableQuantity": 150,
+          "unit": "PIECE",
+          "image": "1682888818696-906287d759f5",
+          "description": "Glazed ceramic wall tiles with matching shade lot. Left over from a cafe interior in Indore. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "1.50",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Moroccan pattern encaustic tiles 8x8 inch",
+          "category": "TILES",
+          "unitPrice": "74.00",
+          "availableQuantity": 120,
+          "unit": "PIECE",
+          "image": "1548700819-892a76eed325",
+          "description": "Patterned cement tiles for verandas and cafes. Left over from a bungalow renovation in Indore. Same batch, no damage.",
+          "tileLengthFeet": "0.67",
+          "tileWidthFeet": "0.67"
+        },
+        {
+          "title": "Black galaxy granite pieces (2x2 ft)",
+          "category": "TILES",
+          "unitPrice": "420.00",
+          "availableQuantity": 40,
+          "unit": "PIECE",
+          "image": "1699982756902-2252fd1070be",
+          "description": "Polished granite offcuts for counters and sills. Left over from a clinic renovation in Indore. Original packing; bill can be shown.",
+          "tileLengthFeet": "2.00",
+          "tileWidthFeet": "2.00"
+        }
+      ]
+    },
+    {
+      "name": "Rang Mahal Paints",
+      "email": "rangmahal@demo.buildback.test",
+      "city": "Lucknow",
+      "listings": [
+        {
+          "title": "Exterior emulsion, cream 20 L",
+          "category": "PAINT",
+          "unitPrice": "3900.00",
+          "availableQuantity": 5,
+          "unit": "CAN",
+          "image": "1456086272160-b28b0645b729",
+          "description": "Weather-resistant exterior emulsion, anti-algal. Left over from a villa project in Lucknow. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Distemper, pista green 10 L",
+          "category": "PAINT",
+          "unitPrice": "880.00",
+          "availableQuantity": 9,
+          "unit": "CAN",
+          "image": "1562886350-d59f89f568ac",
+          "description": "Economical acrylic distemper for interiors. Left over from a school building in Lucknow. Same batch, no damage."
+        },
+        {
+          "title": "Luxury matt emulsion, white 4 L",
+          "category": "PAINT",
+          "unitPrice": "1480.00",
+          "availableQuantity": 11,
+          "unit": "CAN",
+          "image": "1688372199140-cade7ae820fe",
+          "description": "Premium matt finish, high coverage. Left over from a school building in Lucknow. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Melamine sealer 4 L",
+          "category": "PAINT",
+          "unitPrice": "1180.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1621295693450-080546d2ec8e",
+          "description": "Sanding sealer for a smooth polished finish. Left over from a housing society repair job in Lucknow. Original packing; bill can be shown."
+        },
+        {
+          "title": "Cement paint, grey 25 kg",
+          "category": "PAINT",
+          "unitPrice": "1450.00",
+          "availableQuantity": 8,
+          "unit": "CAN",
+          "image": "1759406066673-f76869a4e6db",
+          "description": "For compound walls and sheds. Left over from a housing society repair job in Lucknow. Original packing; bill can be shown."
+        }
+      ]
+    },
+    {
+      "name": "Kovai Plywood House",
+      "email": "kovaiply@demo.buildback.test",
+      "city": "Coimbatore",
+      "listings": [
+        {
+          "title": "Commercial plywood 19 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1720.00",
+          "availableQuantity": 24,
+          "unit": "SHEET",
+          "image": "1626351339530-5056a140089b",
+          "description": "MR grade commercial ply, for furniture carcasses. Left over from a showroom renovation in Coimbatore. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Decorative laminate 1 mm, walnut 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1150.00",
+          "availableQuantity": 40,
+          "unit": "SHEET",
+          "image": "1525947088131-b701cd0f6dc3",
+          "description": "Suede finish walnut laminate. Left over from a cafe interior in Coimbatore. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Pre-laminated MDF 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2150.00",
+          "availableQuantity": 14,
+          "unit": "SHEET",
+          "image": "1597113366853-fea190b6cd82",
+          "description": "Both-side laminated MDF, frosty white. Left over from a commercial complex in Coimbatore. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Cement fibre board 8 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "980.00",
+          "availableQuantity": 30,
+          "unit": "SHEET",
+          "image": "1566744883356-fb704591844e",
+          "description": "For partitions, cladding and mezzanines. Left over from a commercial complex in Coimbatore. Original packing; bill can be shown."
+        }
+      ]
+    },
+    {
+      "name": "AquaFlow Sanitary & Electricals",
+      "email": "aquaflow@demo.buildback.test",
+      "city": "Nagpur",
+      "listings": [
+        {
+          "title": "Swan-neck sink tap, chrome",
+          "category": "FITTINGS",
+          "unitPrice": "1150.00",
+          "availableQuantity": 10,
+          "unit": "PIECE",
+          "image": "1521207418485-99c705420785",
+          "description": "Wall-mounted kitchen sink tap with aerator. Left over from a showroom renovation in Nagpur. Same batch, no damage."
+        },
+        {
+          "title": "Shower arm 15 inch, stainless steel",
+          "category": "FITTINGS",
+          "unitPrice": "780.00",
+          "availableQuantity": 12,
+          "unit": "PIECE",
+          "image": "1611066415956-91ab6f1f57cc",
+          "description": "Wall-mounted shower arm with flange. Left over from a cafe interior in Nagpur. Same batch, no damage."
+        },
+        {
+          "title": "Stainless steel kitchen sink 24x18 inch",
+          "category": "FITTINGS",
+          "unitPrice": "3100.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1771681278369-e2a5480b8c29",
+          "description": "Single-bowl SS 304 sink with waste coupling. Left over from a clinic renovation in Nagpur. Clean stock, checked before listing."
+        },
+        {
+          "title": "Modular switches, white (box of 20)",
+          "category": "FITTINGS",
+          "unitPrice": "1100.00",
+          "availableQuantity": 15,
+          "unit": "PIECE",
+          "image": "1635335874521-7987db781153",
+          "description": "6 A one-way modular switches. Left over from a clinic renovation in Nagpur. Same batch, no damage."
+        },
+        {
+          "title": "Stainless steel butt hinges 4 inch (pack of 12)",
+          "category": "FITTINGS",
+          "unitPrice": "560.00",
+          "availableQuantity": 20,
+          "unit": "PIECE",
+          "image": "1734094151911-803ee718a921",
+          "description": "Heavy-gauge SS hinges for doors. Left over from a cafe interior in Nagpur. Same batch, no damage."
+        },
+        {
+          "title": "Outdoor up-down wall lights (pair)",
+          "category": "FITTINGS",
+          "unitPrice": "1400.00",
+          "availableQuantity": 6,
+          "unit": "PIECE",
+          "image": "1674659719067-8735479ba10c",
+          "description": "IP65 lights for gates and facades. Left over from a clinic renovation in Nagpur. Sealed packing, collect anytime this week."
+        }
+      ]
+    },
+    {
+      "name": "SkyLine Ceilings",
+      "email": "skylineceilings@demo.buildback.test",
+      "city": "Navi Mumbai",
+      "listings": [
+        {
+          "title": "Moisture-resistant gypsum board 12.5 mm (6x4 ft)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "520.00",
+          "availableQuantity": 45,
+          "unit": "SHEET",
+          "image": "1739172205489-74790d2367ff",
+          "description": "Green MR boards for bathrooms and kitchens. Left over from an office fit-out in Navi Mumbai. Original packing; bill can be shown."
+        },
+        {
+          "title": "Cove LED strip light 5 m, warm white",
+          "category": "FALSE_CEILING",
+          "unitPrice": "650.00",
+          "availableQuantity": 25,
+          "unit": "PIECE",
+          "image": "1768195341542-318a0f03eb70",
+          "description": "IP20 strip with driver, for ceiling coves. Left over from a villa project in Navi Mumbai. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "POP punning powder 20 kg",
+          "category": "FALSE_CEILING",
+          "unitPrice": "260.00",
+          "availableQuantity": 70,
+          "unit": "BAG",
+          "image": "1768839725085-829e6ac7ac26",
+          "description": "Fine POP for smooth wall and ceiling finish. Left over from a housing society repair job in Navi Mumbai. Clean stock, checked before listing."
+        },
+        {
+          "title": "Ceiling T-grid main runners (bundle of 10)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "980.00",
+          "availableQuantity": 16,
+          "unit": "PIECE",
+          "image": "1610459716431-e07abcf74230",
+          "description": "Exposed grid sections for 2x2 ft ceilings. Left over from a school building in Navi Mumbai. Brand new, ordered extra by mistake."
+        }
+      ]
+    },
+    {
+      "name": "RoofGuard Waterproofing",
+      "email": "roofguard@demo.buildback.test",
+      "city": "Visakhapatnam",
+      "listings": [
+        {
+          "title": "Polyurethane roof coating 20 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "7400.00",
+          "availableQuantity": 4,
+          "unit": "CAN",
+          "image": "1549728177-4fb67cd39e4f",
+          "description": "UV-resistant PU coating for exposed terraces. Left over from a clinic renovation in Visakhapatnam. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Self-adhesive waterproofing tape (10 m roll)",
+          "category": "WATERPROOFING",
+          "unitPrice": "1150.00",
+          "availableQuantity": 25,
+          "unit": "ROLL",
+          "image": "1635424709961-f3a150459ad4",
+          "description": "Aluminium-faced butyl tape for joints. Left over from a housing society repair job in Visakhapatnam. Unused and stored indoors."
+        },
+        {
+          "title": "Waterproof tile adhesive 20 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "560.00",
+          "availableQuantity": 50,
+          "unit": "BAG",
+          "image": "1763839479257-b2ae0bc4c928",
+          "description": "Polymer tile adhesive for wet areas. Left over from a clinic renovation in Visakhapatnam. Original packing; bill can be shown."
+        },
+        {
+          "title": "Bathroom waterproof coating 4 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "1350.00",
+          "availableQuantity": 12,
+          "unit": "CAN",
+          "image": "1598171182339-b24dd64241a6",
+          "description": "Two-part coating before tiling. Left over from a villa project in Visakhapatnam. Original packing; bill can be shown."
+        },
+        {
+          "title": "Rubberised bitumen coating 20 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "3300.00",
+          "availableQuantity": 5,
+          "unit": "CAN",
+          "image": "1786361284333-1a4f09fc619b",
+          "description": "For foundations and retaining walls. Left over from an office fit-out in Visakhapatnam. Same batch, no damage."
+        }
+      ]
+    },
+    {
+      "name": "Casa Decor Studio",
+      "email": "casadecor@demo.buildback.test",
+      "city": "Panaji",
+      "listings": [
+        {
+          "title": "Rattan pendant light",
+          "category": "INTERIOR",
+          "unitPrice": "1450.00",
+          "availableQuantity": 9,
+          "unit": "PIECE",
+          "image": "1513506003901-1e6a229e2d15",
+          "description": "Handwoven rattan shade with E27 holder. Left over from a hotel refurbishment in Panaji. Unused and stored indoors."
+        },
+        {
+          "title": "Floating wall shelves (set of 3)",
+          "category": "INTERIOR",
+          "unitPrice": "1300.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1632119580908-ae947d4c7691",
+          "description": "Engineered wood shelves with hidden brackets. Left over from a villa project in Panaji. Original packing; bill can be shown."
+        },
+        {
+          "title": "Sheer curtains, white (pair, 7 ft)",
+          "category": "INTERIOR",
+          "unitPrice": "1100.00",
+          "availableQuantity": 15,
+          "unit": "PIECE",
+          "image": "1609423433459-a65b330ef5da",
+          "description": "Light-filtering voile curtains. Left over from a row-house scheme in Panaji. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Carpet tiles 2x2 ft (box of 10)",
+          "category": "INTERIOR",
+          "unitPrice": "2400.00",
+          "availableQuantity": 8,
+          "unit": "PIECE",
+          "image": "1652634213812-f0deeb1de78e",
+          "description": "Loop-pile office carpet tiles, grey. Left over from a row-house scheme in Panaji. Unused and stored indoors."
+        },
+        {
+          "title": "Laminate wooden flooring 8 mm (box)",
+          "category": "INTERIOR",
+          "unitPrice": "1850.00",
+          "availableQuantity": 20,
+          "unit": "PIECE",
+          "image": "1547044479-59ce6c0a784a",
+          "description": "AC4 laminate planks, 21 sq ft per box. Left over from a bungalow renovation in Panaji. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Hanging macrame planters (set of 4)",
+          "category": "INTERIOR",
+          "unitPrice": "780.00",
+          "availableQuantity": 12,
+          "unit": "PIECE",
+          "image": "1621274220348-41dc235ff439",
+          "description": "Cotton macrame hangers. Left over from a housing society repair job in Panaji. Original packing; bill can be shown."
+        }
+      ]
+    },
+    {
+      "name": "Prestige Site Surplus",
+      "email": "prestigesurplus@demo.buildback.test",
+      "city": "Noida",
+      "listings": [
+        {
+          "title": "Walnut wood-finish plank tiles 6x36 inch",
+          "category": "TILES",
+          "unitPrice": "96.00",
+          "availableQuantity": 110,
+          "unit": "PIECE",
+          "image": "1625496235025-d783abf061c8",
+          "description": "Warm walnut planks for bedrooms and balconies. Left over from a row-house scheme in Noida. Brand new, ordered extra by mistake.",
+          "tileLengthFeet": "3.00",
+          "tileWidthFeet": "0.50"
+        },
+        {
+          "title": "Hexagon marble mosaic sheet 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "210.00",
+          "availableQuantity": 45,
+          "unit": "PIECE",
+          "image": "1506463108611-88834e9f6169",
+          "description": "Natural marble hexagons on mesh, for bathroom floors. Left over from a cafe interior in Noida. Unused and stored indoors.",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Terracotta floor tiles 1x1 ft",
+          "category": "TILES",
+          "unitPrice": "38.00",
+          "availableQuantity": 180,
+          "unit": "PIECE",
+          "image": "1662557499709-a8d7ef6d7d5e",
+          "description": "Clay terracotta tiles for courtyards and balconies. Left over from a bungalow renovation in Noida. Unused and stored indoors.",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Calibrated plywood 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2350.00",
+          "availableQuantity": 20,
+          "unit": "SHEET",
+          "image": "1692313208941-4f1c9cdcc7c3",
+          "description": "Uniform thickness ply for modular furniture. Left over from a villa project in Noida. Clean stock, checked before listing."
+        },
+        {
+          "title": "Oak veneer sheet 0.5 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1720.00",
+          "availableQuantity": 12,
+          "unit": "SHEET",
+          "image": "1605367615038-4e3f139fa991",
+          "description": "Crown-cut oak veneer sheets. Left over from a commercial complex in Noida. Original packing; bill can be shown."
+        },
+        {
+          "title": "Block board 25 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "3050.00",
+          "availableQuantity": 10,
+          "unit": "SHEET",
+          "image": "1561435354-298941a0d4a2",
+          "description": "Thick block board for heavy shelving. Left over from a housing society repair job in Noida. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Gypsum ceiling tiles 2x2 ft, PVC laminated",
+          "category": "FALSE_CEILING",
+          "unitPrice": "95.00",
+          "availableQuantity": 180,
+          "unit": "PIECE",
+          "image": "1739172205149-d0cd128e4689",
+          "description": "Washable laminated tiles for grid ceilings. Left over from a 3BHK handover in Noida. Original packing; bill can be shown."
+        },
+        {
+          "title": "PVC ceiling panels 10 ft",
+          "category": "FALSE_CEILING",
+          "unitPrice": "210.00",
+          "availableQuantity": 120,
+          "unit": "PIECE",
+          "image": "1786062841848-18177898b3a7",
+          "description": "Interlocking PVC panels, wood finish. Left over from a villa project in Noida. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Jointing compound 20 kg",
+          "category": "FALSE_CEILING",
+          "unitPrice": "720.00",
+          "availableQuantity": 25,
+          "unit": "BAG",
+          "image": "1617720356637-6264c1c0b4bb",
+          "description": "For taping and finishing gypsum board joints. Left over from an office fit-out in Noida. Unused and stored indoors."
+        },
+        {
+          "title": "Gypsum cornice moulding 8 ft",
+          "category": "FALSE_CEILING",
+          "unitPrice": "180.00",
+          "availableQuantity": 90,
+          "unit": "PIECE",
+          "image": "1694521787149-ee0b6a3d9f78",
+          "description": "Ready-made cornice for ceiling edges. Left over from a commercial complex in Noida. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "Wooden wall clock 16 inch",
+          "category": "INTERIOR",
+          "unitPrice": "950.00",
+          "availableQuantity": 10,
+          "unit": "PIECE",
+          "image": "1615876234886-fd9a39fda97f",
+          "description": "Silent sweep movement, sheesham wood. Left over from a cafe interior in Noida. Same batch, no damage."
+        },
+        {
+          "title": "Roller blinds 4x6 ft, blackout",
+          "category": "INTERIOR",
+          "unitPrice": "1850.00",
+          "availableQuantity": 12,
+          "unit": "PIECE",
+          "image": "1573507811472-909cd17e834d",
+          "description": "Fabric roller blinds with chain control. Left over from a clinic renovation in Noida. Sealed packing, collect anytime this week."
+        },
+        {
+          "title": "3D PVC wall panels 2x2 ft",
+          "category": "INTERIOR",
+          "unitPrice": "220.00",
+          "availableQuantity": 120,
+          "unit": "SHEET",
+          "image": "1683125554888-33d34e38ddea",
+          "description": "Paintable embossed panels for feature walls. Left over from a villa project in Noida. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "SPC click flooring, oak (box)",
+          "category": "INTERIOR",
+          "unitPrice": "2950.00",
+          "availableQuantity": 15,
+          "unit": "PIECE",
+          "image": "1586374574216-20c5d3a466ee",
+          "description": "Waterproof SPC planks, 22 sq ft per box. Left over from a 3BHK handover in Noida. Original packing; bill can be shown."
+        },
+        {
+          "title": "Tall fibreglass floor planter",
+          "category": "INTERIOR",
+          "unitPrice": "2400.00",
+          "availableQuantity": 5,
+          "unit": "PIECE",
+          "image": "1463320898484-cdee8141c787",
+          "description": "3 ft planter for lobbies and balconies. Left over from an office fit-out in Noida. Original packing; bill can be shown."
+        }
+      ]
+    },
+    {
+      "name": "Kalinga Builders Surplus",
+      "email": "kalingabuilders@demo.buildback.test",
+      "city": "Bhubaneswar",
+      "listings": [
+        {
+          "title": "White subway wall tiles 4x12 inch",
+          "category": "TILES",
+          "unitPrice": "22.00",
+          "availableQuantity": 400,
+          "unit": "PIECE",
+          "image": "1620626011761-996317b8d101",
+          "description": "Glossy bevelled subway tiles for kitchens and bathrooms. Left over from a clinic renovation in Bhubaneswar. Clean stock, checked before listing.",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "0.33"
+        },
+        {
+          "title": "Penny round mosaic sheet, white",
+          "category": "TILES",
+          "unitPrice": "145.00",
+          "availableQuantity": 60,
+          "unit": "PIECE",
+          "image": "1622227920933-7fcd7377703f",
+          "description": "Classic penny round mosaic on 1x1 ft mesh sheets. Left over from a bungalow renovation in Bhubaneswar. Original packing; bill can be shown.",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Chequered parking tiles 1x1 ft, grey",
+          "category": "TILES",
+          "unitPrice": "29.00",
+          "availableQuantity": 320,
+          "unit": "PIECE",
+          "image": "1779695109374-6383d9716a8c",
+          "description": "Heavy-duty 20 mm parking tiles for driveways. Left over from a commercial complex in Bhubaneswar. Same batch, no damage.",
+          "tileLengthFeet": "1.00",
+          "tileWidthFeet": "1.00"
+        },
+        {
+          "title": "Fire-retardant plywood 18 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "3400.00",
+          "availableQuantity": 8,
+          "unit": "SHEET",
+          "image": "1615306110347-d06557efb54d",
+          "description": "FR grade ply for commercial interiors. Left over from a school building in Bhubaneswar. Original packing; bill can be shown."
+        },
+        {
+          "title": "MDF board 12 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "1250.00",
+          "availableQuantity": 26,
+          "unit": "SHEET",
+          "image": "1572852515703-596a50742d44",
+          "description": "Plain MDF for paint-finish furniture. Left over from a bungalow renovation in Bhubaneswar. Original packing; bill can be shown."
+        },
+        {
+          "title": "WPC board 12 mm 8x4 ft",
+          "category": "PLYWOOD",
+          "unitPrice": "2400.00",
+          "availableQuantity": 15,
+          "unit": "SHEET",
+          "image": "1583095117095-adaeabc401ab",
+          "description": "Waterproof wood-plastic composite board. Left over from a bungalow renovation in Bhubaneswar. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Metal clip-in ceiling tiles 2x2 ft",
+          "category": "FALSE_CEILING",
+          "unitPrice": "260.00",
+          "availableQuantity": 80,
+          "unit": "PIECE",
+          "image": "1739172205155-6717bbf338d9",
+          "description": "Perforated aluminium tiles for offices. Left over from a school building in Bhubaneswar. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Wooden veneer ceiling planks (8x4 ft)",
+          "category": "FALSE_CEILING",
+          "unitPrice": "1850.00",
+          "availableQuantity": 14,
+          "unit": "SHEET",
+          "image": "1776361984994-089a9df800f6",
+          "description": "Veneer-faced ceiling boards for feature ceilings. Left over from a 3BHK handover in Bhubaneswar. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Wall putty 40 kg, white",
+          "category": "FALSE_CEILING",
+          "unitPrice": "850.00",
+          "availableQuantity": 30,
+          "unit": "BAG",
+          "image": "1700502335822-d4856cca490a",
+          "description": "Cement-based putty for interior walls. Left over from a hotel refurbishment in Bhubaneswar. Clean stock, checked before listing."
+        }
+      ]
+    },
+    {
+      "name": "Sabarmati Infra Projects",
+      "email": "sabarmatiinfra@demo.buildback.test",
+      "city": "Vadodara",
+      "listings": [
+        {
+          "title": "Wall primer, white 20 L",
+          "category": "PAINT",
+          "unitPrice": "2100.00",
+          "availableQuantity": 7,
+          "unit": "CAN",
+          "image": "1581079949099-ea95c980d186",
+          "description": "Water-based primer for new plaster. Left over from an office fit-out in Vadodara. Clean stock, checked before listing."
+        },
+        {
+          "title": "Kids room emulsion, sky blue 4 L",
+          "category": "PAINT",
+          "unitPrice": "1050.00",
+          "availableQuantity": 6,
+          "unit": "CAN",
+          "image": "1512952398228-c6bda07ac7b8",
+          "description": "Low-VOC washable emulsion in a soft blue. Left over from a cafe interior in Vadodara. Original packing; bill can be shown."
+        },
+        {
+          "title": "PU wood polish, clear gloss 4 L",
+          "category": "PAINT",
+          "unitPrice": "2650.00",
+          "availableQuantity": 4,
+          "unit": "CAN",
+          "image": "1576092762791-dd9e2220abd1",
+          "description": "Two-pack polyurethane for furniture and doors. Left over from a school building in Vadodara. Original packing; bill can be shown."
+        },
+        {
+          "title": "Epoxy floor coat, grey 4 L",
+          "category": "PAINT",
+          "unitPrice": "2300.00",
+          "availableQuantity": 5,
+          "unit": "CAN",
+          "image": "1587193097518-7b4b7e639171",
+          "description": "Two-pack epoxy for garages and workshops. Left over from a 3BHK handover in Vadodara. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Health faucet set with hose",
+          "category": "FITTINGS",
+          "unitPrice": "690.00",
+          "availableQuantity": 18,
+          "unit": "PIECE",
+          "image": "1628116906597-5239a936a3d0",
+          "description": "ABS health faucet with 1 m steel hose and holder. Left over from a bungalow renovation in Vadodara. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Concealed cistern frame",
+          "category": "FITTINGS",
+          "unitPrice": "6200.00",
+          "availableQuantity": 3,
+          "unit": "PIECE",
+          "image": "1629079447777-1e605162dc8d",
+          "description": "In-wall cistern for wall-hung WCs. Left over from a cafe interior in Vadodara. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "PPR pipe 25 mm, 4 m",
+          "category": "FITTINGS",
+          "unitPrice": "340.00",
+          "availableQuantity": 50,
+          "unit": "PIECE",
+          "image": "1529269421632-e9253d14d3a9",
+          "description": "Heat-fused PPR for hot and cold water. Left over from a villa project in Vadodara. Original packing; bill can be shown."
+        },
+        {
+          "title": "Electrical wire 1.5 sq mm, 90 m coil",
+          "category": "FITTINGS",
+          "unitPrice": "1550.00",
+          "availableQuantity": 10,
+          "unit": "PIECE",
+          "image": "1581967947421-a9812e72754c",
+          "description": "FR copper house wire, red. Left over from a cafe interior in Vadodara. Unused and stored indoors."
+        },
+        {
+          "title": "SBS membrane 4 mm (10 m roll)",
+          "category": "WATERPROOFING",
+          "unitPrice": "3600.00",
+          "availableQuantity": 10,
+          "unit": "ROLL",
+          "image": "1541888946425-d81bb19240f5",
+          "description": "Torch-on SBS membrane, polyester reinforced. Left over from a commercial complex in Vadodara. Brand new, ordered extra by mistake."
+        },
+        {
+          "title": "Crystalline waterproofing powder 20 kg",
+          "category": "WATERPROOFING",
+          "unitPrice": "2600.00",
+          "availableQuantity": 10,
+          "unit": "BAG",
+          "image": "1730627283177-f43b83c3850c",
+          "description": "For water tanks and basements. Left over from a school building in Vadodara. Same batch, no damage."
+        },
+        {
+          "title": "Integral waterproofing liquid 5 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "650.00",
+          "availableQuantity": 20,
+          "unit": "CAN",
+          "image": "1573345173719-5fbd4783d3c8",
+          "description": "Add to concrete and plaster mixes. Left over from a row-house scheme in Vadodara. Unused and stored indoors."
+        },
+        {
+          "title": "LED bulbs 9 W (box of 20)",
+          "category": "FITTINGS",
+          "unitPrice": "1200.00",
+          "availableQuantity": 10,
+          "unit": "PIECE",
+          "image": "1532007271951-c487760934ae",
+          "description": "Cool daylight B22 bulbs. Left over from an office fit-out in Vadodara. Clean stock, checked before listing."
+        },
+        {
+          "title": "Water tank coating, food-grade 4 L",
+          "category": "WATERPROOFING",
+          "unitPrice": "1850.00",
+          "availableQuantity": 8,
+          "unit": "CAN",
+          "image": "1786361284359-e2ed1910d665",
+          "description": "Non-toxic coating for drinking water tanks. Left over from a housing society repair job in Vadodara. Original packing; bill can be shown."
+        }
+      ]
+    }
+  ]
+}

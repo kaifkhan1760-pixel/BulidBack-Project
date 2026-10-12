@@ -15,6 +15,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.buildback.dto.ApiError;
 import com.buildback.payment.PaymentGatewayException;
@@ -37,8 +39,8 @@ public class GlobalExceptionHandler {
     /** Friendly messages for enum fields that received an unknown value. */
     private static final Map<String, String> ENUM_FIELD_MESSAGES = Map.of(
             "role", "Choose Buyer or Seller",
-            "category", "Choose Tiles, Paint, Plywood or Fittings",
-            "unit", "Choose Piece, Can or Sheet");
+            "category", "Choose one of the categories",
+            "unit", "Choose Piece, Can, Sheet, Bag or Roll");
 
     /** @Valid failed: return one message per field. */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -93,6 +95,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleMissingParam(MissingServletRequestParameterException e) {
         return ResponseEntity.badRequest()
                 .body(new ApiError(FIX_FIELDS, Map.of(e.getParameterName(), e.getParameterName() + " is required")));
+    }
+
+    /** Photo upload without a "file" part. */
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ApiError> handleMissingPart(MissingServletRequestPartException e) {
+        return ResponseEntity.badRequest().body(new ApiError(FIX_FIELDS, Map.of("file", "Choose a photo to upload")));
+    }
+
+    /** Photo bigger than spring.servlet.multipart.max-file-size (5 MB). */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiError> handleTooLarge(MaxUploadSizeExceededException e) {
+        return ResponseEntity.status(HttpStatus.CONTENT_TOO_LARGE)
+                .body(new ApiError(FIX_FIELDS, Map.of("file", "Each photo must be 5 MB or smaller")));
     }
 
     /** e.g. /api/materials/abc or ?version=xyz */

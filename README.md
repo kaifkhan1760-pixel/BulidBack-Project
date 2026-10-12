@@ -1,6 +1,6 @@
 # BuildBack — Construction Surplus Marketplace
 
-Sellers list leftover construction materials (tiles, paint, plywood, fittings).
+Sellers list leftover construction materials (tiles, paint, plywood, fittings, POP & false ceiling, waterproofing, interior & decor).
 Buyers search them, **calculate how many tiles their floor needs**, reserve the stock
 and pay through a payment gateway in **test mode**. Admins moderate listings and review totals.
 
@@ -136,6 +136,26 @@ powershell -ExecutionPolicy Bypass -File scripts\add-demo-listings.ps1 -Email yo
 ```
 It asks for that seller's password and adds five `[Demo]` listings (one per category, including the 35 tiles)
 through the normal API. No accounts or passwords are hard-coded anywhere.
+
+### Listing photos
+Sellers must add 1 to 5 photos to every listing (the **+** tile on the listing form).
+- `POST /api/seller/images` (sellers only) stores one photo and returns its URL; `GET /api/images/{name}` serves it.
+- The server checks the file's first bytes, so only real JPG, PNG or WebP files are accepted (no SVG), up to 5 MB.
+- File names are random (the user never chooses a path). Files are saved in `buildback-backend/uploads/`
+  (git-ignored; change with the `UPLOADS_DIR` environment variable).
+- The first photo is the cover (`materials.image_url`); all photos are in the `material_images` table.
+
+### Demo marketplace (optional, for presentations)
+To fill the site with realistic data (25 seller businesses across India, 213 listings with photos in all 7 categories):
+```
+powershell -ExecutionPolicy Bypass -File scripts\seed-demo-marketplace.ps1
+```
+- Data lives in `scripts/demo-data/marketplace.json`; it goes through the real API, so every validation rule applies.
+- Demo sellers use the reserved `@demo.buildback.test` email domain, so they are easy to spot and archive.
+- One random password is generated on the first run and saved to `scripts/demo-sellers.local`
+  (git-ignored, never printed). Use it to log in as any demo seller.
+- Running it again skips sellers and listings that already exist. It never deletes anything.
+- Product and site photos are free-licence images from [Unsplash](https://unsplash.com/license), linked by URL.
 
 ---
 
