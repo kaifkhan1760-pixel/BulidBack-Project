@@ -7,7 +7,7 @@ import { OrderStatusBadge } from './StatusBadge'
  * Orders as cards. view = 'buyer' | 'seller' | 'admin' decides which
  * person is shown and which action buttons appear.
  */
-export function OrderList({ orders, view, onCollect, busyId }) {
+export function OrderList({ orders, view, onCollect, onCancel, busyId }) {
   return (
     <ul className="bb-order-list">
       {orders.map((o) => (
@@ -33,12 +33,24 @@ export function OrderList({ orders, view, onCollect, busyId }) {
                     · <a href={`mailto:${o.buyerEmail}`}>{o.buyerEmail}</a>
                   </>
                 )}
+                {o.buyerPhone && (
+                  <>
+                    {' '}
+                    · <a href={`tel:${o.buyerPhone}`}>{o.buyerPhone}</a>
+                  </>
+                )}
               </p>
             )}
             {view !== 'seller' && (
               <p className="bb-small">
                 Seller: {o.sellerName}
                 {o.sellerEmail && <> · {o.sellerEmail}</>}
+                {o.sellerPhone && (
+                  <>
+                    {' '}
+                    · <a href={`tel:${o.sellerPhone}`}>{o.sellerPhone}</a>
+                  </>
+                )}
               </p>
             )}
           </div>
@@ -48,6 +60,17 @@ export function OrderList({ orders, view, onCollect, busyId }) {
               <Link to={`/buyer/orders/${o.id}`} className="bb-button bb-button-small">
                 Pay now
               </Link>
+            )}
+            {/* Unpaid: releases the stock. Paid but not collected: cancels and refunds. */}
+            {view === 'buyer' && onCancel && (o.status === 'PENDING_PAYMENT' || o.status === 'PAID') && (
+              <button
+                type="button"
+                className="bb-button bb-button-danger-outline bb-button-small"
+                onClick={() => onCancel(o)}
+                disabled={busyId === o.id}
+              >
+                Cancel order<span className="bb-visually-hidden"> #{o.id}</span>
+              </button>
             )}
             {view === 'seller' && o.status === 'PAID' && (
               <button

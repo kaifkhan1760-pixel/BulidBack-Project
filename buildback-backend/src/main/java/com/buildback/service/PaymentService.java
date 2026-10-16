@@ -3,12 +3,14 @@ package com.buildback.service;
 import java.time.Instant;
 import java.util.Map;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.buildback.dto.CheckoutResponse;
 import com.buildback.dto.OrderResponse;
 import com.buildback.dto.PaymentRequests;
+import com.buildback.entity.OrderStatus;
 import com.buildback.entity.Payment;
 import com.buildback.entity.PaymentStatus;
 import com.buildback.entity.PurchaseOrder;
@@ -36,11 +38,14 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final OrderService orderService;
     private final PaymentGateway gateway;
+    private final ApplicationEventPublisher events;
 
-    public PaymentService(PaymentRepository paymentRepository, OrderService orderService, PaymentGateway gateway) {
+    public PaymentService(PaymentRepository paymentRepository, OrderService orderService, PaymentGateway gateway,
+            ApplicationEventPublisher events) {
         this.paymentRepository = paymentRepository;
         this.orderService = orderService;
         this.gateway = gateway;
+        this.events = events;
     }
 
     /**
@@ -64,7 +69,7 @@ public class PaymentService {
         User buyer = order.getBuyer();
         return new CheckoutResponse(payment.getId(), order.getId(), gateway.provider(), providerOrderId,
                 order.totalInPaise(), "INR", gateway.publicKey(), "BuildBack order #" + order.getId(),
-                buyer.getName(), buyer.getEmail(), order.getExpiresAt());
+                buyer.getName(), buyer.getEmail(), buyer.getPhone(), order.getExpiresAt());
     }
 
     /** The browser reports success; the server decides whether it is real. */
@@ -100,12 +105,50 @@ public class PaymentService {
         if (order.isPending()) {
             orderService.completeSale(order, now); // reserved stock is now sold
             payment.markSucceeded(request.providerPaymentId(), now, false);
+            // Confirmation + invoice emails, sent only after this transaction commits
+            events.publishEvent(new OrderPaidEvent(orderId, payment.getId()));
         } else {
             // Money arrived but the order had already expired or been cancelled:
             // record it and flag it for a manual refund instead of losing track of it.
             payment.markSucceeded(request.providerPaymentId(), now, true);
         }
         paymentRepository.flush();
+        return orderService.buyerView(orderId);
+    }
+
+    /**
+     * The buyer cancels an order.
+     *  - Unpaid: the reserved stock is released (OrderService.cancel).
+     *  - Paid but not collected yet: the payment is refunded through the gateway and the
+     *    quantity goes back on sale. The refund happens inside this transaction: if the
+     *    gateway refuses it, an exception rolls everything back and the order stays PAID,
+     *    so an order is never cancelled without its money going back.
+     *  - Collected, cancelled or expired: nothing to cancel (409).
+     */
+    @Transactional
+    public OrderResponse cancelOrder(Long buyerId, Long orderId) {
+        PurchaseOrder order = orderService.lockOwnedByBuyer(buyerId, orderId);
+        if (order.getStatus() != OrderStatus.PAID) {
+            if (order.getStatus() == OrderStatus.COLLECTED) {
+                throw new ConflictException("This order was already collected, so it cannot be cancelled.");
+            }
+            return orderService.cancel(buyerId, orderId);
+        }
+
+        Payment payment = paymentRepository.findByOrderIdOrderByCreatedAtDesc(orderId).stream()
+                .filter(p -> p.getStatus() == PaymentStatus.SUCCESS && !p.isRefunded())
+                .findFirst()
+                .orElseThrow(() -> new ConflictException("No completed payment was found for this order."));
+        if (payment.getProvider() != gateway.provider()) {
+            throw new ConflictException("This order was paid with " + payment.getProvider()
+                    + ", but the server is now using " + gateway.provider() + ". It cannot be refunded right now.");
+        }
+
+        orderService.cancelPaid(order);
+        String refundId = gateway.refund(payment.getProviderPaymentId(), order.totalInPaise());
+        payment.markRefunded(refundId, Instant.now());
+        paymentRepository.flush();
+        events.publishEvent(new OrderCancelledEvent(orderId, payment.getId()));
         return orderService.buyerView(orderId);
     }
 

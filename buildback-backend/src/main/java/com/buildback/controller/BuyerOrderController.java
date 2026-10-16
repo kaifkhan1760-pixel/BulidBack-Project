@@ -2,6 +2,10 @@ package com.buildback.controller;
 
 import java.net.URI;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +23,7 @@ import com.buildback.dto.OrderResponse;
 import com.buildback.dto.PageResponse;
 import com.buildback.security.AppUserDetails;
 import com.buildback.service.OrderService;
+import com.buildback.service.InvoicePdfService;
 import com.buildback.service.PaymentService;
 
 import jakarta.validation.Valid;
@@ -30,8 +35,11 @@ public class BuyerOrderController {
 
     private final OrderService orderService;
     private final PaymentService paymentService;
+    private final InvoicePdfService invoicePdf;
 
-    public BuyerOrderController(OrderService orderService, PaymentService paymentService) {
+    public BuyerOrderController(OrderService orderService, PaymentService paymentService,
+            InvoicePdfService invoicePdf) {
+        this.invoicePdf = invoicePdf;
         this.orderService = orderService;
         this.paymentService = paymentService;
     }
@@ -57,9 +65,21 @@ public class BuyerOrderController {
         return orderService.getForBuyer(buyer.getId(), id);
     }
 
+    /** GET /api/buyer/orders/{id}/invoice.pdf: the invoice of the buyer's own paid order. */
+    @GetMapping("/{id}/invoice.pdf")
+    public ResponseEntity<byte[]> invoicePdf(@AuthenticationPrincipal AppUserDetails buyer, @PathVariable Long id) {
+        byte[] pdf = invoicePdf.forBuyer(buyer.getId(), id);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment().filename("Invoice-order-" + id + ".pdf").build().toString())
+                .cacheControl(CacheControl.noStore())
+                .body(pdf);
+    }
+
     @PostMapping("/{id}/cancel")
     public OrderResponse cancel(@AuthenticationPrincipal AppUserDetails buyer, @PathVariable Long id) {
-        return orderService.cancel(buyer.getId(), id);
+        return paymentService.cancelOrder(buyer.getId(), id);
     }
 
     /** Starts a payment attempt and returns what the checkout popup needs. */

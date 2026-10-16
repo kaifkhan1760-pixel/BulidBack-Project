@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +21,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.savedrequest.NullRequestCache;
 
+import com.buildback.security.AppUserDetailsService;
 import com.buildback.dto.ApiError;
 import com.buildback.security.AppUserDetails;
 import com.buildback.security.JsonResponseWriter;
@@ -39,6 +42,24 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Login check: email + BCrypt password (Spring's standard provider), plus one
+     * extra rule that runs only AFTER the password matched: the email must be confirmed.
+     * Checking it after the password means a stranger cannot use the login form to
+     * find out which emails have unconfirmed accounts.
+     */
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(AppUserDetailsService users, PasswordEncoder encoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(users);
+        provider.setPasswordEncoder(encoder);
+        provider.setPostAuthenticationChecks(user -> {
+            if (user instanceof AppUserDetails details && !details.isEmailVerified()) {
+                throw new DisabledException("Email not confirmed");
+            }
+        });
+        return provider;
     }
 
     /** Where the logged-in user is remembered between requests: the HTTP session. */
@@ -78,7 +99,8 @@ public class SecurityConfig {
                         "/api/materials/*/tile-estimate").permitAll()
                 // Listing photos are public, like the listings themselves (uploading needs SELLER, below)
                 .requestMatchers(HttpMethod.GET, "/api/images/*").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/verify-email",
+                        "/api/auth/resend-verification").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
                 .requestMatchers("/api/buyer/**").hasRole("BUYER") // orders and payments
                 // /api/seller/** also covers /api/seller/orders; /api/admin/** covers moderation
@@ -98,10 +120,17 @@ public class SecurityConfig {
                     AppUserDetails user = (AppUserDetails) authentication.getPrincipal();
                     json.write(response, HttpStatus.OK.value(), user.toResponse());
                 })
-                .failureHandler((request, response, exception) ->
+                .failureHandler((request, response, exception) -> {
+                    if (exception instanceof DisabledException) {
+                        // Only reached AFTER the password was correct (see authenticationProvider)
+                        json.write(response, HttpStatus.FORBIDDEN.value(), ApiError.withCode(
+                                "Please confirm your email first. We sent you a link when you signed up.",
+                                "EMAIL_NOT_VERIFIED"));
+                        return;
+                    }
                     // Same message for unknown email and wrong password
-                    json.write(response, HttpStatus.UNAUTHORIZED.value(),
-                            ApiError.of("Invalid email or password")))
+                    json.write(response, HttpStatus.UNAUTHORIZED.value(), ApiError.of("Invalid email or password"));
+                })
                 .permitAll())
 
             // POST /api/auth/logout: invalidate session, clear user and CSRF token, delete cookie

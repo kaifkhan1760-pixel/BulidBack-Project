@@ -1,29 +1,19 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../auth/authContext'
+import {
+  cleanName,
+  cleanPhone,
+  passwordChecks,
+  passwordStrength,
+  validateRegistration,
+} from '../auth/registerRules'
 import { AuthLayout } from '../components/AuthLayout'
 import { FormField, PasswordInput } from '../components/FormField'
+import { Icon } from '../components/Icon'
 
-const EMPTY_FORM = { name: '', email: '', password: '', confirmPassword: '', role: '' }
-
-// Same rules as the backend (RegisterRequest.java). The server checks again anyway.
-function validate(form) {
-  const errors = {}
-  const name = form.name.trim()
-  const email = form.email.trim()
-
-  if (name.length < 2 || name.length > 100) errors.name = 'Name must be 2 to 100 characters'
-  if (!email) errors.email = 'Email is required'
-  else if (!/^[^\s@]+@[^\s@]+$/.test(email) || email.length > 254) errors.email = 'Enter a valid email address'
-
-  if (form.password.length < 8) errors.password = 'Password must be at least 8 characters'
-  else if (new TextEncoder().encode(form.password).length > 72)
-    errors.password = 'Password is too long (maximum 72 bytes)'
-
-  if (form.confirmPassword !== form.password) errors.confirmPassword = 'Passwords do not match'
-  if (form.role !== 'BUYER' && form.role !== 'SELLER') errors.role = 'Choose Buyer or Seller'
-  return errors
-}
+const EMPTY_FORM = { name: '', email: '', phone: '', password: '', confirmPassword: '', role: '' }
+const STRENGTH_LABELS = ['', 'Weak', 'Good', 'Strong']
 
 export default function RegisterPage() {
   const { register } = useAuth()
@@ -33,13 +23,36 @@ export default function RegisterPage() {
   const [formError, setFormError] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
-  const update = (field) => (event) => setForm({ ...form, [field]: event.target.value })
+  const update = (field) => (event) => {
+    const value = event.target.value
+    setForm((current) => ({ ...current, [field]: value }))
+    // Once a field shows an error, re-check it while the user fixes it
+    if (errors[field]) {
+      const next = validateRegistration({ ...form, [field]: value })
+      const remaining = { ...errors, [field]: next[field] }
+      setErrors(remaining)
+      // Everything fixed: the "please correct" banner is no longer true
+      if (Object.values(remaining).every((message) => !message)) setFormError(null)
+    }
+  }
+
+  // Check a field when the user leaves it (not on every key press, which feels pushy)
+  const checkOnBlur = (field) => () => {
+    if (!form[field]) return
+    const next = validateRegistration(form)
+    setErrors((current) => ({ ...current, [field]: next[field] }))
+    // Show a valid mobile number neatly: "+91 98765-43210" -> "98765 43210" (+91 is shown beside the box)
+    if (field === 'phone' && !next.phone) {
+      const digits = cleanPhone(form.phone).slice(3)
+      setForm((current) => ({ ...current, phone: `${digits.slice(0, 5)} ${digits.slice(5)}` }))
+    }
+  }
 
   async function handleSubmit(event) {
     event.preventDefault()
     setFormError(null)
 
-    const clientErrors = validate(form)
+    const clientErrors = validateRegistration(form)
     setErrors(clientErrors)
     if (Object.keys(clientErrors).length > 0) {
       setFormError('Please correct the highlighted fields.')
@@ -50,12 +63,14 @@ export default function RegisterPage() {
     try {
       // confirmPassword stays in the browser; it is not sent
       const created = await register({
-        name: form.name.trim(),
+        name: cleanName(form.name),
         email: form.email.trim(),
+        phone: cleanPhone(form.phone),
         password: form.password,
         role: form.role,
       })
-      navigate('/login', { state: { registered: true, email: created.email } })
+      // The account is locked until the link in the confirmation email is clicked
+      navigate('/check-email', { state: { email: created.email } })
     } catch (err) {
       setErrors(err.fieldErrors ?? {}) // 400 field errors, or 409 duplicate email
       setFormError(err.message)
@@ -63,8 +78,11 @@ export default function RegisterPage() {
     }
   }
 
+  const checks = passwordChecks(form.password)
+  const strength = passwordStrength(form.password)
+
   return (
-    <AuthLayout title="Create your account" subtitle="Give leftover materials a new purpose.">
+    <AuthLayout title="Create your account" subtitle="Buy and sell surplus building material near you.">
       {formError && (
         <p className="bb-alert bb-alert-error" role="alert">
           {formError}
@@ -72,36 +90,110 @@ export default function RegisterPage() {
       )}
 
       <form className="bb-form" onSubmit={handleSubmit} noValidate>
-        <FormField id="reg-name" label="Full name" error={errors.name}>
+        <FormField
+          id="reg-name"
+          label="Full name or business name"
+          required
+          error={errors.name}
+          hint="Letters only, e.g. Kaif Khan or Patel Tiles & Sanitary."
+        >
           {(field) => (
-            <input {...field} type="text" autoComplete="name" value={form.name} onChange={update('name')} />
-          )}
-        </FormField>
-
-        <FormField id="reg-email" label="Email" error={errors.email}>
-          {(field) => (
-            <input {...field} type="email" autoComplete="email" value={form.email} onChange={update('email')} />
-          )}
-        </FormField>
-
-        <FormField id="reg-password" label="Password" error={errors.password} hint="At least 8 characters.">
-          {(field) => (
-            <PasswordInput
+            <input
               {...field}
-              autoComplete="new-password"
-              value={form.password}
-              onChange={update('password')}
+              type="text"
+              autoComplete="name"
+              autoCapitalize="words"
+              maxLength={100}
+              value={form.name}
+              onChange={update('name')}
+              onBlur={checkOnBlur('name')}
             />
           )}
         </FormField>
 
-        <FormField id="reg-confirm" label="Confirm password" error={errors.confirmPassword}>
+        <FormField id="reg-email" label="Email" required error={errors.email}>
+          {(field) => (
+            <input
+              {...field}
+              type="email"
+              autoComplete="email"
+              placeholder="name@example.com"
+              maxLength={254}
+              value={form.email}
+              onChange={update('email')}
+              onBlur={checkOnBlur('email')}
+            />
+          )}
+        </FormField>
+
+        <FormField
+          id="reg-phone"
+          label="Mobile number"
+          required
+          error={errors.phone}
+          hint="Shared with the other person only after an order is paid, to arrange pickup."
+        >
+          {(field) => (
+            <div className="bb-input-affix">
+              <span aria-hidden="true">+91</span>
+              <input
+                {...field}
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel-national"
+                placeholder="98765 43210"
+                maxLength={16}
+                value={form.phone}
+                onChange={update('phone')}
+                onBlur={checkOnBlur('phone')}
+              />
+            </div>
+          )}
+        </FormField>
+
+        <FormField id="reg-password" label="Password" required error={errors.password}>
+          {(field) => (
+            <PasswordInput
+              {...field}
+              aria-describedby={[field['aria-describedby'], 'reg-password-rules'].filter(Boolean).join(' ')}
+              autoComplete="new-password"
+              value={form.password}
+              onChange={update('password')}
+              onBlur={checkOnBlur('password')}
+            />
+          )}
+        </FormField>
+
+        <div className="bb-password-help" id="reg-password-rules">
+          <div className="bb-strength" data-level={strength}>
+            <span className="bb-strength-bar" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            <span className="bb-strength-label">
+              {strength > 0 ? `Strength: ${STRENGTH_LABELS[strength]}` : 'Password strength'}
+            </span>
+          </div>
+          <ul className="bb-password-rules">
+            {checks.map((check) => (
+              <li key={check.id} className={check.ok ? 'is-met' : undefined}>
+                <Icon name={check.ok ? 'checkCircle' : 'close'} size={16} />
+                {check.label}
+                <span className="bb-visually-hidden">{check.ok ? ' (done)' : ' (not yet)'}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <FormField id="reg-confirm" label="Confirm password" required error={errors.confirmPassword}>
           {(field) => (
             <PasswordInput
               {...field}
               autoComplete="new-password"
               value={form.confirmPassword}
               onChange={update('confirmPassword')}
+              onBlur={checkOnBlur('confirmPassword')}
             />
           )}
         </FormField>
@@ -134,7 +226,7 @@ export default function RegisterPage() {
         </fieldset>
 
         <button type="submit" className="bb-btn bb-btn-primary bb-btn-lg bb-btn-block" disabled={submitting}>
-          {submitting ? 'Creating account...' : 'Create account'}
+          {submitting ? 'Creating account…' : 'Create account'}
         </button>
       </form>
 

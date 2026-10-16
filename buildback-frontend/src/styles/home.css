@@ -18,17 +18,87 @@
 
 .bb-hero {
   position: relative;
-  min-height: 400px;
-  display: flex;
-  align-items: center;
+  display: grid; /* every slide sits in the same cell; the tallest sets the height */
   border-radius: var(--radius-lg);
   overflow: hidden;
   color: #fff;
   background-color: #23313a;
+}
+
+.bb-slide {
+  grid-area: 1 / 1;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 36px; /* room for the slide controls */
   background-image: linear-gradient(90deg, rgba(14, 22, 28, 0.88) 0%, rgba(14, 22, 28, 0.7) 45%, rgba(14, 22, 28, 0.1) 100%),
     var(--hero-image);
   background-size: cover;
   background-position: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease), visibility 0s linear 0.6s;
+}
+
+.bb-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s var(--ease);
+}
+
+.bb-carousel-controls {
+  position: absolute;
+  left: 44px;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bb-carousel-arrow {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(14, 22, 28, 0.35);
+  color: #fff;
+  cursor: pointer;
+}
+
+.bb-carousel-arrow:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.bb-carousel-dots {
+  display: flex;
+  gap: 2px;
+}
+
+/* 24px tap target around a small dot */
+.bb-carousel-dot {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.bb-carousel-dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: width 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.bb-carousel-dot[aria-current='true']::before {
+  width: 22px;
+  background: var(--accent-500);
 }
 
 .bb-hero-copy {
@@ -46,7 +116,8 @@
   color: var(--accent-500);
 }
 
-.bb-hero h1 {
+.bb-hero h1,
+.bb-hero-title {
   color: #fff;
   font-size: clamp(1.9rem, 3.6vw, 2.75rem);
   font-weight: 700;
@@ -162,19 +233,6 @@
   font-size: 0.86rem;
 }
 
-/* ---------- Shared block heading ---------- */
-.bb-block-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 14px;
-}
-
-.bb-block-head h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-}
 
 /* ---------- Categories ---------- */
 .bb-cat-grid {
@@ -241,26 +299,6 @@
   color: var(--brand-700);
 }
 
-/* ---------- Product rows ---------- */
-.bb-rail {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  padding: 18px 20px 20px;
-}
-
-.bb-rail-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.bb-rail-list > li {
-  display: flex;
-}
 
 /* ---------- Seller banner ---------- */
 .bb-sell {
@@ -431,19 +469,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  /* Rows scroll sideways on tablets and phones */
-  .bb-rail-list {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 6px;
-  }
-
-  .bb-rail-list > li {
-    display: flex;
-    flex: 0 0 200px;
-    scroll-snap-align: start;
-  }
 
   .bb-how ol {
     grid-template-columns: 1fr;
@@ -457,9 +482,15 @@
     gap: 16px;
   }
 
-  .bb-hero {
+  .bb-slide {
     min-height: 0;
+    padding-bottom: 52px;
     background-image: linear-gradient(180deg, rgba(14, 22, 28, 0.78) 0%, rgba(14, 22, 28, 0.9) 100%), var(--hero-image);
+  }
+
+  .bb-carousel-controls {
+    left: 20px;
+    bottom: 14px;
   }
 
   .bb-hero-copy {
@@ -499,13 +530,6 @@
     display: none;
   }
 
-  .bb-rail {
-    padding: 14px 12px 14px;
-  }
-
-  .bb-rail-list > li {
-    flex-basis: 165px;
-  }
 
   .bb-sell {
     background-image: linear-gradient(180deg, rgba(8, 45, 33, 0.9), rgba(8, 45, 33, 0.95)), var(--sell-image);

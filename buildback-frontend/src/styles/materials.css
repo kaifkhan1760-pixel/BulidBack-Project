@@ -757,3 +757,101 @@
     font-size: 0.78rem;
   }
 }
+
+/* ---------- Product rows (home page, similar products, recently viewed) ---------- */
+.bb-block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.bb-block-head h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.bb-rail {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px 20px;
+}
+
+.bb-rail-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.bb-rail-list > li {
+  display: flex;
+}
+
+.bb-link-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+@media (max-width: 900px) {
+  /* Rows scroll sideways on tablets and phones */
+  .bb-rail-list {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 6px;
+  }
+
+  .bb-rail-list > li {
+    display: flex;
+    flex: 0 0 200px;
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 560px) {
+  .bb-rail {
+    padding: 14px 12px 14px;
+  }
+
+  .bb-rail-list > li {
+    flex-basis: 165px;
+  }
+}
+
+/* ---------- Active filter chips ---------- */
+.bb-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px 0 12px;
+  border: 1px solid var(--brand-200);
+  border-radius: 999px;
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bb-filter-chip:hover {
+  border-color: var(--brand-600);
+  background: var(--brand-100);
+}
+
+.bb-active-filters {
+  align-items: center;
+}
+
+.bb-active-filters .bb-link-button {
+  font-size: 0.88rem;
+  margin-left: 4px;
+}

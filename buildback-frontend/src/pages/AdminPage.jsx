@@ -196,22 +196,22 @@ function Listings({ searchParams, setSearchParams }) {
               <tbody>
                 {data.content.map((m) => (
                   <tr key={m.id}>
-                    <td>
+                    <td data-label="Listing">
                       {m.status === 'ACTIVE' ? <Link to={`/materials/${m.id}`}>{m.title}</Link> : m.title}
                       <div className="bb-muted bb-small">
                         {CATEGORY_LABELS[m.category]} · {m.city}
                       </div>
                     </td>
-                    <td>
+                    <td data-label="Seller">
                       {m.sellerName}
                       <div className="bb-muted bb-small">{m.sellerEmail}</div>
                     </td>
-                    <td>{priceWithUnit(m.unitPrice, m.unit)}</td>
-                    <td>
+                    <td data-label="Price">{priceWithUnit(m.unitPrice, m.unit)}</td>
+                    <td data-label="Stock">
                       {m.availableQuantity} available
                       {m.reservedQuantity > 0 && <div className="bb-muted bb-small">{m.reservedQuantity} reserved</div>}
                     </td>
-                    <td>{m.status === 'ACTIVE' ? 'Active' : 'Archived'}</td>
+                    <td data-label="Status">{m.status === 'ACTIVE' ? 'Active' : 'Archived'}</td>
                     <td>
                       {m.status === 'ACTIVE' && (
                         <button
@@ -339,6 +339,7 @@ function Users({ searchParams, setSearchParams }) {
                 <tr>
                   <th scope="col">Name</th>
                   <th scope="col">Email</th>
+                  <th scope="col">Mobile</th>
                   <th scope="col">Role</th>
                   <th scope="col">Joined</th>
                 </tr>
@@ -346,10 +347,11 @@ function Users({ searchParams, setSearchParams }) {
               <tbody>
                 {data.content.map((u) => (
                   <tr key={u.id}>
-                    <td>{u.name}</td>
-                    <td>{u.email}</td>
-                    <td>{u.role}</td>
-                    <td>{formatDate(u.createdAt)}</td>
+                    <td data-label="Name">{u.name}</td>
+                    <td data-label="Email">{u.email}</td>
+                    <td data-label="Mobile">{u.phone ?? '—'}</td>
+                    <td data-label="Role">{u.role}</td>
+                    <td data-label="Joined">{formatDate(u.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>

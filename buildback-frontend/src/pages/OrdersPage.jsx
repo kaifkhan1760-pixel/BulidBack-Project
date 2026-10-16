@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { api } from '../api/client'
+import { ConfirmDialog } from '../components/ConfirmDialog'
 import { OrderList } from '../components/OrderList'
 import { Pagination } from '../components/Pagination'
 import { useApiQuery } from '../hooks/useApiQuery'
+import { formatPrice } from '../materials/materialRules'
 import { ORDER_STATUS } from '../orders/orderRules'
 
 /**
@@ -24,6 +26,32 @@ export default function OrdersPage({ view }) {
   const [busyId, setBusyId] = useState(null)
   const [actionError, setActionError] = useState(null)
   const [message, setMessage] = useState(null)
+
+  // Buyer: the order waiting for "Yes, cancel" in the dialog
+  const [cancelTarget, setCancelTarget] = useState(null)
+  const [cancelError, setCancelError] = useState(null)
+
+  async function cancel() {
+    const order = cancelTarget
+    setBusyId(order.id)
+    setCancelError(null)
+    try {
+      const updated = await api.orders.cancel(order.id)
+      setCancelTarget(null)
+      setMessage(
+        updated.status !== 'CANCELLED'
+          ? `Order #${order.id} had already expired.`
+          : order.status === 'PAID'
+            ? `Order #${order.id} cancelled. A refund of ${formatPrice(order.totalAmount)} has been started.`
+            : `Order #${order.id} cancelled. The reserved stock was released.`,
+      )
+      reload()
+    } catch (err) {
+      setCancelError(err.message)
+    } finally {
+      setBusyId(null)
+    }
+  }
 
   async function collect(order) {
     setBusyId(order.id)
@@ -114,10 +142,38 @@ export default function OrdersPage({ view }) {
         )}
         {data && data.content.length > 0 && (
           <>
-            <OrderList orders={data.content} view={view} onCollect={collect} busyId={busyId} />
+            <OrderList
+              orders={data.content}
+              view={view}
+              onCollect={collect}
+              onCancel={(order) => {
+                setCancelError(null)
+                setCancelTarget(order)
+              }}
+              busyId={busyId}
+            />
             <Pagination page={data.page} totalPages={data.totalPages} onChange={goToPage} />
           </>
         )}
+        <ConfirmDialog
+          open={cancelTarget !== null}
+          title={cancelTarget ? `Cancel order #${cancelTarget.id}?` : 'Cancel order?'}
+          confirmLabel="Yes, cancel order"
+          cancelLabel="Keep order"
+          busy={cancelTarget !== null && busyId === cancelTarget.id}
+          error={cancelError}
+          onConfirm={cancel}
+          onCancel={() => setCancelTarget(null)}
+        >
+          {cancelTarget?.status === 'PAID' ? (
+            <p>
+              The full amount of <strong>{formatPrice(cancelTarget.totalAmount)}</strong> will be refunded to your
+              payment method, and the material goes back on sale.
+            </p>
+          ) : (
+            <p>The reserved stock will be released for other buyers.</p>
+          )}
+        </ConfirmDialog>
       </main>
     </div>
   )

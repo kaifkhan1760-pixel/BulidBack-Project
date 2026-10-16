@@ -1,0 +1,224 @@
+/* =========================================================
+   Responsive polish: phones and tablets.
+   Loaded LAST (see App.jsx) so these rules win over the page styles.
+   ========================================================= */
+
+/* Long words, emails and URLs wrap instead of pushing the page wider */
+h1,
+h2,
+h3,
+p,
+dd,
+td,
+li {
+  overflow-wrap: break-word;
+}
+
+.bb-welcome > * {
+  min-width: 0;
+}
+
+.bb-welcome p {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  /* Finger-sized tap targets (about 40px) for small links and controls */
+  .bb-link,
+  .bb-back-link,
+  .bb-link-arrow,
+  .bb-link-button,
+  .bb-auth-home,
+  .bb-breadcrumb a {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .bb-carousel-arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  .bb-carousel-dot {
+    width: 30px;
+    height: 40px;
+  }
+
+  .bb-photo-remove {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* The category bar scrolls sideways: fade the right edge so it looks scrollable */
+  .bb-catbar-inner {
+    mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+  }
+
+  /* Order page: the payment / total box comes first, so "Pay" is not far below */
+  .bb-order-layout > .bb-buy-panel {
+    order: -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .bb-page,
+  .bb-dashboard-main {
+    padding: 20px 16px 48px;
+    gap: 16px;
+  }
+
+  .bb-container {
+    padding: 0 16px;
+  }
+
+  .bb-card {
+    padding: 18px;
+  }
+
+  .bb-page-heading .bb-card-title,
+  .bb-page-title {
+    font-size: 1.45rem;
+  }
+
+  /* Stat tiles: two per row instead of one long column */
+  .bb-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .bb-stat {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 14px;
+  }
+
+  .bb-stat-icon {
+    grid-row: auto;
+    width: 36px;
+    height: 36px;
+  }
+
+  .bb-stat-value {
+    font-size: 1.25rem;
+  }
+
+  /* Admin tabs: an even 2 x 2 grid instead of an uneven wrap */
+  .bb-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-self: stretch;
+  }
+
+  .bb-tab {
+    padding: 0 8px;
+  }
+
+  .bb-admin-filters > * {
+    flex: 1 1 100%;
+  }
+
+  /* Filter labels sit above their box instead of squeezing beside it */
+  .bb-admin-filters .bb-inline-field {
+    display: grid;
+    gap: 6px;
+  }
+
+  .bb-admin-filters input,
+  .bb-admin-filters select {
+    width: 100%;
+  }
+
+  .bb-welcome {
+    padding: 18px;
+  }
+
+  .bb-welcome .bb-btn {
+    width: 100%;
+  }
+}
+
+/* Tables become one card per row on phones; each value shows its column name */
+@media (max-width: 700px) {
+  .bb-table-wrap {
+    overflow: visible;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .bb-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .bb-table,
+  .bb-table tbody,
+  .bb-table tr,
+  .bb-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .bb-table tr {
+    margin-bottom: 12px;
+    padding: 4px 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .bb-table tbody tr:hover {
+    background: var(--surface);
+  }
+
+  .bb-table td,
+  .bb-table tbody tr:last-child td {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bb-table td::before {
+    content: attr(data-label);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+  }
+
+  .bb-table td:last-child,
+  .bb-table tbody tr:last-child td:last-child {
+    border-bottom: 0;
+  }
+
+  /* Everything inside a cell stays in the value column, next to the label */
+  .bb-table td[data-label] > * {
+    grid-column: 2;
+  }
+
+  .bb-table td > a {
+    justify-self: start;
+    padding: 6px 0;
+  }
+
+  /* Cells without a label (e.g. the action button) use the full width */
+  .bb-table td:not([data-label]) {
+    grid-template-columns: 1fr;
+  }
+
+  .bb-table td:not([data-label])::before {
+    content: none;
+  }
+
+  .bb-table td .bb-button,
+  .bb-table td .bb-btn {
+    width: 100%;
+  }
+}

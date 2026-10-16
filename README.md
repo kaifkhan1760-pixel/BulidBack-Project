@@ -19,7 +19,7 @@ Final-exam project · **React.js + Spring Boot + MySQL** · Kaif Khan
 
 | Module | Implemented |
 | --- | --- |
-| Authentication | Registration, login, logout, BCrypt password hashing, server-side sessions, CSRF protection, role checks |
+| Authentication | Registration (letters-only names, strict email format, Indian mobile number, strong password with live checklist; all checked again on the server), login, logout, BCrypt password hashing, server-side sessions, CSRF protection, role checks |
 | Material CRUD | Create, view, edit, archive (soft delete), optimistic locking against stale edits |
 | Discovery | Keyword search, category / city / price / in-stock filters, sorting, server-side pagination |
 | Tile calculator | `required tiles = round up( floor area × (1 + allowance %) ÷ tile area )` |
@@ -136,6 +136,24 @@ powershell -ExecutionPolicy Bypass -File scripts\add-demo-listings.ps1 -Email yo
 ```
 It asks for that seller's password and adds five `[Demo]` listings (one per category, including the 35 tiles)
 through the normal API. No accounts or passwords are hard-coded anywhere.
+
+### Emails (account confirmation, order confirmation + invoice)
+- New sign-ups must click the link in a confirmation email before they can log in (24 hours, one use;
+  only a SHA-256 hash of the link code is stored). Older accounts and the first admin count as confirmed.
+- When an order is paid, the buyer gets an "Order confirmed" email with the invoice in the email **and as a
+  PDF attachment**, and the seller gets a "New paid order" email. Buyers can also open, print or download
+  the invoice PDF at `/buyer/orders/{id}/invoice` (`GET /api/buyer/orders/{id}/invoice.pdf`, own paid orders only).
+- Buyers can **cancel** an order: unpaid -> the reserved stock is released; paid but not yet collected ->
+  the payment is refunded through the gateway (Razorpay test refund or simulator) and the quantity goes
+  back on sale. If the refund fails, nothing changes. Collected orders cannot be cancelled.
+- **No mail server configured** (default): emails are saved as `.html` files in `buildback-backend/mail-outbox/`
+  (git-ignored). Open one in a browser and click its link.
+- **Real emails through Gmail**: in Eclipse > Run Configurations > Environment add
+  `SPRING_MAIL_HOST=smtp.gmail.com`, `SPRING_MAIL_PORT=587`, `SPRING_MAIL_USERNAME=<your gmail>`,
+  `SPRING_MAIL_PASSWORD=<16-letter Gmail app password>`, `MAIL_FROM=BuildBack <your gmail>`.
+  Never put these in a file or in Git.
+- Demo sellers on the reserved `@demo.buildback.test` domain are confirmed automatically
+  (`app.email-verification.auto-verify-domains`), so the seed script keeps working.
 
 ### Listing photos
 Sellers must add 1 to 5 photos to every listing (the **+** tile on the listing form).

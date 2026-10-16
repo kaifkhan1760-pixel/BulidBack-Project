@@ -18,11 +18,13 @@ public record PaymentResponse(
         String failureReason,
         boolean refundRequired,
         Instant createdAt,
-        Instant verifiedAt) {
+        Instant verifiedAt,
+        String refundId,
+        Instant refundedAt) {
 
     public static PaymentResponse from(Payment p) {
         return new PaymentResponse(p.getId(), p.getProvider(), p.getStatus(), p.getAmount(),
                 p.getProviderPaymentId(), p.getFailureReason(), p.isRefundRequired(), p.getCreatedAt(),
-                p.getVerifiedAt());
+                p.getVerifiedAt(), p.getRefundId(), p.getRefundedAt());
     }
 }

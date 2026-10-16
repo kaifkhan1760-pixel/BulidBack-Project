@@ -2,6 +2,8 @@ package com.buildback.entity;
 
 import java.time.Instant;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -42,6 +44,20 @@ public class User {
     private String email;
 
     /** BCrypt hash (60 characters today); 255 leaves room for a future algorithm. */
+    /**
+     * Has the user clicked the link in the confirmation email?
+     * Default 1 (true): accounts that existed before email confirmation, and
+     * accounts the server creates itself (the first admin), count as confirmed.
+     * Sign-ups from the register page start as false.
+     */
+    @ColumnDefault("1")
+    @Column(name = "email_verified", nullable = false)
+    private boolean emailVerified = true;
+
+    /** Mobile number as +91XXXXXXXXXX. Empty for accounts made before phone numbers were asked for. */
+    @Column(length = 15)
+    private String phone;
+
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
@@ -61,6 +77,13 @@ public class User {
         this.email = email;
         this.passwordHash = passwordHash;
         this.role = role;
+    }
+
+    /** Sign-up from the register page, which always asks for a mobile number. */
+    public User(String name, String email, String passwordHash, Role role, String phone) {
+        this(name, email, passwordHash, role);
+        this.phone = phone;
+        this.emailVerified = false; // must click the link in the confirmation email first
     }
 
     /** The server sets the creation time just before the first INSERT. */
@@ -91,5 +114,17 @@ public class User {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void markEmailVerified() {
+        this.emailVerified = true;
     }
 }

@@ -181,6 +181,14 @@ public class OrderService {
     }
 
     /** Payment verified: the reserved stock is now sold. Order must be locked. */
+    /** A paid order is cancelled (refund handled by PaymentService): the quantity goes back on sale. */
+    void cancelPaid(PurchaseOrder lockedOrder) {
+        Material material = lockMaterial(lockedOrder);
+        material.restock(lockedOrder.getQuantity());
+        lockedOrder.markCancelled();
+        orderRepository.flush();
+    }
+
     void completeSale(PurchaseOrder lockedOrder, Instant now) {
         Material material = lockMaterial(lockedOrder);
         material.completeSale(lockedOrder.getQuantity());

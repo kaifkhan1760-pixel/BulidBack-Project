@@ -144,7 +144,13 @@ export default function OrderDetailPage() {
       const updated = await api.orders.cancel(id)
       setOrder(updated)
       setConfirmCancel(false)
-      setMessage(updated.status === 'CANCELLED' ? 'Order cancelled. The stock was released.' : 'This order had already expired.')
+      setMessage(
+        updated.status !== 'CANCELLED'
+          ? 'This order had already expired.'
+          : order.status === 'PAID'
+            ? `Order cancelled. A refund of ${formatPrice(order.totalAmount)} has been started.`
+            : 'Order cancelled. The stock was released.',
+      )
     } catch (err) {
       setCancelError(err.message)
     } finally {
@@ -153,6 +159,7 @@ export default function OrderDetailPage() {
   }
 
   const refundFlag = order?.payments?.some((p) => p.refundRequired)
+  const refunded = order?.payments?.find((p) => p.refundedAt)
 
   return (
     <div className="bb-app">
@@ -208,6 +215,12 @@ export default function OrderDetailPage() {
                 A payment was received after this order ended. It is recorded for a manual refund.
               </p>
             )}
+            {refunded && (
+              <p className="bb-alert bb-alert-info">
+                You cancelled this paid order. A refund of {formatPrice(refunded.amount)} was started on{' '}
+                {formatDate(refunded.refundedAt)} (refund ID <span className="bb-mono">{refunded.refundId}</span>).
+              </p>
+            )}
 
             <section className="bb-card" aria-label="Order progress">
               <OrderTimeline status={order.status} />
@@ -244,6 +257,12 @@ export default function OrderDetailPage() {
                         <>
                           <br />
                           <a href={`mailto:${order.sellerEmail}`}>{order.sellerEmail}</a>
+                        </>
+                      )}
+                      {order.sellerPhone && (
+                        <>
+                          <br />
+                          <a href={`tel:${order.sellerPhone}`}>{order.sellerPhone}</a>
                         </>
                       )}
                     </dd>
@@ -326,15 +345,32 @@ export default function OrderDetailPage() {
                 )}
 
                 {order.status === 'PAID' && (
-                  <p className="bb-next">
-                    <Icon name="truck" size={20} />
-                    Contact the seller to arrange collection. The seller marks the order collected after hand-over.
-                  </p>
+                  <>
+                    <p className="bb-next">
+                      <Icon name="truck" size={20} />
+                      Contact the seller to arrange collection. The seller marks the order collected after hand-over.
+                    </p>
+                    <button
+                      type="button"
+                      className="bb-btn bb-button-danger-outline bb-btn-block"
+                      onClick={() => {
+                        setCancelError(null)
+                        setConfirmCancel(true)
+                      }}
+                    >
+                      Cancel order and get a refund
+                    </button>
+                  </>
                 )}
                 {order.status === 'COLLECTED' && (
                   <p className="bb-next">
                     <Icon name="checkCircle" size={20} /> Collected. Thank you for giving this material a second life.
                   </p>
+                )}
+                {order.invoiceNumber && (
+                  <Link to={`/buyer/orders/${order.id}/invoice`} className="bb-btn bb-btn-secondary bb-btn-block">
+                    <Icon name="receipt" size={18} /> View invoice {order.invoiceNumber}
+                  </Link>
                 )}
                 {(order.status === 'CANCELLED' || order.status === 'EXPIRED') && (
                   <Link to={`/materials/${order.material.id}`} className="bb-btn bb-btn-secondary bb-btn-block">
@@ -375,13 +411,21 @@ export default function OrderDetailPage() {
         <ConfirmDialog
           open={confirmCancel}
           title="Cancel this order?"
-          confirmLabel="Cancel order"
+          confirmLabel="Yes, cancel order"
+          cancelLabel="Keep order"
           busy={cancelling}
           error={cancelError}
           onConfirm={cancelOrder}
           onCancel={() => setConfirmCancel(false)}
         >
-          <p>The reserved stock will be released for other buyers.</p>
+          {order?.status === 'PAID' ? (
+            <p>
+              The full amount of <strong>{formatPrice(order.totalAmount)}</strong> will be refunded to your payment
+              method, and the material goes back on sale.
+            </p>
+          ) : (
+            <p>The reserved stock will be released for other buyers.</p>
+          )}
         </ConfirmDialog>
       </main>
     </div>

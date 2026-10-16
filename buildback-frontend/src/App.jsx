@@ -3,9 +3,11 @@ import { ProtectedRoute, PublicOnlyRoute } from './components/RouteGuards'
 import { SiteLayout } from './components/SiteLayout'
 import AdminPage from './pages/AdminPage'
 import CataloguePage from './pages/CataloguePage'
+import CheckEmailPage from './pages/CheckEmailPage'
 import ConnectionCheckPage from './pages/ConnectionCheckPage'
 import DashboardPage from './pages/DashboardPage'
 import HomePage from './pages/HomePage'
+import InvoicePage from './pages/InvoicePage'
 import LoginPage from './pages/LoginPage'
 import MaterialDetailPage from './pages/MaterialDetailPage'
 import MaterialFormPage from './pages/MaterialFormPage'
@@ -14,9 +16,11 @@ import OrdersPage from './pages/OrdersPage'
 import RegisterPage from './pages/RegisterPage'
 import SellerMaterialsPage from './pages/SellerMaterialsPage'
 import UnauthorizedPage from './pages/UnauthorizedPage'
+import VerifyEmailPage from './pages/VerifyEmailPage'
 import './styles/app.css'
 import './styles/materials.css'
 import './styles/orders.css'
+import './styles/responsive.css' // last: phone and tablet adjustments
 
 export default function App() {
   return (
@@ -25,6 +29,8 @@ export default function App() {
       <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
       <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} />
       <Route path="/connection-check" element={<ConnectionCheckPage />} />
+      <Route path="/check-email" element={<PublicOnlyRoute><CheckEmailPage /></PublicOnlyRoute>} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
 
       {/* Everything else shares the header and footer */}
       <Route element={<SiteLayout />}>
@@ -47,6 +53,7 @@ export default function App() {
         {/* Orders and payments */}
         <Route path="/buyer/orders" element={<ProtectedRoute role="BUYER"><OrdersPage view="buyer" /></ProtectedRoute>} />
         <Route path="/buyer/orders/:id" element={<ProtectedRoute role="BUYER"><OrderDetailPage /></ProtectedRoute>} />
+        <Route path="/buyer/orders/:id/invoice" element={<ProtectedRoute role="BUYER"><InvoicePage /></ProtectedRoute>} />
         <Route path="/seller/orders" element={<ProtectedRoute role="SELLER"><OrdersPage view="seller" /></ProtectedRoute>} />
 
         {/* Admin console */}

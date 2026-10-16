@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router'
 import { AppHeader } from './AppHeader'
+import { BackToTop } from './BackToTop'
 import { SiteFooter } from './SiteFooter'
 
 /** Shared frame for every page except login/register: header, page, footer. */
@@ -14,6 +15,7 @@ export function SiteLayout() {
         <Outlet />
       </div>
       <SiteFooter />
+      <BackToTop />
     </div>
   )
 }

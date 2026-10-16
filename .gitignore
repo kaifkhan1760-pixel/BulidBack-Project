@@ -22,3 +22,6 @@ Thumbs.db
 
 # Photos uploaded by sellers while running locally
 buildback-backend/uploads/
+
+# Emails saved locally when no mail server is configured (contain one-time links)
+buildback-backend/mail-outbox/

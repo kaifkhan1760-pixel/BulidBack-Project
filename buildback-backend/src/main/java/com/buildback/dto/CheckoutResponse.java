@@ -19,5 +19,6 @@ public record CheckoutResponse(
         String description,
         String buyerName,
         String buyerEmail,
+        String buyerPhone,
         Instant orderExpiresAt) {
 }

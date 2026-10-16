@@ -37,7 +37,8 @@ export async function openRazorpayCheckout(checkout, { onSuccess, onFailure }) {
     order_id: checkout.providerOrderId,
     name: 'BuildBack',
     description: checkout.description,
-    prefill: { name: checkout.buyerName, email: checkout.buyerEmail },
+    // contact = the buyer's own mobile number (older accounts may not have one)
+    prefill: { name: checkout.buyerName, email: checkout.buyerEmail, contact: checkout.buyerPhone ?? undefined },
     theme: { color: '#167a59' },
     handler: (response) => {
       finished = true

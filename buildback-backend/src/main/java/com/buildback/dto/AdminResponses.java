@@ -24,9 +24,9 @@ public final class AdminResponses {
             @JsonFormat(shape = JsonFormat.Shape.STRING) BigDecimal paidRevenue) {
     }
 
-    public record UserRow(Long id, String name, String email, Role role, Instant createdAt) {
+    public record UserRow(Long id, String name, String email, String phone, Role role, Instant createdAt) {
         public static UserRow from(User u) {
-            return new UserRow(u.getId(), u.getName(), u.getEmail(), u.getRole(), u.getCreatedAt());
+            return new UserRow(u.getId(), u.getName(), u.getEmail(), u.getPhone(), u.getRole(), u.getCreatedAt());
         }
     }
 

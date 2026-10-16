@@ -69,10 +69,17 @@ class AuthIntegrationTest {
         return request.session(session).header("X-CSRF-TOKEN", csrfToken(session));
     }
 
+    /** A valid mobile number, typed the way people often type it. */
+    private static final String PHONE = "98765 43210";
+
     private static String registerJson(String name, String email, String password, String role) {
+        return registerJson(name, email, PHONE, password, role);
+    }
+
+    private static String registerJson(String name, String email, String phone, String password, String role) {
         return """
-                {"name": %s, "email": %s, "password": %s, "role": %s}
-                """.formatted(quote(name), quote(email), quote(password), quote(role));
+                {"name": %s, "email": %s, "phone": %s, "password": %s, "role": %s}
+                """.formatted(quote(name), quote(email), quote(phone), quote(password), quote(role));
     }
 
     private static String quote(String value) {
@@ -80,10 +87,15 @@ class AuthIntegrationTest {
     }
 
     private ResultActions register(String name, String email, String password, String role) throws Exception {
+        return register(name, email, PHONE, password, role);
+    }
+
+    private ResultActions register(String name, String email, String phone, String password, String role)
+            throws Exception {
         MockHttpSession session = new MockHttpSession();
         return mockMvc.perform(withCsrf(post("/api/auth/register"), session)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(registerJson(name, email, password, role)));
+                .content(registerJson(name, email, phone, password, role)));
     }
 
     private ResultActions login(MockHttpSession session, String email, String password) throws Exception {
@@ -93,10 +105,18 @@ class AuthIntegrationTest {
                 .param("password", password));
     }
 
-    /** Registers a user and returns a logged-in session. */
+    /** Same as clicking the link in the confirmation email (that flow is tested in EmailVerificationIntegrationTest). */
+    private void confirmEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        user.markEmailVerified();
+        userRepository.save(user);
+    }
+
+    /** Registers a user, confirms the email and returns a logged-in session. */
     private MockHttpSession registerAndLogin(String role) throws Exception {
         String email = uniqueEmail(role.toLowerCase());
         register("Test " + role, email, PASSWORD, role).andExpect(status().isCreated());
+        confirmEmail(email);
         MockHttpSession session = new MockHttpSession();
         login(session, email, PASSWORD).andExpect(status().isOk());
         return session;
@@ -122,6 +142,7 @@ class AuthIntegrationTest {
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Ali Khan"))
                 .andExpect(jsonPath("$.email").value(email))
+                .andExpect(jsonPath("$.phone").value("+919876543210")) // stored in one format
                 .andExpect(jsonPath("$.role").value("BUYER"))
                 .andExpect(jsonPath("$.password").doesNotExist())
                 .andExpect(jsonPath("$.passwordHash").doesNotExist())
@@ -148,7 +169,7 @@ class AuthIntegrationTest {
         mockMvc.perform(withCsrf(post("/api/auth/register"), session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
-                        {"id": 999999, "name": "Sneaky", "email": "%s", "password": "%s",
+                        {"id": 999999, "name": "Sneaky", "email": "%s", "phone": "9876543210", "password": "%s",
                          "role": "BUYER", "passwordHash": "plain", "createdAt": "2000-01-01T00:00:00Z"}
                         """.formatted(email, PASSWORD)))
                 .andExpect(status().isCreated());
@@ -178,12 +199,71 @@ class AuthIntegrationTest {
 
     @Test
     void invalidInputReturnsFieldErrors() throws Exception {
-        register("A", "not-an-email", "short", null)
+        register("A", "not-an-email", "12345", "short", null)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors.name").exists())
                 .andExpect(jsonPath("$.errors.email").exists())
+                .andExpect(jsonPath("$.errors.phone").exists())
                 .andExpect(jsonPath("$.errors.password").exists())
                 .andExpect(jsonPath("$.errors.role").exists());
+    }
+
+    private void expectFieldError(ResultActions result, String field) throws Exception {
+        result.andExpect(status().isBadRequest()).andExpect(jsonPath("$.errors." + field).exists());
+    }
+
+    @Test
+    void namesMustBeLettersOnly() throws Exception {
+        expectFieldError(register("8948r84r7894", uniqueEmail("n"), PASSWORD, "BUYER"), "name");
+        expectFieldError(register("Kaif123", uniqueEmail("n"), PASSWORD, "BUYER"), "name");
+        expectFieldError(register("Kaif @ Khan", uniqueEmail("n"), PASSWORD, "BUYER"), "name");
+        expectFieldError(register("<script>", uniqueEmail("n"), PASSWORD, "BUYER"), "name");
+        expectFieldError(register("-Kaif", uniqueEmail("n"), PASSWORD, "BUYER"), "name");
+
+        // Real names with dots, apostrophes, hyphens and non-English letters are fine
+        register("R. K. D'Souza", uniqueEmail("n"), PASSWORD, "BUYER").andExpect(status().isCreated());
+        register("Patel Tiles & Sanitary", uniqueEmail("n"), PASSWORD, "SELLER").andExpect(status().isCreated());
+        register("Anne-Marie   Shah", uniqueEmail("n"), PASSWORD, "BUYER")
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Anne-Marie Shah")); // extra spaces removed
+        register("\u0915\u0948\u092b \u0916\u093e\u0928", uniqueEmail("n"), PASSWORD, "BUYER")
+                .andExpect(status().isCreated()); // Hindi script
+    }
+
+    @Test
+    void emailNeedsAProperDomain() throws Exception {
+        expectFieldError(register("Test User", "dcdncjdnc", PASSWORD, "BUYER"), "email");
+        expectFieldError(register("Test User", "name@gmail", PASSWORD, "BUYER"), "email");
+        expectFieldError(register("Test User", "name@.com", PASSWORD, "BUYER"), "email");
+        expectFieldError(register("Test User", "na..me@gmail.com", PASSWORD, "BUYER"), "email");
+        register("Test User", "first.last+" + UUID.randomUUID() + "@mail.co.in", PASSWORD, "BUYER")
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void passwordsMustMixCaseAndNumbers() throws Exception {
+        expectFieldError(register("Test User", uniqueEmail("p"), "dncdncidci", "BUYER"), "password"); // the screenshot
+        expectFieldError(register("Test User", uniqueEmail("p"), "alllowercase1", "BUYER"), "password");
+        expectFieldError(register("Test User", uniqueEmail("p"), "ALLUPPERCASE1", "BUYER"), "password");
+        expectFieldError(register("Test User", uniqueEmail("p"), "NoNumbersHere", "BUYER"), "password");
+        expectFieldError(register("Test User", uniqueEmail("p"), " Spaced1Out ", "BUYER"), "password");
+        String email = "same" + UUID.randomUUID().toString().substring(0, 6) + "Aa1@example.com";
+        expectFieldError(register("Test User", email, email.toUpperCase().replace("A1@", "a1@"), "BUYER"), "password");
+        register("Test User", uniqueEmail("p"), "Strong Pass 2026", "BUYER").andExpect(status().isCreated());
+    }
+
+    @Test
+    void phoneMustBeAnIndianMobileAndIsStoredInOneFormat() throws Exception {
+        expectFieldError(register("Test User", uniqueEmail("m"), "12345", PASSWORD, "BUYER"), "phone");
+        expectFieldError(register("Test User", uniqueEmail("m"), "5876543210", PASSWORD, "BUYER"), "phone"); // starts with 5
+        expectFieldError(register("Test User", uniqueEmail("m"), "98765abc10", PASSWORD, "BUYER"), "phone");
+        expectFieldError(register("Test User", uniqueEmail("m"), null, PASSWORD, "BUYER"), "phone");
+
+        for (String typed : new String[] { "+91 98765 43210", "098765-43210", "919876543210", "(+91) 98765.43210" }) {
+            register("Test User", uniqueEmail("m"), typed, PASSWORD, "BUYER")
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.phone").value("+919876543210"));
+        }
     }
 
     @Test
@@ -222,6 +302,7 @@ class AuthIntegrationTest {
     void loginRotatesSessionIdAndMeWorksOnNextRequest() throws Exception {
         String email = uniqueEmail("login");
         register("Login User", email, PASSWORD, "BUYER").andExpect(status().isCreated());
+        confirmEmail(email);
 
         MockHttpSession session = new MockHttpSession();
         String sessionIdBeforeLogin = session.getId();
@@ -325,6 +406,7 @@ class AuthIntegrationTest {
     void csrfTokenChangesAfterLoginAndLogout() throws Exception {
         String email = uniqueEmail("rotate");
         register("Rotate User", email, PASSWORD, "BUYER").andExpect(status().isCreated());
+        confirmEmail(email);
 
         MockHttpSession session = new MockHttpSession();
         String tokenBeforeLogin = csrfToken(session);

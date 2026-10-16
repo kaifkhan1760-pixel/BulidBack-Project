@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router'
+import { api } from '../api/client'
 import { ROLE_LABELS, dashboardPath, useAuth } from '../auth/authContext'
-import { CATEGORY_LABELS } from '../materials/materialRules'
+import { CATEGORY_LABELS, UNIT_LABELS, formatPriceCompact } from '../materials/materialRules'
 import { Icon } from './Icon'
 import { Logo } from './Logo'
+import { MaterialImage } from './MaterialImage'
+
+const SUGGESTIONS = 6
 
 /** Account links depend on the role the SERVER reported for this session. */
 function accountLinksFor(user) {
@@ -229,17 +233,46 @@ export function AppHeader() {
 /**
  * Search box in the header. On the catalogue it keeps the other filters
  * (city, price, sort); elsewhere it starts a fresh search.
+ *
+ * While typing (2+ letters) it shows up to 6 matching listings. Arrow keys move
+ * through them, Enter opens one, Esc closes the list. The list is a standard
+ * ARIA "combobox", so screen readers announce the highlighted suggestion.
  */
 function HeaderSearch({ onCatalogue, params }) {
   const navigate = useNavigate()
   const [keyword, setKeyword] = useState(onCatalogue ? (params.get('keyword') ?? '') : '')
   const [category, setCategory] = useState(onCatalogue ? (params.get('category') ?? '') : '')
+  const [open, setOpen] = useState(false)
+  const [active, setActive] = useState(-1) // highlighted row; the last row is "See all results"
+  const [result, setResult] = useState({ key: '', items: [] })
 
-  function handleSubmit(event) {
-    event.preventDefault()
+  const text = keyword.trim().slice(0, 100)
+  const queryKey = `${category}|${text}`
+
+  // Wait until typing pauses for 250 ms, then ask the server. A newer search cancels an older one.
+  useEffect(() => {
+    if (text.length < 2) return undefined
+    const controller = new AbortController()
+    const timer = setTimeout(() => {
+      api.materials
+        .search({ keyword: text, category, size: SUGGESTIONS }, controller.signal)
+        .then((page) => setResult({ key: queryKey, items: page.content }))
+        .catch(() => {}) // suggestions are optional; the normal search still works
+    }, 250)
+    return () => {
+      clearTimeout(timer)
+      controller.abort()
+    }
+  }, [text, category, queryKey])
+
+  const suggestions = text.length >= 2 && result.key === queryKey ? result.items : []
+  const showList = open && suggestions.length > 0
+  const seeAllIndex = suggestions.length
+
+  function searchAll() {
+    setOpen(false)
     const next = onCatalogue ? new URLSearchParams(params) : new URLSearchParams()
     next.delete('page')
-    const text = keyword.trim().slice(0, 100)
     if (text) next.set('keyword', text)
     else next.delete('keyword')
     if (category) next.set('category', category)
@@ -248,33 +281,139 @@ function HeaderSearch({ onCatalogue, params }) {
     navigate(query ? `/materials?${query}` : '/materials')
   }
 
+  function openListing(item) {
+    setOpen(false)
+    navigate(`/materials/${item.id}`)
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === 'Escape') {
+      setOpen(false)
+      setActive(-1)
+    } else if (event.key === 'ArrowDown' && suggestions.length > 0) {
+      event.preventDefault()
+      setOpen(true)
+      setActive((current) => Math.min(current + 1, seeAllIndex))
+    } else if (event.key === 'ArrowUp' && showList) {
+      event.preventDefault()
+      setActive((current) => Math.max(current - 1, -1))
+    } else if (event.key === 'Enter' && showList && active >= 0 && active < seeAllIndex) {
+      event.preventDefault()
+      openListing(suggestions[active])
+    }
+  }
+
+  const optionId = (index) => (index === seeAllIndex ? 'hs-option-all' : `hs-option-${suggestions[index].id}`)
+
   return (
-    <form className="bb-search" role="search" onSubmit={handleSubmit}>
-      <label htmlFor="hs-category" className="bb-visually-hidden">
-        Category
-      </label>
-      <select id="hs-category" className="bb-search-category" value={category} onChange={(e) => setCategory(e.target.value)}>
-        <option value="">All</option>
-        {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="hs-keyword" className="bb-visually-hidden">
-        Search materials
-      </label>
-      <input
-        id="hs-keyword"
-        type="search"
-        placeholder="Search for tiles, paint, plywood, taps…"
-        value={keyword}
-        maxLength={100}
-        onChange={(e) => setKeyword(e.target.value)}
-      />
-      <button type="submit" className="bb-search-submit" aria-label="Search">
-        <Icon name="search" size={20} />
-      </button>
-    </form>
+    <div className="bb-search-wrap">
+      <form
+        className="bb-search"
+        role="search"
+        onSubmit={(event) => {
+          event.preventDefault()
+          searchAll()
+        }}
+      >
+        <label htmlFor="hs-category" className="bb-visually-hidden">
+          Category
+        </label>
+        <select
+          id="hs-category"
+          className="bb-search-category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">All</option>
+          {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="hs-keyword" className="bb-visually-hidden">
+          Search materials
+        </label>
+        <input
+          id="hs-keyword"
+          type="search"
+          placeholder="Search for tiles, paint, plywood, taps…"
+          value={keyword}
+          maxLength={100}
+          autoComplete="off"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={showList}
+          aria-controls="hs-suggestions"
+          aria-activedescendant={showList && active >= 0 ? optionId(active) : undefined}
+          onChange={(e) => {
+            setKeyword(e.target.value)
+            setOpen(true)
+            setActive(-1)
+          }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setOpen(false)}
+          onKeyDown={handleKeyDown}
+        />
+        <button type="submit" className="bb-search-submit" aria-label="Search">
+          <Icon name="search" size={20} />
+        </button>
+      </form>
+
+      {showList && (
+        // preventDefault on mouse down keeps focus in the input, so the click can finish
+        <ul id="hs-suggestions" role="listbox" className="bb-suggest" onMouseDown={(e) => e.preventDefault()}>
+          {suggestions.map((item, index) => (
+            <li
+              key={item.id}
+              id={optionId(index)}
+              role="option"
+              aria-selected={index === active}
+              className="bb-suggest-item"
+              onClick={() => openListing(item)}
+              onMouseEnter={() => setActive(index)}
+            >
+              <MaterialImage src={item.imageUrl} alt="" className="bb-suggest-img" />
+              <span className="bb-suggest-text">
+                <span className="bb-suggest-title">
+                  <Highlight text={item.title} match={text} />
+                </span>
+                <small>
+                  {CATEGORY_LABELS[item.category]} · {item.city}
+                </small>
+              </span>
+              <span className="bb-suggest-price">
+                {formatPriceCompact(item.unitPrice)}
+                <small>/ {UNIT_LABELS[item.unit]}</small>
+              </span>
+            </li>
+          ))}
+          <li
+            id="hs-option-all"
+            role="option"
+            aria-selected={active === seeAllIndex}
+            className="bb-suggest-item bb-suggest-all"
+            onClick={searchAll}
+            onMouseEnter={() => setActive(seeAllIndex)}
+          >
+            <Icon name="search" size={18} />
+            See all results for “{text}”
+          </li>
+        </ul>
+      )}
+    </div>
+  )
+}
+
+/** Shows the part of the title that matches what was typed in bold. */
+function Highlight({ text, match }) {
+  const start = text.toLowerCase().indexOf(match.toLowerCase())
+  if (!match || start < 0) return text
+  return (
+    <>
+      {text.slice(0, start)}
+      <strong>{text.slice(start, start + match.length)}</strong>
+      {text.slice(start + match.length)}
+    </>
   )
 }

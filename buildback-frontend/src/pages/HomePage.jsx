@@ -1,14 +1,26 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { api } from '../api/client'
 import { dashboardPath, useAuth } from '../auth/authContext'
+import { HeroCarousel } from '../components/HeroCarousel'
 import { Icon } from '../components/Icon'
-import { MaterialCard, MaterialCardSkeleton } from '../components/MaterialCard'
-import { CALCULATOR_IMAGE, CATEGORY_IMAGES, HERO_IMAGE, SELLER_IMAGE, STOCK_IMAGE } from '../content/siteImages'
+import { MaterialRail } from '../components/MaterialRail'
+import {
+  CALCULATOR_IMAGE,
+  CATEGORY_IMAGES,
+  DEALS_SLIDE_IMAGE,
+  HERO_IMAGE,
+  INTERIOR_SLIDE_IMAGE,
+  SELLER_IMAGE,
+  STOCK_IMAGE,
+} from '../content/siteImages'
 import { useApiQuery } from '../hooks/useApiQuery'
 import { CATEGORY_LABELS } from '../materials/materialRules'
+import { clearRecentlyViewed, readRecentlyViewed } from '../materials/recentlyViewed'
 import '../styles/home.css'
 
 const RAIL_SIZE = 4
+const DEAL_PRICE = 500 // "Deals under ₹500"
 
 const CATEGORY_TEXT = {
   TILES: 'Vitrified, ceramic, mosaic and cladding',
@@ -58,35 +70,77 @@ export default function HomePage() {
     ).then(Object.fromEntries),
   )
 
+  const deals = useApiQuery('home-deals', (signal) =>
+    api.materials.search({ maxPrice: String(DEAL_PRICE), sort: 'priceAsc', size: RAIL_SIZE }, signal),
+  )
+  // Read once when the page opens; kept only in this browser
+  const [recent, setRecent] = useState(readRecentlyViewed)
+
   const sellHref = user?.role === 'SELLER' ? '/seller/materials/new' : user ? dashboardPath(user.role) : '/register'
+
+  const slides = [
+    {
+      id: 'main',
+      image: HERO_IMAGE,
+      kicker: 'Construction surplus marketplace',
+      title: 'Good building material shouldn’t go to waste',
+      text: 'Buy unused tiles, paint, plywood and fittings left over from projects near you, at well below showroom prices.',
+      actions: (
+        <>
+          <Link to="/materials" className="bb-btn bb-btn-accent bb-btn-lg">
+            Shop materials
+          </Link>
+          <Link to={sellHref} className="bb-btn bb-btn-outline-light bb-btn-lg">
+            Sell your surplus
+          </Link>
+        </>
+      ),
+    },
+    {
+      id: 'interior',
+      image: INTERIOR_SLIDE_IMAGE,
+      kicker: 'New categories',
+      title: 'Interior décor, POP ceilings and waterproofing',
+      text: 'Lights, wall panels, wallpaper, gypsum boards and roof coatings from finished projects across India.',
+      actions: (
+        <>
+          <Link to="/materials?category=INTERIOR" className="bb-btn bb-btn-accent bb-btn-lg">
+            Shop interior &amp; décor
+          </Link>
+          <Link to="/materials?category=FALSE_CEILING" className="bb-btn bb-btn-outline-light bb-btn-lg">
+            POP &amp; false ceiling
+          </Link>
+        </>
+      ),
+    },
+    {
+      id: 'deals',
+      image: DEALS_SLIDE_IMAGE,
+      kicker: 'Budget picks',
+      title: `Budget buys under ₹${DEAL_PRICE}`,
+      text: 'Paint, tiles, fittings and more, priced per unit. Sort by lowest price and buy only what you need.',
+      actions: (
+        <Link to={`/materials?maxPrice=${DEAL_PRICE}&sort=priceAsc`} className="bb-btn bb-btn-accent bb-btn-lg">
+          See the deals
+        </Link>
+      ),
+    },
+  ]
 
   return (
     <main className="bb-home">
       {/* ---------- Banner + side promotions ---------- */}
       <section className="bb-container bb-hero-area" aria-label="Featured">
-        <div className="bb-hero" style={{ '--hero-image': `url("${HERO_IMAGE}")` }}>
-          <div className="bb-hero-copy">
-            <p className="bb-hero-kicker">Construction surplus marketplace</p>
-            <h1>Good building material shouldn&apos;t go to waste</h1>
-            <p className="bb-hero-lead">
-              Buy unused tiles, paint, plywood and fittings left over from projects near you, at well below
-              showroom prices.
-            </p>
-            <div className="bb-hero-actions">
-              <Link to="/materials" className="bb-btn bb-btn-accent bb-btn-lg">
-                Shop materials
-              </Link>
-              <Link to={sellHref} className="bb-btn bb-btn-outline-light bb-btn-lg">
-                Sell your surplus
-              </Link>
-            </div>
-            {latest.data && (
+        <HeroCarousel
+          slides={slides}
+          footer={
+            latest.data && (
               <p className="bb-hero-stat">
                 <strong>{latest.data.totalElements.toLocaleString('en-IN')}</strong> listings live now
               </p>
-            )}
-          </div>
-        </div>
+            )
+          }
+        />
 
         <div className="bb-promos">
           <Link to={sellHref} className="bb-promo" style={{ '--promo-image': `url("${STOCK_IMAGE}")` }}>
@@ -155,7 +209,37 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Product rows ---------- */}
+      {recent.length > 0 && (
+        <div className="bb-container">
+          <MaterialRail
+            id="recent"
+            title="Recently viewed"
+            items={recent.slice(0, RAIL_SIZE)}
+            action={
+              <button
+                type="button"
+                className="bb-link bb-link-button"
+                onClick={() => {
+                  clearRecentlyViewed()
+                  setRecent([])
+                }}
+              >
+                Clear history
+              </button>
+            }
+          />
+        </div>
+      )}
+
       <Rail id="latest" title="Fresh arrivals" to="/materials" query={latest} page={latest.data} />
+
+      <Rail
+        id="deals"
+        title={`Deals under ₹${DEAL_PRICE}`}
+        to={`/materials?maxPrice=${DEAL_PRICE}&sort=priceAsc`}
+        query={deals}
+        page={deals.data}
+      />
 
       {Object.keys(CATEGORY_LABELS)
         .slice(0, 3)
@@ -241,38 +325,11 @@ export default function HomePage() {
   )
 }
 
-/** One horizontal row of listing cards with a "See all" link. */
+/** A product row inside the page container. */
 function Rail({ id, title, to, query, page }) {
-  if (page && page.content.length === 0) return null
   return (
-    <section className="bb-container bb-block" aria-labelledby={`rail-${id}`}>
-      <div className="bb-rail">
-        <div className="bb-block-head">
-          <h2 id={`rail-${id}`}>{title}</h2>
-          <Link to={to} className="bb-link">
-            See all <Icon name="chevronRight" size={16} />
-          </Link>
-        </div>
-        {query.error && (
-          <p className="bb-alert bb-alert-error" role="alert">
-            Listings could not be loaded: {query.error.message}
-          </p>
-        )}
-        <ul className="bb-rail-list">
-          {page
-            ? page.content.map((material) => (
-                <li key={material.id}>
-                  <MaterialCard material={material} />
-                </li>
-              ))
-            : !query.error &&
-              Array.from({ length: RAIL_SIZE }, (_, i) => (
-                <li key={i}>
-                  <MaterialCardSkeleton />
-                </li>
-              ))}
-        </ul>
-      </div>
-    </section>
+    <div className="bb-container">
+      <MaterialRail id={id} title={title} to={to} items={page?.content ?? null} error={query.error} size={RAIL_SIZE} />
+    </div>
   )
 }

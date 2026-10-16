@@ -143,6 +143,25 @@ export default function CataloguePage() {
               </label>
             </div>
 
+            {hasFilters && (
+              <div className="bb-active-filters" role="group" aria-label="Active filters">
+                {activeFilterChips(searchParams).map((chip) => (
+                  <Link
+                    key={chip.key}
+                    to={linkWithout(searchParams, chip.key)}
+                    className="bb-filter-chip"
+                    aria-label={`Remove filter: ${chip.label}`}
+                  >
+                    {chip.label}
+                    <Icon name="close" size={14} />
+                  </Link>
+                ))}
+                <button type="button" className="bb-link bb-link-button" onClick={clearFilters}>
+                  Clear all
+                </button>
+              </div>
+            )}
+
             {loading && (
               <div className="bb-card-grid">
                 {Array.from({ length: 8 }, (_, i) => (
@@ -205,6 +224,28 @@ export default function CataloguePage() {
       </div>
     </main>
   )
+}
+
+/** One removable chip per filter in the URL, e.g. "Tiles", "City: Pune", "Max ₹500". */
+function activeFilterChips(params) {
+  const chips = []
+  const add = (key, label) => params.get(key) && chips.push({ key, label })
+  add('keyword', `“${params.get('keyword')}”`)
+  add('category', CATEGORY_LABELS[params.get('category')] ?? params.get('category'))
+  add('city', `City: ${params.get('city')}`)
+  add('minPrice', `Min ₹${params.get('minPrice')}`)
+  add('maxPrice', `Max ₹${params.get('maxPrice')}`)
+  if (params.get('inStock') === 'true') chips.push({ key: 'inStock', label: 'In stock only' })
+  return chips
+}
+
+/** The current catalogue URL without one filter (and back on page 1). */
+function linkWithout(params, key) {
+  const next = new URLSearchParams(params)
+  next.delete(key)
+  next.delete('page')
+  const text = next.toString()
+  return text ? `/materials?${text}` : '/materials'
 }
 
 function FilterForm({ initial, open, onApply, onClear }) {

@@ -343,48 +343,6 @@
   font-weight: 600;
 }
 
-/* ---------- ₹ prefix / unit suffix ---------- */
-.bb-input-affix {
-  display: flex;
-  align-items: stretch;
-}
-
-.bb-input-affix > span {
-  display: grid;
-  place-items: center;
-  padding: 0 12px;
-  border: 1px solid var(--line-strong);
-  background: var(--canvas);
-  color: var(--ink-500);
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.bb-input-affix > span:first-child {
-  border-right: 0;
-  border-radius: var(--radius-md) 0 0 var(--radius-md);
-}
-
-.bb-input-affix > span:last-child {
-  border-left: 0;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-}
-
-.bb-field .bb-input-affix input {
-  flex: 1;
-  min-width: 0;
-}
-
-.bb-field .bb-input-affix:not(.bb-input-affix-end) input {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.bb-field .bb-input-affix-end input {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 /* ---------- Submit bar ---------- */
 .bb-form-submit {
   display: flex;

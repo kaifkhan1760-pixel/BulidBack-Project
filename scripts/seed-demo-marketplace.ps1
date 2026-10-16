@@ -25,9 +25,13 @@ if (Test-Path $secretFile) {
     $password = (Get-Content $secretFile -Raw).Trim()
 } else {
     $chars = [char[]]'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'
-    $bytes = New-Object byte[] 20
-    [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
-    $password = -join ($bytes | ForEach-Object { $chars[$_ % $chars.Length] })
+    $random = [Security.Cryptography.RandomNumberGenerator]::Create()
+    # Same rule as the register form: upper case, lower case and a number
+    do {
+        $bytes = New-Object byte[] 20
+        $random.GetBytes($bytes)
+        $password = -join ($bytes | ForEach-Object { $chars[$_ % $chars.Length] })
+    } until ($password -cmatch '[A-Z]' -and $password -cmatch '[a-z]' -and $password -match '\d')
     Set-Content -Path $secretFile -Value $password -NoNewline -Encoding ASCII
     Write-Host "Generated a demo-seller password and saved it to scripts\demo-sellers.local"
 }
@@ -47,7 +51,8 @@ foreach ($seller in $data.sellers) {
     $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
     try {
-        $body = @{ name = $seller.name; email = $seller.email; password = $password; role = "SELLER" } | ConvertTo-Json
+        # 9000000000 is a placeholder mobile number for demo accounts, not a real contact
+        $body = @{ name = $seller.name; email = $seller.email; phone = "9000000000"; password = $password; role = "SELLER" } | ConvertTo-Json
         Invoke-RestMethod -Uri "$ApiBase/auth/register" -Method Post -WebSession $session -Headers (Get-Csrf $session) `
             -ContentType "application/json" -Body $body | Out-Null
         Write-Host "Registered seller: $($seller.name)"

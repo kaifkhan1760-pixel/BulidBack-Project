@@ -1,0 +1,217 @@
+/* =========================================================
+   Invoice page (screen + print) and the email-confirmation pages
+   ========================================================= */
+.bb-invoice-page {
+  max-width: 860px;
+}
+
+.bb-invoice-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bb-invoice {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+  display: grid;
+  gap: 28px;
+}
+
+.bb-invoice-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--brand-600);
+}
+
+.bb-invoice-meta {
+  text-align: right;
+}
+
+.bb-invoice-meta h1 {
+  font-size: 1.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-700);
+}
+
+.bb-invoice-meta dl {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 2px;
+}
+
+.bb-invoice-meta dl div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.bb-invoice-meta dt {
+  color: var(--ink-500);
+}
+
+.bb-invoice-meta dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.bb-invoice-parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.bb-invoice h2 {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  margin-bottom: 6px;
+}
+
+.bb-invoice-parties p {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.bb-invoice-items {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bb-invoice-items th,
+.bb-invoice-items td {
+  padding: 12px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+}
+
+.bb-invoice-items th:first-child,
+.bb-invoice-items td:first-child {
+  text-align: left;
+}
+
+.bb-invoice-items thead th {
+  background: var(--canvas);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-500);
+}
+
+.bb-invoice-items td:first-child span {
+  display: block;
+}
+
+.bb-invoice-items tfoot th,
+.bb-invoice-items tfoot td {
+  border-bottom: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.bb-mono {
+  font-family: ui-monospace, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.bb-invoice-foot {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--ink-500);
+}
+
+@media (max-width: 600px) {
+  .bb-invoice {
+    padding: 22px 18px;
+  }
+
+  .bb-invoice-meta {
+    text-align: left;
+  }
+
+  .bb-invoice-meta dl div {
+    justify-content: flex-start;
+  }
+
+  .bb-invoice-parties {
+    grid-template-columns: 1fr;
+  }
+
+  .bb-invoice-items th,
+  .bb-invoice-items td {
+    padding: 10px 6px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Printing / "Save as PDF": only the invoice, no site header, footer or buttons */
+@media print {
+  .bb-header,
+  .bb-footer,
+  .bb-skip-link,
+  .bb-back-to-top,
+  .bb-invoice-toolbar {
+    display: none !important;
+  }
+
+  body,
+  .bb-site {
+    background: #fff;
+  }
+
+  .bb-invoice-page {
+    padding: 0;
+    max-width: none;
+  }
+
+  .bb-invoice {
+    border: 0;
+    padding: 0;
+  }
+}
+
+/* ---------- Check your email / confirm email ---------- */
+.bb-check-email {
+  display: grid;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.bb-check-email-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--brand-50);
+  color: var(--brand-600);
+}
+
+.bb-check-email-tips {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--ink-500);
+  font-size: 0.92rem;
+  display: grid;
+  gap: 4px;
+}
+
+.bb-resend {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.bb-resend-compact {
+  margin-top: 10px;
+}

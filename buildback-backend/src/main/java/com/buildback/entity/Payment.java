@@ -69,6 +69,13 @@ public class Payment {
     @Column(name = "refund_required", nullable = false)
     private boolean refundRequired;
 
+    /** Set when the money was given back (the buyer cancelled the paid order). */
+    @Column(name = "refund_id", length = 100)
+    private String refundId;
+
+    @Column(name = "refunded_at")
+    private Instant refundedAt;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -150,5 +157,23 @@ public class Payment {
 
     public Instant getVerifiedAt() {
         return verifiedAt;
+    }
+
+    public void markRefunded(String refundId, Instant now) {
+        this.refundId = refundId;
+        this.refundedAt = now;
+        this.refundRequired = false;
+    }
+
+    public boolean isRefunded() {
+        return refundedAt != null;
+    }
+
+    public String getRefundId() {
+        return refundId;
+    }
+
+    public Instant getRefundedAt() {
+        return refundedAt;
     }
 }

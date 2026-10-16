@@ -61,4 +61,10 @@ public class SimulatedPaymentGateway implements PaymentGateway {
         RANDOM.nextBytes(buffer);
         return HexFormat.of().formatHex(buffer);
     }
+
+    /** Simulator: nothing to send back, just a clearly fake refund id. */
+    @Override
+    public String refund(String providerPaymentId, long amountInPaise) {
+        return "sim_rfnd_" + java.util.UUID.randomUUID().toString().replace("-", "").substring(0, 20);
+    }
 }

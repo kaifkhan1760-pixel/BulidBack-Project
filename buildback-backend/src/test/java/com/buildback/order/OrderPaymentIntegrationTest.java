@@ -342,6 +342,72 @@ class OrderPaymentIntegrationTest extends ApiTestSupport {
         assertThat(material(tiles).getReservedQuantity()).isZero();
     }
 
+    @Test
+    void buyerCanCancelAPaidOrderBeforePickupAndIsRefunded() throws Exception {
+        TestUser seller = loggedIn(Role.SELLER);
+        TestUser buyer = loggedIn(Role.BUYER);
+        long tiles = createTiles(seller, 10);
+        long orderId = idOf(order(buyer, tiles, 4).andExpect(status().isCreated()));
+        Approved approved = approve(buyer, orderId);
+        postJson(buyer, "/api/buyer/payments/" + approved.paymentId() + "/verify", approved.verifyBody())
+                .andExpect(jsonPath("$.status").value("PAID"));
+        assertThat(material(tiles).getAvailableQuantity()).isEqualTo(6);
+
+        postJson(buyer, "/api/buyer/orders/" + orderId + "/cancel", null)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("CANCELLED"))
+                .andExpect(jsonPath("$.payments[0].refundId").exists())
+                .andExpect(jsonPath("$.payments[0].refundedAt").exists());
+        assertThat(material(tiles).getAvailableQuantity()).isEqualTo(10); // back on sale
+        assertThat(material(tiles).getReservedQuantity()).isZero();
+
+        // Cannot be cancelled (or refunded) twice
+        postJson(buyer, "/api/buyer/orders/" + orderId + "/cancel", null).andExpect(status().isConflict());
+        assertThat(material(tiles).getAvailableQuantity()).isEqualTo(10);
+    }
+
+    @Test
+    void buyerCanDownloadTheInvoicePdfOfAPaidOrderOnly() throws Exception {
+        TestUser seller = loggedIn(Role.SELLER);
+        TestUser buyer = loggedIn(Role.BUYER);
+        TestUser otherBuyer = loggedIn(Role.BUYER);
+        long tiles = createTiles(seller, 10);
+        long orderId = idOf(order(buyer, tiles, 3).andExpect(status().isCreated()));
+        String pdfUrl = "/api/buyer/orders/" + orderId + "/invoice.pdf";
+
+        // Not paid yet: no invoice
+        mockMvc.perform(get(pdfUrl).session(buyer.session())).andExpect(status().isConflict());
+
+        Approved approved = approve(buyer, orderId);
+        postJson(buyer, "/api/buyer/payments/" + approved.paymentId() + "/verify", approved.verifyBody())
+                .andExpect(jsonPath("$.status").value("PAID"));
+
+        byte[] pdf = mockMvc.perform(get(pdfUrl).session(buyer.session()))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.content()
+                        .contentType("application/pdf"))
+                .andReturn().getResponse().getContentAsByteArray();
+        assertThat(new String(pdf, 0, 5, java.nio.charset.StandardCharsets.US_ASCII)).isEqualTo("%PDF-");
+        assertThat(pdf.length).isGreaterThan(1000);
+
+        // Someone else's invoice: not found
+        mockMvc.perform(get(pdfUrl).session(otherBuyer.session())).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void collectedOrdersCannotBeCancelled() throws Exception {
+        TestUser seller = loggedIn(Role.SELLER);
+        TestUser buyer = loggedIn(Role.BUYER);
+        long tiles = createTiles(seller, 10);
+        long orderId = idOf(order(buyer, tiles, 2).andExpect(status().isCreated()));
+        Approved approved = approve(buyer, orderId);
+        postJson(buyer, "/api/buyer/payments/" + approved.paymentId() + "/verify", approved.verifyBody());
+        postJson(seller, "/api/seller/orders/" + orderId + "/collect", null).andExpect(status().isOk());
+
+        postJson(buyer, "/api/buyer/orders/" + orderId + "/cancel", null).andExpect(status().isConflict());
+        assertThat(material(tiles).getAvailableQuantity()).isEqualTo(8);
+    }
+
     // ---------------- who may do what ----------------
 
     @Test

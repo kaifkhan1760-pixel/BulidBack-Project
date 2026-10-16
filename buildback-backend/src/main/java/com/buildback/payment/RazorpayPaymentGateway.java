@@ -90,4 +90,22 @@ public class RazorpayPaymentGateway implements PaymentGateway {
             throw new PaymentGatewayException("Razorpay payment details do not match this order");
         }
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public String refund(String providerPaymentId, long amountInPaise) {
+        try {
+            Map<String, Object> refund = restClient.post()
+                    .uri("/payments/{id}/refund", providerPaymentId)
+                    .body(Map.of("amount", amountInPaise))
+                    .retrieve()
+                    .body(Map.class);
+            if (refund == null || !(refund.get("id") instanceof String id)) {
+                throw new PaymentGatewayException("Razorpay did not return a refund id");
+            }
+            return id;
+        } catch (RestClientException e) {
+            throw new PaymentGatewayException("Razorpay could not refund this payment", e);
+        }
+    }
 }

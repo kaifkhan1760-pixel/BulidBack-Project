@@ -5,11 +5,12 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export class ApiError extends Error {
-  constructor(message, status, fieldErrors = {}) {
+  constructor(message, status, fieldErrors = {}, code = null) {
     super(message)
     this.name = 'ApiError'
     this.status = status // 0 means "no response from the server at all"
     this.fieldErrors = fieldErrors // e.g. { email: 'Enter a valid email address' }
+    this.code = code // e.g. 'EMAIL_NOT_VERIFIED' when React must react to a specific case
   }
 }
 
@@ -79,7 +80,12 @@ async function send(path, { method = 'GET', json, form, file, signal } = {}) {
     } else if (response.status === 403 && method !== 'GET') {
       csrf = null // token may be stale; the next attempt fetches a fresh one (we never auto-resend)
     }
-    throw new ApiError(data?.message ?? `Request failed (HTTP ${response.status})`, response.status, data?.errors ?? {})
+    throw new ApiError(
+      data?.message ?? `Request failed (HTTP ${response.status})`,
+      response.status,
+      data?.errors ?? {},
+      data?.code ?? null,
+    )
   }
   return data
 }
@@ -95,6 +101,11 @@ export function imageSrc(url) {
   return null
 }
 
+/** Full address of an API path, for plain links such as "download the invoice PDF". */
+export function apiUrl(path) {
+  return `${API_BASE_URL}${path}`
+}
+
 export async function refreshCsrfToken() {
   csrf = null
   const data = await send('/auth/csrf')
@@ -105,6 +116,10 @@ export const api = {
   me: () => send('/auth/me'),
 
   register: (details) => send('/auth/register', { method: 'POST', json: details }),
+
+  // Email confirmation: the code from the link, and "send me a new link"
+  verifyEmail: (token) => send('/auth/verify-email', { method: 'POST', json: { token } }),
+  resendVerification: (email) => send('/auth/resend-verification', { method: 'POST', json: { email } }),
 
   async login(email, password) {
     const user = await send('/auth/login', { method: 'POST', form: { email, password } })

@@ -287,4 +287,12 @@ public class Material {
     public Long getVersion() {
         return version;
     }
+
+    /** A paid order was cancelled and refunded: the sold quantity can be bought again. */
+    public void restock(int quantity) {
+        if (quantity < 1) {
+            throw new IllegalStateException("Quantity to restock must be positive");
+        }
+        availableQuantity += quantity;
+    }
 }

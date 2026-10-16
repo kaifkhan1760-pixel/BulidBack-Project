@@ -9,13 +9,14 @@ import com.buildback.entity.MaterialUnit;
 import com.buildback.entity.OrderStatus;
 import com.buildback.entity.PurchaseOrder;
 import com.buildback.entity.User;
+import com.buildback.service.OrderEmailService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * An order as shown to the buyer, the seller or the admin.
  *
- * Privacy rule: buyer and seller only see each other's EMAIL after the order
- * is paid, so they can arrange collection. Before that, names only.
+ * Privacy rule: buyer and seller only see each other's EMAIL and PHONE after the
+ * order is paid, so they can arrange collection. Before that, names only.
  */
 public record OrderResponse(
         Long id,
@@ -28,11 +29,14 @@ public record OrderResponse(
         Instant expiresAt,
         Instant paidAt,
         Instant collectedAt,
+        String invoiceNumber,
         MaterialSummary material,
         String sellerName,
         String sellerEmail,
+        String sellerPhone,
         String buyerName,
         String buyerEmail,
+        String buyerPhone,
         List<PaymentResponse> payments) {
 
     public record MaterialSummary(Long id, String title, MaterialCategory category, MaterialUnit unit, String city) {
@@ -48,10 +52,11 @@ public record OrderResponse(
         User buyer = o.getBuyer();
         return new OrderResponse(o.getId(), o.getStatus(), o.getQuantity(), o.getUnitPrice(), o.getTotalAmount(),
                 "INR", o.getCreatedAt(), o.getExpiresAt(), o.getPaidAt(), o.getCollectedAt(),
+                o.getPaidAt() == null ? null : OrderEmailService.invoiceNumber(o),
                 new MaterialSummary(o.getMaterial().getId(), o.getMaterial().getTitle(),
                         o.getMaterial().getCategory(), o.getMaterial().getUnit(), o.getMaterial().getCity()),
-                seller.getName(), showSellerEmail ? seller.getEmail() : null,
-                buyer.getName(), showBuyerEmail ? buyer.getEmail() : null,
+                seller.getName(), showSellerEmail ? seller.getEmail() : null, showSellerEmail ? seller.getPhone() : null,
+                buyer.getName(), showBuyerEmail ? buyer.getEmail() : null, showBuyerEmail ? buyer.getPhone() : null,
                 payments);
     }
 

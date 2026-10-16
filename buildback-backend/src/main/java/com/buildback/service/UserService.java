@@ -1,6 +1,7 @@
 package com.buildback.service;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,6 +12,7 @@ import com.buildback.dto.RegisterRequest;
 import com.buildback.dto.UserResponse;
 import com.buildback.entity.User;
 import com.buildback.exception.EmailAlreadyUsedException;
+import com.buildback.exception.InvalidRequestException;
 import com.buildback.repository.UserRepository;
 
 /**
@@ -38,17 +40,23 @@ public class UserService {
             throw new EmailAlreadyUsedException();
         }
 
-        // 2. Store only the BCrypt hash, never the plain password
+        // 2. A password equal to the email is the first thing an attacker tries
+        if (request.password().trim().equalsIgnoreCase(request.email())) {
+            throw new InvalidRequestException(Map.of("password", "Password must not be the same as your email"));
+        }
+
+        // 3. Store only the BCrypt hash, never the plain password
         User user = new User(
                 request.name(),
                 request.email(),
                 passwordEncoder.encode(request.password()),
-                request.role().toRole());
+                request.role().toRole(),
+                request.phone());
 
         try {
             return UserResponse.from(userRepository.saveAndFlush(user));
         } catch (DataIntegrityViolationException e) {
-            // 3. Two sign-ups with the same email at the same moment can both pass
+            // 4. Two sign-ups with the same email at the same moment can both pass
             //    step 1. The UNIQUE constraint in MySQL then rejects the second one.
             if (isDuplicateEmail(e)) {
                 throw new EmailAlreadyUsedException();

@@ -3,9 +3,12 @@ import { Link, useLocation, useParams } from 'react-router'
 import { api } from '../api/client'
 import { BuyBox } from '../components/BuyBox'
 import { Icon } from '../components/Icon'
+import { MaterialRail } from '../components/MaterialRail'
 import { PhotoGallery } from '../components/PhotoGallery'
 import { TileCalculator } from '../components/TileCalculator'
+import { useApiQuery } from '../hooks/useApiQuery'
 import { CATEGORY_ICONS, CATEGORY_LABELS, UNIT_LABELS, formatPrice, quantityText } from '../materials/materialRules'
+import { rememberViewed } from '../materials/recentlyViewed'
 
 export default function MaterialDetailPage() {
   const { id } = useParams()
@@ -30,6 +33,11 @@ export default function MaterialDetailPage() {
 
   const material = loading ? null : result.material
   const error = loading ? null : result.error
+
+  // Remember this listing for the "Recently viewed" row on the home page
+  useEffect(() => {
+    if (material) rememberViewed(material)
+  }, [material])
   // Archived, deleted or never existed (or a non-number id): all look the same to buyers
   const notFound = error && (error.status === 404 || error.status === 400)
 
@@ -149,6 +157,26 @@ export default function MaterialDetailPage() {
           </aside>
         </div>
       )}
+      {material && <SimilarMaterials material={material} />}
     </main>
+  )
+}
+
+/** Other listings in the same category (the current one is left out). */
+function SimilarMaterials({ material }) {
+  const similar = useApiQuery(`similar-${material.category}-${material.id}`, (signal) =>
+    api.materials.search({ category: material.category, size: 5 }, signal),
+  )
+  const items = similar.data
+    ? similar.data.content.filter((item) => item.id !== material.id).slice(0, 4)
+    : null
+  return (
+    <MaterialRail
+      id="similar"
+      title={`More in ${CATEGORY_LABELS[material.category]}`}
+      to={`/materials?category=${material.category}`}
+      items={items}
+      error={similar.error}
+    />
   )
 }

@@ -34,6 +34,7 @@
   margin: 0 auto;
   padding: 32px 20px 64px;
   display: grid;
+  grid-template-columns: minmax(0, 1fr); /* wide content (scrolling rows) must not widen the page */
   gap: 20px;
   align-content: start;
 }
@@ -194,9 +195,14 @@
 }
 
 /* Search: category select + text box + button, joined into one control */
-.bb-search {
+.bb-search-wrap {
+  position: relative;
   flex: 1;
+  min-width: 0; /* may shrink below the width of its longest option */
   max-width: 680px;
+}
+
+.bb-search {
   display: flex;
   height: 44px;
   border: 2px solid var(--brand-600);
@@ -210,6 +216,7 @@
 }
 
 .bb-search-category {
+  max-width: 170px; /* long names like "POP & False Ceiling" must not push the box wider */
   border: 0;
   border-right: 1px solid var(--line);
   background: var(--canvas);
@@ -245,6 +252,85 @@
 
 .bb-search-submit:hover {
   background: var(--brand-700);
+}
+
+.bb-suggest {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 60;
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  max-height: 440px;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.bb-suggest-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.bb-suggest-item[aria-selected='true'] {
+  background: var(--brand-50);
+  box-shadow: inset 3px 0 0 var(--brand-600);
+}
+
+.bb-suggest-img {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--canvas);
+}
+
+.bb-suggest-text {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+
+.bb-suggest-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink-900);
+}
+
+.bb-suggest-title strong {
+  color: var(--brand-700);
+}
+
+.bb-suggest-text small,
+.bb-suggest-price small {
+  color: var(--ink-500);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.bb-suggest-price {
+  display: grid;
+  justify-items: end;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bb-suggest-all {
+  margin-top: 4px;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  color: var(--brand-700);
+  font-weight: 600;
 }
 
 .bb-header-actions {
@@ -469,10 +555,14 @@
     padding-bottom: 12px;
   }
 
-  .bb-search {
+  .bb-search-wrap {
     order: 3;
     flex-basis: 100%;
     max-width: none;
+  }
+
+  .bb-search-category {
+    max-width: 92px;
   }
 
   .bb-menu-toggle {
@@ -1348,4 +1438,148 @@
   display: grid;
   gap: 12px;
   justify-items: center;
+}
+
+/* ---------- Back to top ---------- */
+.bb-back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  z-index: 45;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+}
+
+.bb-back-to-top:hover {
+  background: var(--brand-700);
+}
+
+.bb-rotate-up {
+  transform: rotate(-90deg);
+}
+
+/* ---------- Input with a prefix or suffix (₹, +91, units) ---------- */
+.bb-input-affix {
+  display: flex;
+  align-items: stretch;
+}
+
+.bb-input-affix > span {
+  display: grid;
+  place-items: center;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  background: var(--canvas);
+  color: var(--ink-500);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bb-input-affix > span:first-child {
+  border-right: 0;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.bb-input-affix > span:last-child {
+  border-left: 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.bb-field .bb-input-affix input {
+  flex: 1;
+  min-width: 0;
+}
+
+.bb-field .bb-input-affix:not(.bb-input-affix-end) input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.bb-field .bb-input-affix-end input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+
+/* ---------- Password strength + checklist (register page) ---------- */
+.bb-password-help {
+  display: grid;
+  gap: 8px;
+  margin-top: -6px;
+}
+
+.bb-strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--ink-500);
+}
+
+.bb-strength-bar {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.bb-strength-bar span {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: background 0.2s var(--ease);
+}
+
+.bb-strength[data-level='1'] .bb-strength-bar span:nth-child(1) {
+  background: var(--error);
+}
+
+.bb-strength[data-level='2'] .bb-strength-bar span:nth-child(-n + 2) {
+  background: var(--accent-500);
+}
+
+.bb-strength[data-level='3'] .bb-strength-bar span {
+  background: var(--brand-600);
+}
+
+.bb-strength-label {
+  min-width: 120px;
+  text-align: right;
+  font-weight: 600;
+}
+
+.bb-password-rules {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 0.86rem;
+  color: var(--ink-500);
+}
+
+.bb-password-rules li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bb-password-rules li .bb-icon {
+  color: var(--ink-300);
+}
+
+.bb-password-rules li.is-met {
+  color: var(--brand-700);
+}
+
+.bb-password-rules li.is-met .bb-icon {
+  color: var(--brand-600);
 }

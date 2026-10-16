@@ -4,6 +4,8 @@
 const unsplash = (id, width) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${width}&q=75`
 
 export const HERO_IMAGE = unsplash('1747192904662-e03e8da1e0ab', 1600) // building under construction
+export const INTERIOR_SLIDE_IMAGE = unsplash('1616046229478-9901c5536a45', 1600) // living room interior
+export const DEALS_SLIDE_IMAGE = unsplash('1643822308521-1da534425d82', 1600) // open paint cans
 export const SELLER_IMAGE = unsplash('1764116858643-8519de606248', 1400) // workers loading timber onto a truck
 export const STOCK_IMAGE = unsplash('1778830355855-58ffa19781e1', 800) // stacked timber at a yard
 export const STOCK_IMAGE_LARGE = unsplash('1778830355855-58ffa19781e1', 1200)

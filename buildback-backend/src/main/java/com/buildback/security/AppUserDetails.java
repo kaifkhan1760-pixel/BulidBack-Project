@@ -28,19 +28,24 @@ public class AppUserDetails implements UserDetails, CredentialsContainer {
     private final Long id;
     private final String name;
     private final String email;
+    private final String phone;
     private final Role role;
+    private final boolean emailVerified;
     private String passwordHash;
 
-    private AppUserDetails(Long id, String name, String email, Role role, String passwordHash) {
+    private AppUserDetails(Long id, String name, String email, String phone, Role role, boolean emailVerified,
+            String passwordHash) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.phone = phone;
         this.role = role;
+        this.emailVerified = emailVerified;
         this.passwordHash = passwordHash;
     }
 
     public static AppUserDetails from(User user) {
-        return new AppUserDetails(user.getId(), user.getName(), user.getEmail(), user.getRole(),
+        return new AppUserDetails(user.getId(), user.getName(), user.getEmail(), user.getPhone(), user.getRole(), user.isEmailVerified(),
                 user.getPasswordHash());
     }
 
@@ -74,7 +79,11 @@ public class AppUserDetails implements UserDetails, CredentialsContainer {
         return role;
     }
 
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
     public UserResponse toResponse() {
-        return new UserResponse(id, name, email, role);
+        return new UserResponse(id, name, email, phone, role);
     }
 }

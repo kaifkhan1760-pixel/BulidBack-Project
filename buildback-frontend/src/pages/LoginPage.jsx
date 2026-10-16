@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router'
 import { dashboardPath, useAuth } from '../auth/authContext'
 import { AuthLayout } from '../components/AuthLayout'
 import { FormField, PasswordInput } from '../components/FormField'
+import { ResendConfirmation } from '../components/ResendConfirmation'
 
 export default function LoginPage() {
   const { login, notice, clearNotice } = useAuth()
@@ -10,12 +11,13 @@ export default function LoginPage() {
   const navigate = useNavigate()
 
   // Messages handed over by other pages (kept in router state, never in the URL)
-  const justRegistered = location.state?.registered === true
+  const justVerified = location.state?.verified === true
   const [authNotice] = useState(notice) // "logged out" / "session expired"
 
   const [email, setEmail] = useState(location.state?.email ?? '')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
+  const [needsConfirmation, setNeedsConfirmation] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
   // The notice was copied above; clear it so it does not show again later
@@ -26,6 +28,7 @@ export default function LoginPage() {
   async function handleSubmit(event) {
     event.preventDefault()
     setError(null)
+    setNeedsConfirmation(false)
     if (!email.trim() || !password) {
       setError('Enter your email and password.')
       return
@@ -36,8 +39,9 @@ export default function LoginPage() {
       const user = await login(email, password)
       navigate(dashboardPath(user.role), { replace: true })
     } catch (err) {
-      // 401 -> "Invalid email or password", 0 -> server unreachable
+      // 401 -> "Invalid email or password", 403 + code -> email not confirmed yet, 0 -> server unreachable
       setError(err.message)
+      setNeedsConfirmation(err.code === 'EMAIL_NOT_VERIFIED')
       setSubmitting(false)
     }
   }
@@ -45,16 +49,17 @@ export default function LoginPage() {
   return (
     <AuthLayout title="Log in" subtitle="Welcome back. Log in to continue.">
       <div role="status" aria-live="polite">
-        {justRegistered && !authNotice && (
-          <p className="bb-alert bb-alert-success">Account created. You can log in now.</p>
+        {justVerified && !authNotice && (
+          <p className="bb-alert bb-alert-success">Your email is confirmed. Log in to continue.</p>
         )}
         {authNotice && <p className="bb-alert bb-alert-info">{authNotice}</p>}
       </div>
 
       {error && (
-        <p className="bb-alert bb-alert-error" role="alert">
-          {error}
-        </p>
+        <div className="bb-alert bb-alert-error" role="alert">
+          <p>{error}</p>
+          {needsConfirmation && <ResendConfirmation email={email} compact />}
+        </div>
       )}
 
       <form className="bb-form" onSubmit={handleSubmit} noValidate>
