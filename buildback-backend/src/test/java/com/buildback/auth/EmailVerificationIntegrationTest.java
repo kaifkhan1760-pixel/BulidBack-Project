@@ -84,7 +84,8 @@ class EmailVerificationIntegrationTest {
             return List.of();
         }
         try (Stream<Path> files = Files.list(folder)) {
-            return files.sorted().map(file -> {
+            // Only the emails themselves; invoice PDFs saved next to them are not text
+            return files.filter(file -> file.toString().endsWith(".html")).sorted().map(file -> {
                 try {
                     return Files.readString(file);
                 } catch (IOException e) {

@@ -100,7 +100,9 @@ public class MailService {
     /** Same, with one PDF attached (e.g. the invoice). attachmentName/pdf may be null. */
     public void send(String to, String subject, String html, String text, String attachmentName, byte[] pdf) {
         JavaMailSender sender = mailSender.getIfAvailable();
-        if (sender == null) {
+        // No mail server, or an address that can never receive mail (demo sellers on ".test"):
+        // keep it locally instead of sending, so nothing bounces back to the sender's inbox
+        if (sender == null || isReservedTestAddress(to)) {
             saveToOutbox(to, subject, html, attachmentName, pdf);
             return;
         }
@@ -143,6 +145,16 @@ public class MailService {
         } catch (IOException e) {
             throw new UncheckedIOException("Could not save the email to the outbox", e);
         }
+    }
+
+    /**
+     * True for domains reserved for testing by RFC 2606 / RFC 6761 (and ".local"):
+     * mail to them can never be delivered, e.g. the demo sellers' "@demo.buildback.test".
+     */
+    static boolean isReservedTestAddress(String to) {
+        String domain = to.substring(to.lastIndexOf('@') + 1).toLowerCase(java.util.Locale.ROOT);
+        return domain.endsWith(".test") || domain.endsWith(".example") || domain.endsWith(".invalid")
+                || domain.endsWith(".localhost") || domain.endsWith(".local") || domain.equals("localhost");
     }
 
     /** Makes text safe to put inside HTML (names can contain ' and &). */
